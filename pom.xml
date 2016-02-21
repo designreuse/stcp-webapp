@@ -79,7 +79,7 @@
 				<version>2.1</version>
 				<configuration>
                     <ignorePackaging>true</ignorePackaging>
-					<path>/sctp</path>
+					<path>/stcp</path>
 				</configuration>
 			</plugin>
 			
