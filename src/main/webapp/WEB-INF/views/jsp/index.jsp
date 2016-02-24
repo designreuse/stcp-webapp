@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <title>Student Course Planer</title>
+
     <spring:url value="/resources/core/css/main.css" var="coreCss"/>
     <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss"/>
     <link href="${bootstrapCss}" rel="stylesheet"/>
@@ -34,7 +35,7 @@
         </p>
 
         <p>
-            <a class="btn btn-primary btn-lg" href="CourseOfferingPlanerMainPage" role="button">Course offering Planing</a>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         </p>
     </div>
 </div>
