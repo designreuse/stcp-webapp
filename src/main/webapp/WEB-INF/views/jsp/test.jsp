@@ -22,7 +22,7 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1>${Course Offering Planner}</h1>
+        <h1>${title}</h1>
 
         <p>
             <c:if test="${not empty msg}">
