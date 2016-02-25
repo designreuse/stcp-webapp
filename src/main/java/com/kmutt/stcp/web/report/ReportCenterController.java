@@ -1,3 +1,7 @@
+package com.kmutt.stcp.web.report;
+
+import com.kmutt.stcp.entity.User;
+
 public class ReportCenterController {
 
 	private User authorizedUser;

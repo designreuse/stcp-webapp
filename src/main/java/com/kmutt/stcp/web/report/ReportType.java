@@ -5,8 +5,9 @@ public enum ReportType {
 	NORMAL("normal"),
 	STAT("statistics");
 
-	ReportType(String name) {
-
+	private String reportTypeName;
+	ReportType(String reportTypeName) {
+		this.reportTypeName = reportTypeName;
 	}
 
 }

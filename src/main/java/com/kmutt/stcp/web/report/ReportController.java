@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +26,25 @@ public class ReportController {
 
         model.put("title", "test");
         model.put("msg", "message test test test");
+
+        List<ReportMaster> records = new ArrayList<>();
+        ReportMaster master = new ReportMaster();
+        master.setReportName("Courses");
+        master.setReportType(ReportType.NORMAL);
+        records.add(master);
+
+        master = new ReportMaster();
+        master.setReportName("Study Plan");
+        master.setReportType(ReportType.NORMAL);
+        records.add(master);
+
+        master = new ReportMaster();
+        master.setReportName("Summary");
+        master.setReportType(ReportType.STAT);
+        records.add(master);
+
+        model.put("records",records);
+
 
         return "report/report-controller";
     }

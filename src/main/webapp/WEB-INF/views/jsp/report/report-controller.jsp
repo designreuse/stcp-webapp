@@ -24,14 +24,47 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 
+			<div class="panel panel-default">
 
-            <div class="input-group">
-              <span class="input-group-addon" id="studentId">Student ID</span>
-              <input type="text" class="form-control" id="basic-url" aria-describedby="studentId" />
-            </div>
+				<div class="panel-heading">
+					Filter
+				</div>
+
+				<div class="input-group">
+				  <span class="input-group-addon" id="studentId">Student ID</span>
+				  <input type="text" class="form-control" id="basic-url" aria-describedby="studentId" />
+				</div>
+
+				<div class="dropup">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Dropup
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#">Separated link</a></li>
+					</ul>
+				</div>
+
+				asdfdsaf
+
+				<div class="panel-footer text-center">
+					<p>
+						<button type="button" class="btn btn-primary btn-sm">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+						</button>
+						<button type="button" class="btn btn-default btn-sm">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
+						</button>
+					</p>
+				</div>
+			</div>
 
 			<!-- Table -->
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -40,21 +73,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Courses</td>
-						<td>Normal</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>Study Plan</td>
-						<td>Normal</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>Summary</td>
-						<td>Statistics</td>
-					</tr>
+					<c:forEach var="master" varStatus="status" items="${records}" >
+						<tr>
+							<td>
+								<c:out value="${status.count}" />
+							</td>
+							<td>
+								<c:out value="${master.reportName}" />
+							</td>
+							<td>
+								<c:out value="${master.reportType}" />
+							</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 
