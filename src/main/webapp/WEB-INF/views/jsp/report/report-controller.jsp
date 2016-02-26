@@ -31,25 +31,27 @@
 				</div>
 
 				<div class="input-group">
-				  <span class="input-group-addon" id="studentId">Student ID</span>
-				  <input type="text" class="form-control" id="basic-url" aria-describedby="studentId" />
+					<div class="input-group-btn">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+						<ul class="dropdown-menu">
+							<li role="presentation"><a href="#">${idOption.studentId}</a></li>
+							<li><a href="#">${idOption.staffId}</a></li>
+						</ul>
+					</div>
+					<input type="text" class="form-control" aria-label="...">
 				</div>
 
-				<div class="dropup">
+
+				<div class="dropdown">
 					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Dropup
+						ReportType
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#">Separated link</a></li>
+						<li><a href="#">Normal</a></li>
+						<li><a href="#">Statistics</a></li>
 					</ul>
 				</div>
-
-				asdfdsaf
 
 				<div class="panel-footer text-center">
 					<p>
@@ -100,12 +102,13 @@
 	</footer>
 
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
 	<spring:url value="/resources/core/css/main.js" var="coreJs" />
-	<spring:url value="/resources/core/css/bootstrap.min.js" var="bootstrapJs" />
+	<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 
 	<script src="${coreJs}"></script>
 	<script src="${bootstrapJs}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 </body>
 

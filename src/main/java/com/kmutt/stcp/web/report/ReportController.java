@@ -1,13 +1,15 @@
 package com.kmutt.stcp.web.report;
 
-import com.kmutt.stcp.web.TestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,11 @@ public class ReportController {
 
         model.put("title", "test");
         model.put("msg", "message test test test");
+
+        Map<String,String> map = new HashMap<>();
+        map.put("studentId", "Student ID");
+        map.put("staffId", "Staff ID");
+        model.put("idOption",map);
 
         List<ReportMaster> records = new ArrayList<>();
         ReportMaster master = new ReportMaster();
@@ -47,6 +54,7 @@ public class ReportController {
 
 
         return "report/report-controller";
+//        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/testTemplate", method = RequestMethod.GET)
