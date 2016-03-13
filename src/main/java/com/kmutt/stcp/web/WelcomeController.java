@@ -1,9 +1,7 @@
 package com.kmutt.stcp.web;
 
-import com.kmutt.stcp.service.CurriculumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +16,6 @@ public class WelcomeController {
 	private final Logger logger = LoggerFactory.getLogger(WelcomeController.class);
 
 
-	@Autowired CurriculumService curriculumService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Map<String, Object> model) {
