@@ -13,14 +13,14 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Student Course Planer</a>
-			</div>
-		</div>
-	</nav>
-	<hr>
+	<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
+		<!--<div class="container">-->
+			<!--<div class="navbar-header">-->
+				<!--<a class="navbar-brand" href="#">Student Course Planer</a>-->
+			<!--</div>-->
+		<!--</div>-->
+	<!--</nav>-->
+	<!--<hr>-->
 	<div class="panel panel-default">
 		<div class="panel-body">
 
@@ -52,7 +52,7 @@
 						<li><a href="#">Statistics</a></li>
 					</ul>
 				</div>
-
+<a  href="getpdf">getpdf</a>
 				<div class="panel-footer text-center">
 					<p>
 						<button type="button" class="btn btn-primary btn-sm">

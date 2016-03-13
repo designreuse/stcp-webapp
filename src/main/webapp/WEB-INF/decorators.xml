@@ -5,6 +5,7 @@
     </excludes>
     <decorator name="template" page="template.jsp">
     	<pattern>/test/*</pattern>
+        <pattern>/report/*</pattern>
     </decorator>
     
 </decorators>
