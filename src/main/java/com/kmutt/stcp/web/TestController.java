@@ -33,4 +33,9 @@ public class TestController {
     public String testTemplate(Map<String, Object> model) {
         return "testTemplate";
     }
+    
+//    @RequestMapping(value = "/courseofferring", method = RequestMethod.GET)
+//    public String courseOfferring(Map<String, Object> model) {
+//        return "courseofferring";
+//    }
 }
