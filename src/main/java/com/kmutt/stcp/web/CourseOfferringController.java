@@ -17,5 +17,21 @@ public class CourseOfferringController {
 	    public String courseofferring(Map<String, Object> model) {
 	        return "courseofferring";
 	    }
+	    
+	    @RequestMapping(value = "/managesubject", method = RequestMethod.GET)
+	    public String managesubject(Map<String, Object> model) {
+	        return "managesubject";
+	    }
+	    
+	    @RequestMapping(value = "/managecurriculum", method = RequestMethod.GET)
+	    public String managecurriculum(Map<String, Object> model) {
+	        return "managecurriculum";
+	    }
+	    
+	    @RequestMapping(value = "/mergesubjectandcurriculum", method = RequestMethod.GET)
+	    public String mergesubjectandcurriculum(Map<String, Object> model) {
+	        return "mergesubjectandcurriculum";
+	    }
+	
 
 }
