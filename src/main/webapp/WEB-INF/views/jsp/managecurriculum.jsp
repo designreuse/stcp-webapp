@@ -12,35 +12,10 @@
 <body>
       <!-- Main content -->
       <div class="box-header">
-        <h3 class="box-title">Cousre Offerring</h3>
+        <h3 class="box-title">Manage Curriculum</h3>
       </div><!-- /.box-header -->
-      <!-- <div class="box-body">
-		<a href="http://google.com" class="btn btn-default">Manage Subject</a>
-		
-      </div>/.box-body -->
-      
-      <table>
-      <tr>
-      	<td>
-      		<div class="box-body">
-				<a href="http://google.com" class="btn btn-default">Manage Subject</a>
-      		</div><!-- /.box-body -->
-      	</td>
-      	
-      	<td>
-      		<div class="box-body">
-				<a href="http://google.com" class="btn btn-default">Manage Curriculum</a>
-      		</div><!-- /.box-body -->
-      	</td>
-      	
-      	<td>
-      		<div class="box-body">
-				<a href="http://google.com" class="btn btn-default">Merge Subject && Curriculum</a>
-      		</div><!-- /.box-body -->
-      	</td>
-      	
-      </tr>
-      </table>
+     
+    
       
 </body>
 </html>
