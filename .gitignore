@@ -70,6 +70,7 @@ local.properties
 # Package Files
 ######################
 *.jar
+!src/main/webapp/WEB-INF/lib/ReportFont.jar
 *.war
 *.ear
 *.db
