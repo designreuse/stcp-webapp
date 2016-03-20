@@ -81,6 +81,13 @@
 	                <span>Menu</span>
 	              </a>
 	            </li>
+	           
+	            <li class="treeview">
+	             <a href="${root}/courseofferring/courseofferring">
+	               <i class="fa fa-edit"></i>
+	               <span>Course Offerring</span>
+	             </a>
+	           	</li>
 	        </ul>
         </section>
         <!-- /.sidebar -->
