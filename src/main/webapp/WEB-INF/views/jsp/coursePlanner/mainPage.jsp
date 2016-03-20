@@ -77,16 +77,38 @@
             border: 1px solid black;
             display: none;
         }
+        
+        .table-subject{
+        	border: 1px solid black;
+        	width:100%;
+        }
+        
+        .td-subject{
+        	border: 1px solid black;
+        	width:40%;
+        }
+        
+        .td-credit{
+        	border: 1px solid black;
+        	width:30%;
+        	text-align:center;
+        }
+        
+        .td-delete{
+        	border: 1px solid black;
+        	width:30%;
+        }
     </style>
 
 
 </head>
 <body>
     <!-- <div style="width: 100%; height: 100px">Header</div> -->
-    <div style="float: left; width: 20%; margin-left: 10px">
+    <div style="float: left; width: 25%; margin-left: 10px">
+    <br>
         <input name="txt1" type="text"><input name="btnSubmit1" type="submit" value="Search">
         <br>
-        <select id="subjectListID" name="sometext" size="5" style="width: 210px;height:180px" ondblclick="dblSubject()">
+        <select id="subjectListID" name="sometext" size="5" style="width: 210px;height:200px" ondblclick="dblSubject()">
             <option id="SWE601">SWE601</option>
             <option id="SWE602">SWE602</option>
             <option id="SWE603">SWE603</option>
@@ -94,7 +116,8 @@
             <option id="SWE605">SWE605</option>
         </select>
     </div>
-    <div style="float: left; width: 70%">
+    <div style="float: left; width: 50%">
+    <br>
         <select style="width: 100px">
             <option value="1">ปี1</option>
             <option value="2">ปี2</option>
@@ -102,7 +125,8 @@
             <option value="4">ปี4</option>
         </select>
         <button onclick="reset()">Reset</button>
-        <br>
+         <button onclick="save()">Save</button>
+        <br><br>
 
 
         <div>
@@ -113,10 +137,24 @@
             </ul>
             <ul id="detail_containTab">
                 <li class="detailContent1">
-                    <div id="tab1"> </div>
+                    <div id="tab1"> 
+                    	<div id="subjectPlan1">
+                    		<table id="tableSubject" class="table-subject">
+								  <tr>
+								    <td class="td-subject"><b>Subject</b></td>
+								    <td class="td-credit"><b>Credit</b></td>	
+								    <td class="td-delete"></td>									  
+								  </tr>
+							</table>
+                    	</div>
+                    	<div id="detailPlan1"></div>
+                    </div>
                 </li>
                 <li class="detailContent2">
-                    <div id="tab2"> </div>
+                    <div id="tab2"> 
+                    	<div id="subjectPlan2"></div>
+                    	<div id="detailPlan2"></div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -131,8 +169,12 @@
 
         function reset() {
             alert(1);
-            tab1.innerHTML = "";
-            tab2.innerHTML = "";
+            subjectPlan1.innerHTML = "";
+            subjectPlan2.innerHTML = "";
+        }
+        
+        function save() {
+            alert("save");
         }
 
         function clickTab() {
@@ -144,13 +186,13 @@
             var subject = subjectListID.value;
             
             
-            var div = document.createElement("div");
-            div.innerHTML = subject;
-            if (term == 0) {
-                tab1.appendChild(div);
-            } else {
-                tab2.appendChild(div);
-            }
+            //var div = document.createElement("div");
+            //div.innerHTML = subject;
+            //if (term == 0) {
+            //	subjectPlan1.appendChild(div);
+            //} else {
+            //	subjectPlan2.appendChild(div);
+            //}
 
             document.getElementById(subject).disabled = true;
 
@@ -158,7 +200,26 @@
             //var t = document.createTextNode("CLICK ME");
             //btnDelete.appendChild(t);
             //tab1.appendChild(btnDelete);
-
+            
+            insertSubjectToTable();
+        }
+        
+        function insertSubjectToTable() {
+            var table = document.getElementById("tableSubject");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            
+            cell1.innerHTML = "test subject";
+            cell2.innerHTML = "3"; //หน่วยกิต
+            cell3.innerHTML = "delete button" //ปุ่มลบ
+            
+            cell1.className="td-subject";
+            cell2.className="td-credit";
+            cell3.className="td-delete";
         }
 
         function btnDelete_Click() {
