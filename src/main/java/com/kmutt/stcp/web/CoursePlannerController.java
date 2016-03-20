@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/coursePlanner")
 public class CoursePlannerController {
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
 
 
 	//@Autowired CurriculumService curriculumService;
 
-	@RequestMapping(value = "/coursePlanner", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Map<String, Object> model) {
 
 		//logger.debug("index() is executed!");
