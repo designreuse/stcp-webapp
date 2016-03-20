@@ -215,7 +215,7 @@
             
             cell1.innerHTML = "test subject";
             cell2.innerHTML = "3"; //หน่วยกิต
-            cell3.innerHTML = "delete button" //ปุ่มลบ
+            cell3.innerHTML = "Delete button" //ปุ่มลบ
             
             cell1.className="td-subject";
             cell2.className="td-credit";
