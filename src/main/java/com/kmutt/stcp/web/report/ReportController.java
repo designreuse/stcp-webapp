@@ -1,5 +1,6 @@
 package com.kmutt.stcp.web.report;
 
+import com.kmutt.stcp.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,10 @@ import java.util.Map;
 @RequestMapping("/report")
 public class ReportController {
     private final Logger logger = LoggerFactory.getLogger(ReportController.class);
+
+    private User authorizedUser;
+    private ReportModule module;
+    private String filterText;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Map<String, Object> model) {
@@ -62,10 +67,21 @@ public class ReportController {
 //        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getpdf", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> getPDF(/*@RequestBody String json*/) {
-        ReportMaster r = new ReportMaster();
-        r.generateReport(0,null);
+
+    @RequestMapping(value = "/searchReport", method = RequestMethod.GET)
+    public String searchReport(Map<String, Object> model) {
+//        model.get("studentId")
+
+        //TODO get filter
+        //TODO query report
+        return "";
+    }
+
+    //onSelectedReport
+    @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> reportCenterGenerator(/*@RequestBody String json*/) {
+        ReportGenerator r = new ReportGenerator();
+//        r.generateReport(0,null);
 
         // convert JSON to Employee
 //        Employee emp = convertSomehow(json);
@@ -73,7 +89,7 @@ public class ReportController {
 //        // generate the file
 //        PdfUtil.showHelp(emp);
 
-        byte[] pdfContents = r.getReportTemplate();
+        byte[] pdfContents = r.generateReport(0,null);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -81,6 +97,20 @@ public class ReportController {
 
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+    }
+
+    //module clicked
+    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> reportModuleGenerator(/*@RequestBody String json*/) {
+        //TODO pass moduleId
+
+        ReportGenerator generator = new ReportGenerator();
+        //FIXME edit arguments
+        if(generator.isReportValid(0)){
+            generator.generateReport(0,null);
+        }
+
+        return null;
     }
 
 }
