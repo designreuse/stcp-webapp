@@ -215,10 +215,14 @@
         }
 
         function dblSubject() {
-            var subject = subjectListID.value;       
-            document.getElementById(subject).disabled = true;
-    
-            insertSubjectToTable(subject,"3");
+        	
+            var subject = subjectListID.value;    
+            if(document.getElementById(subject).disabled == false){
+            	 document.getElementById(subject).disabled = true;
+            	    
+                 insertSubjectToTable(subject,"3");
+            }
+           
         }
         
         function insertSubjectToTable(subject,credit) {
@@ -237,7 +241,7 @@
                 totalCredits2.innerHTML= credits;
             }  	
         	
-        	var btnDelete = document.createElement("BUTTON");
+        	var btnDelete = document.createElement("BUTTON");      	
             var text = document.createTextNode("delete");
             btnDelete.appendChild(text);
             btnDelete.addEventListener("click", function(){
@@ -277,7 +281,7 @@
                 
                 if (rowObj.textContent == subject) { 
                 	table.deleteRow(i);
-                	document.getElementById(subject).disabled = false;
+                	document.getElementById(subject).disabled = false;               
                     rowCount--;
                     
                     if (term == 0) {               		
