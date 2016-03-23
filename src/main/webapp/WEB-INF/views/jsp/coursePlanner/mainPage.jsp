@@ -44,11 +44,13 @@
             }
         /* class รูปแบบของแต่ละเมนู */
         .tabNavi1 {
-            background-color: #CEF6F5;
+            background-color: #848484;
+            color:#ffffff;
         }
 
         .tabNavi2 {
-            background-color: #F2E0F7;
+            background-color: #A4A4A4;
+            color:#ffffff;
         }
 
 
@@ -63,7 +65,7 @@
             ul#detail_containTab li {
                 float: left;
                 width: 100%;
-                height: 150px;
+                height: 250px;
             }
         /* class รูปแบบของแต่ละเนื้อหา */
         .detailContent1 {
@@ -103,74 +105,104 @@
 
 </head>
 <body>
-    <!-- <div style="width: 100%; height: 100px">Header</div> -->
-    <div style="float: left; width: 25%; margin-left: 10px">
-    <br>
-        <input name="txt1" type="text"><input name="btnSubmit1" type="submit" value="Search">
-        <br>
-        <select id="subjectListID" name="sometext" size="5" style="width: 210px;height:200px" ondblclick="dblSubject()">
-            <option id="SWE601">SWE601</option>
-            <option id="SWE602">SWE602</option>
-            <option id="SWE603">SWE603</option>
-            <option id="SWE604">SWE604</option>
-            <option id="SWE605">SWE605</option>
-        </select>
-    </div>
-    <div style="float: left; width: 50%">
-    <br>
-        <select style="width: 100px">
-            <option value="1">ปี1</option>
-            <option value="2">ปี2</option>
-            <option value="3">ปี3</option>
-            <option value="4">ปี4</option>
-        </select>
-        <button onclick="reset()">Reset</button>
-         <button onclick="save()">Save</button>
-        <br><br>
+    
+   <div style="min-height:400px">
+	    <div style="float: left; width: 25%; margin-left: 10px">
+	    <br>
+	        <input name="txt1" type="text"><input name="btnSubmit1" type="submit" value="Search">
+	        <br>
+	        <select id="subjectListID" name="sometext" size="5" style="width: 210px;height:350px" ondblclick="dblSubject()">
+	            <option id="SWE601">SWE601</option>
+	            <option id="SWE602">SWE602</option>
+	            <option id="SWE603">SWE603</option>
+	            <option id="SWE604">SWE604</option>
+	            <option id="SWE605">SWE605</option>
+	        </select>
+	    </div>
+	    <div style="float: left; width: 50%">
+	    <br>
+	        <select style="width: 100px">
+	            <option value="1">ปี1</option>
+	            <option value="2">ปี2</option>
+	            <option value="3">ปี3</option>
+	            <option value="4">ปี4</option>
+	        </select>
+	        <button onclick="reset()">Reset</button>
+	         <button onclick="save()">Save</button>
+	        <br><br>
 
+	        <div>
+	            <ul id="navi_containTab" onclick="clickTab()">
+	                <li class="tabNavi1">เทอม 1</li>
+	                <li class="tabNavi2">เทอม 2</li>
+	
+	            </ul>
+	            <ul id="detail_containTab">
+	                <li class="detailContent1">
+	                    <div id="tab1" style="height:100%"> 
+	                    	<div id="subjectPlan1" style="height:80%">
+	                    		<table id="tableSubject1" class="table-subject">
+									  <tr>
+									    <td class="td-subject" style="background-color:#F2F2F2;text-align:center;"><b>Subject</b></td>
+									    <td class="td-credit" style="background-color:#F2F2F2"><b>Credit</b></td>	
+									    <td class="td-delete" style="background-color:#F2F2F2"></td>									  
+									  </tr>
+								</table>
+	                    	</div>
+	                    	<div id="detailPlan1" style="height:20%;padding-left:10px">
+	                    		<span>Total Credits : </span>
+	                    		<span id="totalCredits1"> 0 </span>
+	                    		<br>
+	                    		<span>All Years Credits : </span>
+	                    		<span> 36 </span>
+	                    	</div>
+	                    </div>
+	                </li>
+	                <li class="detailContent2">
+	                    <div id="tab2" style="height:100%"> 
+	                    	<div id="subjectPlan2" style="height:80%">
+	                    		<table id="tableSubject2" class="table-subject">
+									  <tr>
+									    <td class="td-subject" style="background-color:#F2F2F2;text-align:center;"><b>Subject</b></td>
+									    <td class="td-credit" style="background-color:#F2F2F2"><b>Credit</b></td>	
+									    <td class="td-delete" style="background-color:#F2F2F2"></td>									  
+									  </tr>
+								</table>
+	                    	</div>
+	                    	<div id="detailPlan2" style="height:20%;padding-left:10px">
+	                    		<span>Total Credits : </span>
+	                    		<span id="totalCredits2"> 0 </span>
+	                    		<br>
+	                    		<span>All Years Credits : </span>
+	                    		<span> 36 </span>
+	                    	</div>
+	                    </div>
+	                </li>
+	            </ul>
+	        </div>
+	
+			<br>
+			<span>
+				Warning!!
+				<br>
+				-Normal status allows 9 credits per semester
+			</span>
+			
+	
+	    </div>
+   </div>
 
-        <div>
-            <ul id="navi_containTab" onclick="clickTab()">
-                <li class="tabNavi1">เทอม 1</li>
-                <li class="tabNavi2">เทอม 2</li>
+<script>
 
-            </ul>
-            <ul id="detail_containTab">
-                <li class="detailContent1">
-                    <div id="tab1"> 
-                    	<div id="subjectPlan1">
-                    		<table id="tableSubject" class="table-subject">
-								  <tr>
-								    <td class="td-subject"><b>Subject</b></td>
-								    <td class="td-credit"><b>Credit</b></td>	
-								    <td class="td-delete"></td>									  
-								  </tr>
-							</table>
-                    	</div>
-                    	<div id="detailPlan1"></div>
-                    </div>
-                </li>
-                <li class="detailContent2">
-                    <div id="tab2"> 
-                    	<div id="subjectPlan2"></div>
-                    	<div id="detailPlan2"></div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-
-
-    </div>
-
-    <script>
-
-        term =  "0",
+        term =  "0", //เทอม1
+        
+        window.onload = function () { 
+			console.log("onload");
+        }
 
         function reset() {
-            alert(1);
-            subjectPlan1.innerHTML = "";
-            subjectPlan2.innerHTML = "";
+            //subjectPlan1.innerHTML = "";
+            //subjectPlan2.innerHTML = "";
         }
         
         function save() {
@@ -183,49 +215,86 @@
         }
 
         function dblSubject() {
-            var subject = subjectListID.value;
-            
-            
-            //var div = document.createElement("div");
-            //div.innerHTML = subject;
-            //if (term == 0) {
-            //	subjectPlan1.appendChild(div);
-            //} else {
-            //	subjectPlan2.appendChild(div);
-            //}
-
+            var subject = subjectListID.value;       
             document.getElementById(subject).disabled = true;
-
-            //var btnDelete = document.createElement("BUTTON");
-            //var t = document.createTextNode("CLICK ME");
-            //btnDelete.appendChild(t);
-            //tab1.appendChild(btnDelete);
-            
-            insertSubjectToTable();
+    
+            insertSubjectToTable(subject,"3");
         }
         
-        function insertSubjectToTable() {
-            var table = document.getElementById("tableSubject");
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
+        function insertSubjectToTable(subject,credit) {
+        	var table = null;
+        	if (term == 0) {
+        		table = document.getElementById("tableSubject1");
+  
+           	    var oldCredits = parseInt(totalCredits1.textContent);
+                var credits = oldCredits + parseInt(credit);
+                totalCredits1.innerHTML= credits;
+            } else {
+            	table = document.getElementById("tableSubject2");
+
+           	    var oldCredits = parseInt(totalCredits2.textContent);
+                var credits = oldCredits + parseInt(credit);
+                totalCredits2.innerHTML= credits;
+            }  	
+        	
+        	var btnDelete = document.createElement("BUTTON");
+            var text = document.createTextNode("delete");
+            btnDelete.appendChild(text);
+            btnDelete.addEventListener("click", function(){
+            	btnDeleteSubject_Click(subject,credit);
+            });           
+           
+            //var table = document.getElementById("tableSubject");
+            var rowCount = table.rows.length;           
+            var row = table.insertRow(rowCount);          
             
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
             
-            cell1.innerHTML = "test subject";
-            cell2.innerHTML = "3"; //หน่วยกิต
-            cell3.innerHTML = "Delete button" //ปุ่มลบ
-            
+            cell1.innerHTML = subject;
+            cell2.innerHTML = credit; //หน่วยกิต
+            //cell3.innerHTML = "Delete" //ปุ่มลบ
+            cell3.appendChild(btnDelete);
+
             cell1.className="td-subject";
             cell2.className="td-credit";
-            cell3.className="td-delete";
+            cell3.className="td-delete";                    
         }
 
-        function btnDelete_Click() {
-            alert("ddd");
+        function btnDeleteSubject_Click(subject,credit){
+        	var table = null;
+        	if (term == 0) {
+        		table = document.getElementById("tableSubject1");
+            } else {
+            	table = document.getElementById("tableSubject2");
+            }
+            //var table = document.getElementById('tableSubject');
+            var rowCount = table.rows.length;
+            for (var i = 0; i < rowCount; i++) {
+                var row = table.rows[i];
+                var rowObj = row.cells[0].childNodes[0];
+                
+                if (rowObj.textContent == subject) { 
+                	table.deleteRow(i);
+                	document.getElementById(subject).disabled = false;
+                    rowCount--;
+                    
+                    if (term == 0) {               		
+                   	    var oldCredits = parseInt(totalCredits1.textContent);
+                        var credits = oldCredits - parseInt(credit);
+                        totalCredits1.innerHTML= credits;
+                    } else {
+                    	
+                   	    var oldCredits = parseInt(totalCredits2.textContent);
+                        var credits = oldCredits - parseInt(credit);
+                        totalCredits2.innerHTML= credits;
+                    } 
+                }
+            }
+            
         }
-
+       
 
         $("ul#navi_containTab > li").click(function (event) {
             //alert(1);
