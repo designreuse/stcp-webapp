@@ -45,6 +45,7 @@ public class ReportController {
         map.put("staffId", "Staff ID");
         model.put("idOption", map);
 
+        //displayReportList
         List<ReportMaster> records = new ArrayList<>();
         ReportMaster master = new ReportMaster();
         master.setReportName("Courses");

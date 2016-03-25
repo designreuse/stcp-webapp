@@ -1,15 +1,12 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page session="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<title>Student Course Planer</title>
-
-	<spring:url value="/resources/core/css/main.css" var="coreCss" />
-	<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
-	<link href="${bootstrapCss}" rel="stylesheet" />
-	<link href="${coreCss}" rel="stylesheet" />
 </head>
 
 <body>
@@ -29,6 +26,13 @@
                 <div class="panel-heading">
                     Filter
                 </div>
+
+
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1">ชั้นปีที่</span>
+                  <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                </div>
+
 
                 <div class="input-group">
                     <div class="input-group-btn">
