@@ -8,6 +8,4 @@ public class ReportModule extends ReportMaster {
 
 	private String moduleName;
 
-	private ReportModuleGenerator reportModuleGenerator;
-
 }
