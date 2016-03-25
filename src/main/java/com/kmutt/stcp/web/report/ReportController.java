@@ -73,14 +73,14 @@ public class ReportController {
 //        model.get("studentId")
 
         //TODO get filter
-        //TODO query report
+        //TODO query report "REPORT_MASTER JOIN..."
         return "";
     }
 
     //onSelectedReport
     @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET)
     public ResponseEntity<byte[]> reportCenterGenerator(/*@RequestBody String json*/) {
-        ReportGenerator r = new ReportGenerator();
+        ReportGenerator generator = new ReportGenerator();
 //        r.generateReport(0,null);
 
         // convert JSON to Employee
@@ -89,7 +89,7 @@ public class ReportController {
 //        // generate the file
 //        PdfUtil.showHelp(emp);
 
-        byte[] pdfContents = r.generateReport(0,null);
+        byte[] pdfContents = generator.generateReport(0,null);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -107,7 +107,15 @@ public class ReportController {
         ReportGenerator generator = new ReportGenerator();
         //FIXME edit arguments
         if(generator.isReportValid(0)){
-            generator.generateReport(0,null);
+
+            byte[] pdfContents = generator.generateReport(0,null);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            headers.add("content-disposition", "inline;filename=exported.pdf");
+
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
         }
 
         return null;

@@ -54,7 +54,9 @@
                         <li><a href="#">Statistics</a></li>
                     </ul>
                 </div>
-                <a href="reportCenterGenerator">getpdf</a>
+                <a href="reportModuleGenerator">click export</a>
+                <br/>
+                <a href="reportCenterGenerator">click row</a>
                 <div class="panel-footer text-center">
                     <p>
                         <button type="button" class="btn btn-primary btn-sm">

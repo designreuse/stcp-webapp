@@ -18,7 +18,7 @@ public class ReportGenerator {
     private final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
 
     public boolean isReportValid(Integer reportId) {
-        return false;
+        return true;
     }
     public boolean isReportValid(Integer reportId, Integer moduleId) {
         return false;
