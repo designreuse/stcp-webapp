@@ -27,37 +27,30 @@
                     Filter
                 </div>
 
+                <div class="input-group">
+                  <span class="input-group-addon" id="yearLabel">ชั้นปีที่</span>
+                  <input type="number" class="form-control" placeholder="ระบุชั้นปีระหว่าง 1-8" min="1" max="8" />
+                </div>
+
+                <div class="input-group" style="width:100%">
+                    <span class="input-group-addon" style="width:110px;padding:0px;border:none;">
+                        <select class="form-control">
+                            <option>${idOption.studentId}</option>
+                            <option>${idOption.staffId}</option>
+                        </select>
+                    </span>
+                    <input type="text" class="form-control" placeholder="รหัสประจำตัว" />
+                </div>
 
                 <div class="input-group">
-                  <span class="input-group-addon" id="basic-addon1">ชั้นปีที่</span>
-                  <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                    <span class="input-group-addon">ประเภทรายงาน</span>
+                    <select class="form-control">
+                        <option>All</option>
+                        <option>Normal</option>
+                        <option>Statistics</option>
+                    </select>
                 </div>
 
-
-                <div class="input-group">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li role="presentation"><a href="#">${idOption.studentId}</a></li>
-                            <li><a href="#">${idOption.staffId}</a></li>
-                        </ul>
-                    </div>
-                    <input type="text" class="form-control" aria-label="..."/>
-                </div>
-
-
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        ReportType
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <li><a href="#">Normal</a></li>
-                        <li><a href="#">Statistics</a></li>
-                    </ul>
-                </div>
                 <a href="reportModuleGenerator">click export</a>
                 <br/>
                 <a href="reportCenterGenerator">click row</a>
@@ -107,16 +100,6 @@
     <footer>
         <p>Report & Statistics Module 2016</p>
     </footer>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-    <spring:url value="/resources/core/css/main.js" var="coreJs"/>
-    <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs"/>
-
-    <script src="${coreJs}"></script>
-    <script src="${bootstrapJs}"></script>
-
 </body>
 
 </html>
