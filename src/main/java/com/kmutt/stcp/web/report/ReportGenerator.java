@@ -7,9 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.OptionalInt;
+import java.util.WeakHashMap;
 
 /**
  * Created by Gift on 20-Mar-16.
@@ -20,6 +19,7 @@ public class ReportGenerator {
     public boolean isReportValid(Integer reportId) {
         return true;
     }
+
     public boolean isReportValid(Integer reportId, Integer moduleId) {
         return false;
     }
@@ -33,9 +33,9 @@ public class ReportGenerator {
             JasperReport jasperReport = JasperCompileManager.compileReport(jrDesign);
 
             // Parameters for report
-            Map<String, Object> parameters = new HashMap<>();
+            Map<String, Object> parameters = new WeakHashMap<>();
 //            paramValues.
-            parameters.put("gifttestparam","MEMEME");
+            parameters.put("gifttestparam", "MEMEME");
             // DataSource
             // This is simple example, no database.
             // then using empty datasource.
