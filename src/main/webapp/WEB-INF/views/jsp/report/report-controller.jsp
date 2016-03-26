@@ -27,19 +27,23 @@
                     Filter
                 </div>
 
-                <div class="input-group">
-                  <span class="input-group-addon" id="yearLabel">ชั้นปีที่</span>
-                  <input type="number" class="form-control" placeholder="ระบุชั้นปีระหว่าง 1-8" min="1" max="8" />
-                </div>
-
                 <div class="input-group" style="width:100%">
                     <span class="input-group-addon" style="width:110px;padding:0px;border:none;">
-                        <select class="form-control">
+                        <select class="form-control" disabled>
                             <option>${idOption.studentId}</option>
                             <option>${idOption.staffId}</option>
                         </select>
                     </span>
-                    <input type="text" class="form-control" placeholder="รหัสประจำตัว" />
+                    <input type="text" class="form-control" placeholder="รหัสประจำตัว" disabled value="12345678"/>
+                </div>
+
+                <!--<div class="input-group">-->
+                  <!--<span class="input-group-addon" id="yearLabel">ชั้นปีที่</span>-->
+                  <!--<input type="number" class="form-control" placeholder="ระบุชั้นปีระหว่าง 1-8" min="1" max="8" />-->
+                <!--</div>-->
+                <div class="input-group">
+                    <span class="input-group-addon">ชื่อรายงาน</span>
+                    <input type="text" class="form-control" placeholder="ชื่อรายงาน" />
                 </div>
 
                 <div class="input-group">
