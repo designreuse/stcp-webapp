@@ -1,4 +1,4 @@
-package com.kmutt.stcp.entity;
+package com.kmutt.stcp.entity.courseplan;
 
 import java.util.List;
 
