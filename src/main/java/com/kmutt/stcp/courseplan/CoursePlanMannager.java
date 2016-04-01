@@ -11,6 +11,9 @@ public class CoursePlanMannager {
 	private List<CoursePlan> coursePlan;
 
 	// Constructor//
+	public CoursePlanMannager() {
+	}
+
 	public CoursePlanMannager(Account acount) {
 
 		this.student = acount;

@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,9 +10,9 @@
 
 <c:set var="root" value="${pageContext.request.contextPath}" />
 
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<%-- <link rel="stylesheet" href="${root}/resources/core/css/bootstrap.min.css"> --%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="${root}/resources/core/js/bootstrap.min.js"></script>
 
 <!-- SweetAlert -->
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
@@ -234,9 +236,21 @@ ul#detail_containTab li {
 	<script>
 		var term = "0"; //เทอม1
 
-		/* $("body").popover({
-			selector:".hasPop"
-		}); */
+		/* $("body")
+				.popover(
+						{
+							trigger : "hover",
+							container : 'body',
+							placement : 'right auto',
+							delay : {
+								"show" : 800,
+								"hide" : 100
+							},
+							template : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title" style="white-space: nowrap;"></h3><div class="popover-content"></div></div>',
+							title : "Dismissible popover",
+							content : "And here's some amazing content. It's very engaging. Right?",
+							selector : ".hasPop"
+						}); */
 
 		/* $('.hasPop')
 				.popover(
@@ -256,7 +270,6 @@ ul#detail_containTab li {
 		//$("#subjectListID > option").popover(function(){
 		//show popup;
 		//})
-
 		$('#subjectListID').dblclick(function() {
 
 			var subject = $(this).children("option:selected");
@@ -368,16 +381,19 @@ ul#detail_containTab li {
 				confirmButtonClass : 'btn btn-info',
 				confirmButtonText : "Yes",
 				cancelButtonText : "No",
-				closeOnConfirm : false
+				closeOnConfirm : false,
+				showLoaderOnConfirm : true
 			}, function(isConfirm) {
 				if (isConfirm) {
-					swal({
-						title : "Course Planner",
-						text : "This plan has been saved",
-						type : "success",
-						confirmButtonClass : 'btn btn-success',
-						confirmButtonText : 'OK'
-					});
+					setTimeout(function() {
+						swal({
+							title : "Course Planner",
+							text : "This plan has been saved",
+							type : "success",
+							confirmButtonClass : 'btn btn-success',
+							confirmButtonText : 'OK'
+						});
+					}, 2000);
 				}
 			});
 		});
@@ -394,13 +410,6 @@ ul#detail_containTab li {
 				closeOnConfirm : false
 			}, function(isConfirm) {
 				if (isConfirm) {
-					/* swal({
-						title : "Course Planner",
-						text : "This plan will be reseted",
-						type : "success",
-						confirmButtonClass : 'btn btn-success',
-						confirmButtonText : 'OK'
-					}); */
 					window.location.href = "${root}/coursePlanner/";
 				}
 			});
