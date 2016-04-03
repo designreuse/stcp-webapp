@@ -17,7 +17,7 @@ public class ReportMaster {
 
     private String reportName;
 
-    private ReportType reportType;
+//    private ReportType reportType;
 
     private byte[] reportTemplate;
 
@@ -36,14 +36,14 @@ public class ReportMaster {
     public void setReportName(String reportName) {
         this.reportName = reportName;
     }
-
-    public ReportType getReportType() {
-        return reportType;
-    }
-
-    public void setReportType(ReportType reportType) {
-        this.reportType = reportType;
-    }
+//
+//    public ReportType getReportType() {
+//        return reportType;
+//    }
+//
+//    public void setReportType(ReportType reportType) {
+//        this.reportType = reportType;
+//    }
 
     public byte[] getReportTemplate() {
         return reportTemplate;

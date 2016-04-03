@@ -41,19 +41,19 @@
                   <!--<span class="input-group-addon" id="yearLabel">ชั้นปีที่</span>-->
                   <!--<input type="number" class="form-control" placeholder="ระบุชั้นปีระหว่าง 1-8" min="1" max="8" />-->
                 <!--</div>-->
-                <div class="input-group">
-                    <span class="input-group-addon">ชื่อรายงาน</span>
-                    <input type="text" class="form-control" placeholder="ชื่อรายงาน" />
-                </div>
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon">ชื่อรายงาน</span>-->
+                    <!--<input type="text" class="form-control" placeholder="ชื่อรายงาน" />-->
+                <!--</div>-->
 
-                <div class="input-group">
-                    <span class="input-group-addon">ประเภทรายงาน</span>
-                    <select class="form-control">
-                        <option>All</option>
-                        <option>Normal</option>
-                        <option>Statistics</option>
-                    </select>
-                </div>
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon">ประเภทรายงาน</span>-->
+                    <!--<select class="form-control">-->
+                        <!--<option>All</option>-->
+                        <!--<option>Normal</option>-->
+                        <!--<option>Statistics</option>-->
+                    <!--</select>-->
+                <!--</div>-->
 
                 <a href="reportModuleGenerator">click export</a>
                 <br/>
@@ -76,7 +76,6 @@
                 <tr>
                     <th>#</th>
                     <th>Report Name</th>
-                    <th>Type</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,9 +86,6 @@
                         </td>
                         <td>
                             <c:out value="${master.reportName}"/>
-                        </td>
-                        <td>
-                            <c:out value="${master.reportType}"/>
                         </td>
                     </tr>
                 </c:forEach>

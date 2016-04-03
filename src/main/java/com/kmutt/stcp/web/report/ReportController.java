@@ -44,17 +44,14 @@ public class ReportController {
         List<ReportMaster> records = new ArrayList<>();
         ReportMaster master = new ReportMaster();
         master.setReportName("Courses");
-        master.setReportType(ReportType.NORMAL);
         records.add(master);
 
         master = new ReportMaster();
         master.setReportName("Study Plan");
-        master.setReportType(ReportType.NORMAL);
         records.add(master);
 
         master = new ReportMaster();
         master.setReportName("Summary");
-        master.setReportType(ReportType.STAT);
         records.add(master);
 
         model.put("records", records);
