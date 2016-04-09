@@ -26,8 +26,8 @@ public class TestResourse {
 	public List<Course> getDummyEmployee() {
 
 		Course course = new Course();
-		course.setName("name");
-		course.setCode("code");
+//		course.setName("name");
+//		course.setCode("code");
 
 		ArrayList<Course> courseList = new ArrayList<>();
 		courseList.add(course);
@@ -41,8 +41,8 @@ public class TestResourse {
 	public @ResponseBody boolean createEmployee(@RequestBody Course course) {
 
 		Course c = new Course();
-		c.setCode(course.getCode());
-		c.setName(course.getName());
+//		c.setCode(course.getCode());
+//		c.setName(course.getName());
 
 		boolean _success = false;
 		try {
@@ -58,7 +58,7 @@ public class TestResourse {
 	public @ResponseBody Course deleteEmployee(@PathVariable("code") String code) {
 
 		Course c = new Course();
-		c.setCode(code);
+//		c.setCode(code);
 
 		courseRepository.delete(c);
 		return c;

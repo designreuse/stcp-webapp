@@ -3,431 +3,604 @@ package com.kmutt.stcp.courseplan;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.kmutt.stcp.entity.*;
+import com.kmutt.stcp.repository.CourseRepository;
+import com.kmutt.stcp.repository.SubjectRepository;
+import com.kmutt.stcp.web.CoursePlannerController;
 
 public class CourseManager {
 
 	// Field//
-	private ArrayList<Course> courseList;
+	private final Logger logger = LoggerFactory.getLogger(CourseManager.class);
+	
+	@Autowired
+	private SubjectRepository subjectRepository;
+	
+	private ArrayList<Subject> subjectList;
+	private Account student;
 
 	// Constructor//
-	public CourseManager() {
+	public CourseManager(Account student) {
+		this.student = student;
 	}
 
 	// Method//
-	public ArrayList<Course> getCourseListAll() {
-
-		courseList = new ArrayList<>();
-
-		Course course1 = new Course();
-		course1.setId(1);
-		course1.setCode("INT 610");
-		course1.setName("ระบบสนับสนุนการตัดสินใจ");
-		courseList.add(course1);
-
-		Course course2 = new Course();
-		course2.setId(2);
-		course2.setCode("INT 611");
-		course2.setName("การเงินเชิงกลยุทธ์สาหรับเทคโนโลยีสารสนเทศ");
-		courseList.add(course2);
-
-		Course course3 = new Course();
-		course3.setId(3);
-		course3.setCode("INT 613");
-		course3.setName("การบริหารความมั่นคงของสารสนเทศ");
-		courseList.add(course3);
-
-		Course course4 = new Course();
-		course4.setId(4);
-		course4.setCode("INT 615");
-		course4.setName("การจัดการคุณภาพสารสนเทศ");
-		courseList.add(course4);
-
-		Course course5 = new Course();
-		course5.setId(5);
-		course5.setCode("INT 616");
-		course5.setName("การวางแผนทรัพยากรองค์กร");
-		courseList.add(course5);
-
-		Course course6 = new Course();
-		course6.setId(6);
-		course6.setCode("INT 617");
-		course6.setName("การยอมรับการใช้งานเทคโนโลยีสารสนเทศ");
-		courseList.add(course6);
-
-		Course course7 = new Course();
-		course7.setId(7);
-		course7.setCode("INT 630");
-		course7.setName("เทคโนโลยีฐานข้อมูล");
-		courseList.add(course7);
-
-		Course course8 = new Course();
-		course8.setId(8);
-		course8.setCode("INT 631");
-		course8.setName("เทคโนโลยีเชิงอ็อบเจกต์");
-		courseList.add(course8);
-
-		Course course9 = new Course();
-		course9.setId(9);
-		course9.setCode("INT 632");
-		course9.setName("ปัญญาประดิษฐ์");
-		course9.setDetail("");
-		courseList.add(course9);
-
-		Course course10 = new Course();
-		course10.setId(10);
-		course10.setCode("INT 633");
-		course10.setName("เทคโนโลยีมัลติมีเดีย");
-		courseList.add(course10);
-
-		Course course11 = new Course();
-		course11.setId(11);
-		course11.setCode("INT 635");
-		course11.setName("การค้นคืนสารสนเทศ");
-		courseList.add(course11);
-
-		Course course12 = new Course();
-		course12.setId(12);
-		course12.setCode("INT 636");
-		course12.setName("ปฏิสัมพันธ์ระหว่างคอมพิวเตอร์กับมนุษย์");
-		courseList.add(course12);
-
-		Course course13 = new Course();
-		course13.setId(13);
-		course13.setCode("INT 637");
-		course13.setName("การจัดการความรู้");
-		courseList.add(course13);
-
-		Course course14 = new Course();
-		course14.setId(14);
-		course14.setCode("INT 638");
-		course14.setName("การทาเหมืองข้อมูล");
-		courseList.add(course14);
-
-		Course course15 = new Course();
-		course15.setId(15);
-		course15.setCode("INT 640");
-		course15.setName("เทคโนโลยีเอ็กซ์เอ็มแอล");
-		courseList.add(course15);
-
-		Course course16 = new Course();
-		course16.setId(16);
-		course16.setCode("INT 641");
-		course16.setName("การควบคุมและตรวจสอบเทคโนโลยีสารสนเทศ");
-		courseList.add(course16);
-
-		Course course17 = new Course();
-		course17.setId(17);
-		course17.setCode("INT 650");
-		course17.setName("ความมั่นคงของเทคโนโลยีสารสนเทศ");
-		courseList.add(course17);
-
-		Course course18 = new Course();
-		course18.setId(18);
-		course18.setCode("INT 651");
-		course18.setName("เทคโนโลยีโทรคมนาคม");
-		courseList.add(course18);
-
-		Course course19 = new Course();
-		course19.setId(19);
-		course19.setCode("INT 652");
-		course19.setName("วิศวกรรมอินเทอร์เน็ต");
-		courseList.add(course19);
-
-		Course course20 = new Course();
-		course20.setId(20);
-		course20.setCode("INT 653");
-		course20.setName("เทคโนโลยีโมบาย");
-		courseList.add(course20);
-
-		Course course21 = new Course();
-		course21.setId(21);
-		course21.setCode("INT 654");
-		course21.setName("การประมวลผลแบบคลาวด์และการประยุกต์");
-		courseList.add(course21);
-
-		Course course22 = new Course();
-		course22.setId(22);
-		course22.setCode("INT 671");
-		course22.setName("สัมมนาเชิงปฏิบัติการการจัดการฐานข้อมูลเชิงธุรกิจ");
-		courseList.add(course22);
-
-		Course course23 = new Course();
-		course23.setId(23);
-		course23.setCode("INT 672");
-		course23.setName("สัมมนาเชิงปฏิบัติการพัฒนาคลังข้อมูล");
-		courseList.add(course23);
-
-		Course course24 = new Course();
-		course24.setId(24);
-		course24.setCode("INT 673");
-		course24.setName("สัมมนาเชิงปฏิบัติการเครือข่ายสาหรับสานักงาน");
-		courseList.add(course24);
-
-		Course course25 = new Course();
-		course25.setId(25);
-		course25.setCode("INT 674");
-		course25.setName("สัมมนาเชิงปฏิบัติการเครือข่ายสาหรับองค์กรขนาดใหญ่");
-		courseList.add(course25);
-
-		Course course26 = new Course();
-		course26.setId(26);
-		course26.setCode("INT 675");
-		course26.setName("สัมมนาเชิงปฏิบัติการการเขียนโปรแกรมจาวา");
-		courseList.add(course26);
-
-		Course course27 = new Course();
-		course27.setId(27);
-		course27.setCode("INT 676");
-		course27.setName("สัมมนาเชิงปฏิบัติการการเขียนโปรแกรมจาวาเซิร์ฟเวอร์ไซต์");
-		courseList.add(course27);
-
-		Course course28 = new Course();
-		course28.setId(28);
-		course28.setCode("INT 677");
-		course28.setName("สัมมนาเชิงปฏิบัติการมาตรฐานการให้บริการด้านเทคโนโลยีสารสนเทศ");
-		courseList.add(course28);
-
-		Course course29 = new Course();
-		course29.setId(29);
-		course29.setCode("INT 678");
-		course29.setName("สัมมนาเชิงปฏิบัติการคอมพิวเตอร์แบบคลาวด์");
-		courseList.add(course29);
-
-		Course course30 = new Course();
-		course30.setId(30);
-		course30.setCode("SWE 601");
-		course30.setName("หลักการวิศวกรรมซอฟต์แวร์");
-		courseList.add(course30);
-
-		Course course31 = new Course();
-		course31.setId(31);
-		course31.setCode("SWE 602");
-		course31.setName("การวิเคราะห์และออกแบบระบบขั้นสูง");
-		courseList.add(course31);
-
-		Course course32 = new Course();
-		course32.setId(32);
-		course32.setCode("SWE 603");
-		course32.setName("การบริหารโครงการซอฟต์แวร์");
-		courseList.add(course32);
-
-		Course course33 = new Course();
-		course33.setId(33);
-		course33.setCode("SWE 604");
-		course33.setName("โครงสร้างและสถาปัตยกรรมซอฟต์แวร์");
-		courseList.add(course33);
-
-		Course course34 = new Course();
-		course34.setId(34);
-		course34.setCode("SWE 605");
-		course34.setName("การทวนสอบและการตรวจสอบความสมเหตุสมผลของซอฟต์แวร์");
-		courseList.add(course34);
-
-		Course course35 = new Course();
-		course35.setId(35);
-		course35.setCode("SWE 610");
-		course35.setName("การออกแบบซอฟต์แวร์ประเภทฝังตัว");
-		courseList.add(course35);
-
-		Course course36 = new Course();
-		course36.setId(36);
-		course36.setCode("SWE 611");
-		course36.setName("การออกแบบปฏิสัมพันธ์");
-		courseList.add(course36);
-
-		Course course37 = new Course();
-		course37.setId(37);
-		course37.setCode("SWE 612");
-		course37.setName("การประมว,ผลแบบคลาวด์");
-		courseList.add(course37);
-
-		Course course38 = new Course();
-		course38.setId(38);
-		course38.setCode("SWE 613");
-		course38.setName("ระบบแบบกระจายและแบบขนาน");
-		courseList.add(course38);
-
-		Course course39 = new Course();
-		course39.setId(39);
-		course39.setCode("SWE 614");
-		course39.setName("การออกแบบซอฟต์แวร์แบบทนทานต่อความบกพร่อง");
-		courseList.add(course39);
-
-		Course course40 = new Course();
-		course40.setId(40);
-		course40.setCode("SWE 615");
-		course40.setName("การออกแบบแอนิเมชันและเกม");
-		courseList.add(course40);
-
-		Course course41 = new Course();
-		course41.setId(41);
-		course41.setCode("SWE 616");
-		course41.setName("การประมวลผลสาหรับอุปกรณ์เคลื่อนที่และแอปพลิเคชัน");
-		courseList.add(course41);
-
-		Course course42 = new Course();
-		course42.setId(42);
-		course42.setCode("SWE 617");
-		course42.setName("การสื่อสารสาหรับวิศวกรซอฟต์แวร์");
-		courseList.add(course42);
-
-		Course course43 = new Course();
-		course43.setId(43);
-		course43.setCode("SWE 630");
-		course43.setName("การพัฒนาซอฟต์แวร์แบบอไจล์");
-		courseList.add(course43);
-
-		Course course44 = new Course();
-		course44.setId(44);
-		course44.setCode("SWE 631");
-		course44.setName("การพัฒนาซอฟต์แวร์แบบกระจาย");
-		courseList.add(course44);
-
-		Course course45 = new Course();
-		course45.setId(45);
-		course45.setCode("SWE 632");
-		course45.setName("ระบบปฏิบัติการและระบบเครือข่าย");
-		courseList.add(course45);
-
-		Course course46 = new Course();
-		course46.setId(46);
-		course46.setCode("SWE 633");
-		course46.setName("การพัฒนาโปรแกรมประยุกต์สาหรับองค์กรขนาดใหญ่");
-		courseList.add(course46);
-
-		Course course47 = new Course();
-		course47.setId(47);
-		course47.setCode("SWE 634");
-		course47.setName("การบารุงรักษาซอฟต์แวร์");
-		courseList.add(course47);
-
-		Course course48 = new Course();
-		course48.setId(48);
-		course48.setCode("SWE 640");
-		course48.setName("การจัดการข้อกาหนดและสิ่งต้องการทางซอฟต์แวร์");
-		courseList.add(course48);
-
-		Course course49 = new Course();
-		course49.setId(49);
-		course49.setCode("SWE 641");
-		course49.setName("การจัดการโครงแบบซอฟต์แวร์");
-		courseList.add(course49);
-
-		Course course50 = new Course();
-		course50.setId(50);
-		course50.setCode("SWE 650");
-		course50.setName("การปรับปรุงกระบวนการซอฟต์แวร์");
-		courseList.add(course50);
-
-		Course course51 = new Course();
-		course51.setId(51);
-		course51.setCode("SWE 651");
-		course51.setName("มาตรวัดผลซอฟต์แวร์");
-		courseList.add(course51);
-
-		Course course52 = new Course();
-		course52.setId(52);
-		course52.setCode("SWE 652");
-		course52.setName("การประกันคุณภาพซอฟต์แวร์");
-		courseList.add(course52);
-
-		Course course53 = new Course();
-		course53.setId(53);
-		course53.setCode("SWE 660");
-		course53.setName("เครื่องมือสาหรับงานวิศวกรรมซอฟต์แวร์");
-		courseList.add(course53);
-
-		Course course54 = new Course();
-		course54.setId(54);
-		course54.setCode("SWE 661");
-		course54.setName("การเขียนโปรแกรมและการพัฒนาบนเว็บ");
-		courseList.add(course54);
-
-		Course course55 = new Course();
-		course55.setId(55);
-		course55.setCode("SWE 670");
-		course55.setName("สัมมนาเชิงปฏิบัติการเขียนโปรแกรมและการจัดการฐานข้อมูล");
-		courseList.add(course55);
-
-		Course course56 = new Course();
-		course56.setId(56);
-		course56.setCode("SWE 671");
-		course56.setName("สัมมนาเชิงปฏิบัติการทางวิศวกรรมซอฟต์แวร์ 1");
-		courseList.add(course56);
-
-		Course course57 = new Course();
-		course57.setId(57);
-		course57.setCode("SWE 672");
-		course57.setName("สัมมนาเชิงปฏิบัติการทางวิศวกรรมซอฟต์แวร์ 2");
-		courseList.add(course57);
-
-		Course course58 = new Course();
-		course58.setId(58);
-		course58.setCode("SWE 690");
-		course58.setName("การศึกษาเฉพาะเรื่องทางวิศวกรรมซอฟต์แวร์ 1");
-		courseList.add(course58);
-
-		Course course59 = new Course();
-		course59.setId(59);
-		course59.setCode("SWE 691");
-		course59.setName("การศึกษาเฉพาะเรื่องทางวิศวกรรมซอฟต์แวร์ 2");
-		courseList.add(course59);
-
-		Course course60 = new Course();
-		course60.setId(60);
-		course60.setCode("SWE 692");
-		course60.setName("การศึกษาเฉพาะเรื่องทางวิศวกรรมซอฟต์แวร์ 3");
-		courseList.add(course60);
-
-		Course course61 = new Course();
-		course61.setId(61);
-		course61.setCode("SWE 700");
-		course61.setName("วิทยานิพนธ์");
-		courseList.add(course61);
-
-		Course course62 = new Course();
-		course62.setId(62);
-		course62.setCode("SWE 701");
-		course62.setName("การศึกษาโครงการเฉพาะเรื่อง");
-		courseList.add(course62);
-
-		Course course63 = new Course();
-		course63.setId(63);
-		course63.setCode("SWE 702");
-		course63.setName("ระเบียบวิธีการวิจัย");
-		courseList.add(course63);
-
-		return courseList;
+	public ArrayList<Subject> getSubjectList() {
+
+		// should get subjectList from Common Entity module.
+		// return this.subjectRepository.findAll(); 
+		return this.dummySubjectList(this.student);
 
 	}
 
-	public Course getCourseByCode(String code) {
+	public Subject getSubjectByCode(String code) {
 
-		if (this.courseList == null) {
-			this.getCourseListAll();
+		if (this.subjectList == null) {
+			this.subjectList = this.getSubjectList();
 		}
 
-		Course resultCourse = this.courseList.get(3);
+		Subject resultSubject;
 
-		/*
-		 * this.courseList.forEach((item) -> { if(item.getCode().toLowerCase()
-		 * == code.toLowerCase()) { item; } });
-		 */
+		try {
 
-		return resultCourse;
+			//Should change this to get from Common Entity module.
+			//resultSubject = this.subjectRepository.findAll().stream()
+			resultSubject = this.subjectList.stream()
+					.filter(subject -> subject.getSubjectCode().toLowerCase().equals(code.toLowerCase()))
+					.findFirst()
+					.orElse(null);
+
+		} catch (Exception e) {
+
+			logger.error("Method:getSubjectByCode|Err:" + e.getMessage());
+			resultSubject = null;
+
+		}
+
+		return resultSubject;
 
 	}
 
-	public Course getCourseByID(int id) {
+	public Subject getSubjectByID(int id) {
 
-		if (this.courseList == null) {
-			this.getCourseListAll();
+		if (this.subjectList == null) {
+			this.subjectList = this.getSubjectList();
 		}
 
-		Course resultCourse = this.courseList.get(3);
+		Subject resultSubject;
+		
+		try {
 
-		return resultCourse;
+			//Should change this to get from Common Entity module.
+			//resultSubject = this.subjectRepository.findAll().stream()
+			resultSubject = this.subjectList.stream()
+					.filter(subject -> subject.getId() == id)
+					.findFirst()
+					.orElse(null);
 
+		} catch (Exception e) {
+
+			logger.error("Method:getSubjectByID|Err:" + e.getMessage());
+			resultSubject = null;
+		}
+
+		return resultSubject;
+
+	}
+
+	//Dummy//
+	private ArrayList<Subject> dummySubjectList(Account student) {
+		
+		subjectList = new ArrayList<>();
+
+		Subject subject1 = new Subject();
+		subject1.setId(1);
+		subject1.setSubjectCode("INT 610");
+		subject1.setNameThai("ระบบสนับสนุนการตัดสินใจ");
+		subject1.setCredit("3");
+		subject1.setDetailThai("Detail: " + subject1.getNameThai());
+		subjectList.add(subject1);
+
+		Subject subject2 = new Subject();
+		subject2.setId(2);
+		subject2.setSubjectCode("INT 611");
+		subject2.setNameThai("การเงินเชิงกลยุทธ์สาหรับเทคโนโลยีสารสนเทศ");
+		subject2.setCredit("3");
+		subject2.setDetailThai("Detail: " + subject2.getNameThai());
+		subjectList.add(subject2);
+
+		Subject subject3 = new Subject();
+		subject3.setId(3);
+		subject3.setSubjectCode("INT 613");
+		subject3.setNameThai("การบริหารความมั่นคงของสารสนเทศ");
+		subject3.setCredit("3");
+		subject3.setDetailThai("Detail: " + subject3.getNameThai());
+		subjectList.add(subject3);
+
+		Subject subject4 = new Subject();
+		subject4.setId(4);
+		subject4.setSubjectCode("INT 615");
+		subject4.setNameThai("การจัดการคุณภาพสารสนเทศ");
+		subject4.setCredit("3");
+		subject4.setDetailThai("Detail: " + subject4.getNameThai());
+		subjectList.add(subject4);
+
+		Subject subject5 = new Subject();
+		subject5.setId(5);
+		subject5.setSubjectCode("INT 616");
+		subject5.setNameThai("การวางแผนทรัพยากรองค์กร");
+		subject5.setCredit("3");
+		subject5.setDetailThai("Detail: " + subject5.getNameThai());
+		subjectList.add(subject5);
+
+		Subject subject6 = new Subject();
+		subject6.setId(6);
+		subject6.setSubjectCode("INT 617");
+		subject6.setNameThai("การยอมรับการใช้งานเทคโนโลยีสารสนเทศ");
+		subject6.setCredit("3");
+		subject6.setDetailThai("Detail: " + subject6.getNameThai());
+		subjectList.add(subject6);
+
+		Subject subject7 = new Subject();
+		subject7.setId(7);
+		subject7.setSubjectCode("INT 630");
+		subject7.setNameThai("เทคโนโลยีฐานข้อมูล");
+		subject7.setCredit("3");
+		subject7.setDetailThai("Detail: " + subject7.getNameThai());
+		subjectList.add(subject7);
+
+		Subject subject8 = new Subject();
+		subject8.setId(8);
+		subject8.setSubjectCode("INT 631");
+		subject8.setNameThai("เทคโนโลยีเชิงอ็อบเจกต์");
+		subject8.setCredit("3");
+		subject8.setDetailThai("Detail: " + subject8.getNameThai());
+		subjectList.add(subject8);
+
+		Subject subject9 = new Subject();
+		subject9.setId(9);
+		subject9.setSubjectCode("INT 632");
+		subject9.setNameThai("ปัญญาประดิษฐ์");
+		subject9.setCredit("3");
+		subject9.setDetailThai("Detail: " + subject9.getNameThai());
+		subjectList.add(subject9);
+
+		Subject subject10 = new Subject();
+		subject10.setId(10);
+		subject10.setSubjectCode("INT 633");
+		subject10.setNameThai("เทคโนโลยีมัลติมีเดีย");
+		subject10.setCredit("3");
+		subject10.setDetailThai("Detail: " + subject10.getNameThai());
+		subjectList.add(subject10);
+
+		Subject subject11 = new Subject();
+		subject11.setId(11);
+		subject11.setSubjectCode("INT 635");
+		subject11.setNameThai("การค้นคืนสารสนเทศ");
+		subject11.setCredit("3");
+		subject11.setDetailThai("Detail: " + subject11.getNameThai());
+		subjectList.add(subject11);
+
+		Subject subject12 = new Subject();
+		subject12.setId(12);
+		subject12.setSubjectCode("INT 636");
+		subject12.setNameThai("ปฏิสัมพันธ์ระหว่างคอมพิวเตอร์กับมนุษย์");
+		subject12.setCredit("3");
+		subject12.setDetailThai("Detail: " + subject12.getNameThai());
+		subjectList.add(subject12);
+
+		Subject subject13 = new Subject();
+		subject13.setId(13);
+		subject13.setSubjectCode("INT 637");
+		subject13.setNameThai("การจัดการความรู้");
+		subject13.setCredit("3");
+		subject13.setDetailThai("Detail: " + subject13.getNameThai());
+		subjectList.add(subject13);
+
+		Subject subject14 = new Subject();
+		subject14.setId(14);
+		subject14.setSubjectCode("INT 638");
+		subject14.setNameThai("การทาเหมืองข้อมูล");
+		subject14.setCredit("3");
+		subject14.setDetailThai("Detail: " + subject14.getNameThai());
+		subjectList.add(subject14);
+
+		Subject subject15 = new Subject();
+		subject15.setId(15);
+		subject15.setSubjectCode("INT 640");
+		subject15.setNameThai("เทคโนโลยีเอ็กซ์เอ็มแอล");
+		subject15.setCredit("3");
+		subject15.setDetailThai("Detail: " + subject15.getNameThai());
+		subjectList.add(subject15);
+
+		Subject subject16 = new Subject();
+		subject16.setId(16);
+		subject16.setSubjectCode("INT 641");
+		subject16.setNameThai("การควบคุมและตรวจสอบเทคโนโลยีสารสนเทศ");
+		subject16.setCredit("3");
+		subject16.setDetailThai("Detail: " + subject16.getNameThai());
+		subjectList.add(subject16);
+
+		Subject subject17 = new Subject();
+		subject17.setId(17);
+		subject17.setSubjectCode("INT 650");
+		subject17.setNameThai("ความมั่นคงของเทคโนโลยีสารสนเทศ");
+		subject17.setCredit("3");
+		subject17.setDetailThai("Detail: " + subject17.getNameThai());
+		subjectList.add(subject17);
+
+		Subject subject18 = new Subject();
+		subject18.setId(18);
+		subject18.setSubjectCode("INT 651");
+		subject18.setNameThai("เทคโนโลยีโทรคมนาคม");
+		subject18.setCredit("3");
+		subject18.setDetailThai("Detail: " + subject18.getNameThai());
+		subjectList.add(subject18);
+
+		Subject subject19 = new Subject();
+		subject19.setId(19);
+		subject19.setSubjectCode("INT 652");
+		subject19.setNameThai("วิศวกรรมอินเทอร์เน็ต");
+		subject19.setCredit("3");
+		subject19.setDetailThai("Detail: " + subject19.getNameThai());
+		subjectList.add(subject19);
+
+		Subject subject20 = new Subject();
+		subject20.setId(20);
+		subject20.setSubjectCode("INT 653");
+		subject20.setNameThai("เทคโนโลยีโมบาย");
+		subject20.setCredit("3");
+		subject20.setDetailThai("Detail: " + subject20.getNameThai());
+		subjectList.add(subject20);
+
+		Subject subject21 = new Subject();
+		subject21.setId(21);
+		subject21.setSubjectCode("INT 654");
+		subject21.setNameThai("การประมวลผลแบบคลาวด์และการประยุกต์");
+		subject21.setCredit("3");
+		subject21.setDetailThai("Detail: " + subject21.getNameThai());
+		subjectList.add(subject21);
+
+		Subject subject22 = new Subject();
+		subject22.setId(22);
+		subject22.setSubjectCode("INT 671");
+		subject22.setNameThai("สัมมนาเชิงปฏิบัติการการจัดการฐานข้อมูลเชิงธุรกิจ");
+		subject22.setCredit("3");
+		subject22.setDetailThai("Detail: " + subject22.getNameThai());
+		subjectList.add(subject22);
+
+		Subject subject23 = new Subject();
+		subject23.setId(23);
+		subject23.setSubjectCode("INT 672");
+		subject23.setNameThai("สัมมนาเชิงปฏิบัติการพัฒนาคลังข้อมูล");
+		subject23.setCredit("3");
+		subject23.setDetailThai("Detail: " + subject23.getNameThai());
+		subjectList.add(subject23);
+
+		Subject subject24 = new Subject();
+		subject24.setId(24);
+		subject24.setSubjectCode("INT 673");
+		subject24.setNameThai("สัมมนาเชิงปฏิบัติการเครือข่ายสาหรับสานักงาน");
+		subject24.setCredit("3");
+		subject24.setDetailThai("Detail: " + subject24.getNameThai());
+		subjectList.add(subject24);
+
+		Subject subject25 = new Subject();
+		subject25.setId(25);
+		subject25.setSubjectCode("INT 674");
+		subject25.setNameThai("สัมมนาเชิงปฏิบัติการเครือข่ายสาหรับองค์กรขนาดใหญ่");
+		subject25.setCredit("3");
+		subject25.setDetailThai("Detail: " + subject25.getNameThai());
+		subjectList.add(subject25);
+
+		Subject subject26 = new Subject();
+		subject26.setId(26);
+		subject26.setSubjectCode("INT 675");
+		subject26.setNameThai("สัมมนาเชิงปฏิบัติการการเขียนโปรแกรมจาวา");
+		subject26.setCredit("3");
+		subject26.setDetailThai("Detail: " + subject26.getNameThai());
+		subjectList.add(subject26);
+
+		Subject subject27 = new Subject();
+		subject27.setId(27);
+		subject27.setSubjectCode("INT 676");
+		subject27.setNameThai("สัมมนาเชิงปฏิบัติการการเขียนโปรแกรมจาวาเซิร์ฟเวอร์ไซต์");
+		subject27.setCredit("3");
+		subject27.setDetailThai("Detail: " + subject27.getNameThai());
+		subjectList.add(subject27);
+
+		Subject subject28 = new Subject();
+		subject28.setId(28);
+		subject28.setSubjectCode("INT 677");
+		subject28.setNameThai("สัมมนาเชิงปฏิบัติการมาตรฐานการให้บริการด้านเทคโนโลยีสารสนเทศ");
+		subject28.setCredit("3");
+		subject28.setDetailThai("Detail: " + subject28.getNameThai());
+		subjectList.add(subject28);
+
+		Subject subject29 = new Subject();
+		subject29.setId(29);
+		subject29.setSubjectCode("INT 678");
+		subject29.setNameThai("สัมมนาเชิงปฏิบัติการคอมพิวเตอร์แบบคลาวด์");
+		subject29.setCredit("3");
+		subject29.setDetailThai("Detail: " + subject29.getNameThai());
+		subjectList.add(subject29);
+
+		Subject subject30 = new Subject();
+		subject30.setId(30);
+		subject30.setSubjectCode("SWE 601");
+		subject30.setNameThai("หลักการวิศวกรรมซอฟต์แวร์");
+		subject30.setCredit("3");
+		subject30.setDetailThai("Detail: " + subject30.getNameThai());
+		subjectList.add(subject30);
+
+		Subject subject31 = new Subject();
+		subject31.setId(31);
+		subject31.setSubjectCode("SWE 602");
+		subject31.setNameThai("การวิเคราะห์และออกแบบระบบขั้นสูง");
+		subject31.setCredit("3");
+		subject31.setDetailThai("Detail: " + subject31.getNameThai());
+		subjectList.add(subject31);
+
+		Subject subject32 = new Subject();
+		subject32.setId(32);
+		subject32.setSubjectCode("SWE 603");
+		subject32.setNameThai("การบริหารโครงการซอฟต์แวร์");
+		subject32.setCredit("3");
+		subject32.setDetailThai("Detail: " + subject32.getNameThai());
+		subjectList.add(subject32);
+
+		Subject subject33 = new Subject();
+		subject33.setId(33);
+		subject33.setSubjectCode("SWE 604");
+		subject33.setNameThai("โครงสร้างและสถาปัตยกรรมซอฟต์แวร์");
+		subject33.setCredit("3");
+		subject33.setDetailThai("Detail: " + subject33.getNameThai());
+		subjectList.add(subject33);
+
+		Subject subject34 = new Subject();
+		subject34.setId(34);
+		subject34.setSubjectCode("SWE 605");
+		subject34.setNameThai("การทวนสอบและการตรวจสอบความสมเหตุสมผลของซอฟต์แวร์");
+		subject34.setCredit("3");
+		subject34.setDetailThai("Detail: " + subject34.getNameThai());
+		subjectList.add(subject34);
+
+		Subject subject35 = new Subject();
+		subject35.setId(35);
+		subject35.setSubjectCode("SWE 610");
+		subject35.setNameThai("การออกแบบซอฟต์แวร์ประเภทฝังตัว");
+		subject35.setCredit("3");
+		subject35.setDetailThai("Detail: " + subject35.getNameThai());
+		subjectList.add(subject35);
+
+		Subject subject36 = new Subject();
+		subject36.setId(36);
+		subject36.setSubjectCode("SWE 611");
+		subject36.setNameThai("การออกแบบปฏิสัมพันธ์");
+		subject36.setCredit("3");
+		subject36.setDetailThai("Detail: " + subject36.getNameThai());
+		subjectList.add(subject36);
+
+		Subject subject37 = new Subject();
+		subject37.setId(37);
+		subject37.setSubjectCode("SWE 612");
+		subject37.setNameThai("การประมว,ผลแบบคลาวด์");
+		subject37.setCredit("3");
+		subject37.setDetailThai("Detail: " + subject37.getNameThai());
+		subjectList.add(subject37);
+
+		Subject subject38 = new Subject();
+		subject38.setId(38);
+		subject38.setSubjectCode("SWE 613");
+		subject38.setNameThai("ระบบแบบกระจายและแบบขนาน");
+		subject38.setCredit("3");
+		subject38.setDetailThai("Detail: " + subject38.getNameThai());
+		subjectList.add(subject38);
+
+		Subject subject39 = new Subject();
+		subject39.setId(39);
+		subject39.setSubjectCode("SWE 614");
+		subject39.setNameThai("การออกแบบซอฟต์แวร์แบบทนทานต่อความบกพร่อง");
+		subject39.setCredit("3");
+		subject39.setDetailThai("Detail: " + subject39.getNameThai());
+		subjectList.add(subject39);
+
+		Subject subject40 = new Subject();
+		subject40.setId(40);
+		subject40.setSubjectCode("SWE 615");
+		subject40.setNameThai("การออกแบบแอนิเมชันและเกม");
+		subject40.setCredit("3");
+		subject40.setDetailThai("Detail: " + subject40.getNameThai());
+		subjectList.add(subject40);
+
+		Subject subject41 = new Subject();
+		subject41.setId(41);
+		subject41.setSubjectCode("SWE 616");
+		subject41.setNameThai("การประมวลผลสาหรับอุปกรณ์เคลื่อนที่และแอปพลิเคชัน");
+		subject41.setCredit("3");
+		subject41.setDetailThai("Detail: " + subject41.getNameThai());
+		subjectList.add(subject41);
+
+		Subject subject42 = new Subject();
+		subject42.setId(42);
+		subject42.setSubjectCode("SWE 617");
+		subject42.setNameThai("การสื่อสารสาหรับวิศวกรซอฟต์แวร์");
+		subject42.setCredit("3");
+		subject42.setDetailThai("Detail: " + subject42.getNameThai());
+		subjectList.add(subject42);
+
+		Subject subject43 = new Subject();
+		subject43.setId(43);
+		subject43.setSubjectCode("SWE 630");
+		subject43.setNameThai("การพัฒนาซอฟต์แวร์แบบอไจล์");
+		subject43.setCredit("3");
+		subject43.setDetailThai("Detail: " + subject43.getNameThai());
+		subjectList.add(subject43);
+
+		Subject subject44 = new Subject();
+		subject44.setId(44);
+		subject44.setSubjectCode("SWE 631");
+		subject44.setNameThai("การพัฒนาซอฟต์แวร์แบบกระจาย");
+		subject44.setCredit("3");
+		subject44.setDetailThai("Detail: " + subject44.getNameThai());
+		subjectList.add(subject44);
+
+		Subject subject45 = new Subject();
+		subject45.setId(45);
+		subject45.setSubjectCode("SWE 632");
+		subject45.setNameThai("ระบบปฏิบัติการและระบบเครือข่าย");
+		subject45.setCredit("3");
+		subject45.setDetailThai("Detail: " + subject45.getNameThai());
+		subjectList.add(subject45);
+
+		Subject subject46 = new Subject();
+		subject46.setId(46);
+		subject46.setSubjectCode("SWE 633");
+		subject46.setNameThai("การพัฒนาโปรแกรมประยุกต์สาหรับองค์กรขนาดใหญ่");
+		subject46.setCredit("3");
+		subject46.setDetailThai("Detail: " + subject46.getNameThai());
+		subjectList.add(subject46);
+
+		Subject subject47 = new Subject();
+		subject47.setId(47);
+		subject47.setSubjectCode("SWE 634");
+		subject47.setNameThai("การบารุงรักษาซอฟต์แวร์");
+		subject47.setCredit("3");
+		subject47.setDetailThai("Detail: " + subject47.getNameThai());
+		subjectList.add(subject47);
+
+		Subject subject48 = new Subject();
+		subject48.setId(48);
+		subject48.setSubjectCode("SWE 640");
+		subject48.setNameThai("การจัดการข้อกาหนดและสิ่งต้องการทางซอฟต์แวร์");
+		subject48.setCredit("3");
+		subject48.setDetailThai("Detail: " + subject48.getNameThai());
+		subjectList.add(subject48);
+
+		Subject subject49 = new Subject();
+		subject49.setId(49);
+		subject49.setSubjectCode("SWE 641");
+		subject49.setNameThai("การจัดการโครงแบบซอฟต์แวร์");
+		subject49.setCredit("3");
+		subject49.setDetailThai("Detail: " + subject49.getNameThai());
+		subjectList.add(subject49);
+
+		Subject subject50 = new Subject();
+		subject50.setId(50);
+		subject50.setSubjectCode("SWE 650");
+		subject50.setNameThai("การปรับปรุงกระบวนการซอฟต์แวร์");
+		subject50.setCredit("3");
+		subject50.setDetailThai("Detail: " + subject50.getNameThai());
+		subjectList.add(subject50);
+
+		Subject subject51 = new Subject();
+		subject51.setId(51);
+		subject51.setSubjectCode("SWE 651");
+		subject51.setNameThai("มาตรวัดผลซอฟต์แวร์");
+		subject51.setCredit("3");
+		subject51.setDetailThai("Detail: " + subject51.getNameThai());
+		subjectList.add(subject51);
+
+		Subject subject52 = new Subject();
+		subject52.setId(52);
+		subject52.setSubjectCode("SWE 652");
+		subject52.setNameThai("การประกันคุณภาพซอฟต์แวร์");
+		subject52.setCredit("3");
+		subject52.setDetailThai("Detail: " + subject52.getNameThai());
+		subjectList.add(subject52);
+
+		Subject subject53 = new Subject();
+		subject53.setId(53);
+		subject53.setSubjectCode("SWE 660");
+		subject53.setNameThai("เครื่องมือสาหรับงานวิศวกรรมซอฟต์แวร์");
+		subject53.setCredit("3");
+		subject53.setDetailThai("Detail: " + subject53.getNameThai());
+		subjectList.add(subject53);
+
+		Subject subject54 = new Subject();
+		subject54.setId(54);
+		subject54.setSubjectCode("SWE 661");
+		subject54.setNameThai("การเขียนโปรแกรมและการพัฒนาบนเว็บ");
+		subject54.setCredit("3");
+		subject54.setDetailThai("Detail: " + subject54.getNameThai());
+		subjectList.add(subject54);
+
+		Subject subject55 = new Subject();
+		subject55.setId(55);
+		subject55.setSubjectCode("SWE 670");
+		subject55.setNameThai("สัมมนาเชิงปฏิบัติการเขียนโปรแกรมและการจัดการฐานข้อมูล");
+		subject55.setCredit("3");
+		subject55.setDetailThai("Detail: " + subject55.getNameThai());
+		subjectList.add(subject55);
+
+		Subject subject56 = new Subject();
+		subject56.setId(56);
+		subject56.setSubjectCode("SWE 671");
+		subject56.setNameThai("สัมมนาเชิงปฏิบัติการทางวิศวกรรมซอฟต์แวร์ 1");
+		subject56.setCredit("3");
+		subject56.setDetailThai("Detail: " + subject56.getNameThai());
+		subjectList.add(subject56);
+
+		Subject subject57 = new Subject();
+		subject57.setId(57);
+		subject57.setSubjectCode("SWE 672");
+		subject57.setNameThai("สัมมนาเชิงปฏิบัติการทางวิศวกรรมซอฟต์แวร์ 2");
+		subject57.setCredit("3");
+		subject57.setDetailThai("Detail: " + subject57.getNameThai());
+		subjectList.add(subject57);
+
+		Subject subject58 = new Subject();
+		subject58.setId(58);
+		subject58.setSubjectCode("SWE 690");
+		subject58.setNameThai("การศึกษาเฉพาะเรื่องทางวิศวกรรมซอฟต์แวร์ 1");
+		subject58.setCredit("3");
+		subject58.setDetailThai("Detail: " + subject58.getNameThai());
+		subjectList.add(subject58);
+
+		Subject subject59 = new Subject();
+		subject59.setId(59);
+		subject59.setSubjectCode("SWE 691");
+		subject59.setNameThai("การศึกษาเฉพาะเรื่องทางวิศวกรรมซอฟต์แวร์ 2");
+		subject59.setCredit("3");
+		subject59.setDetailThai("Detail: " + subject59.getNameThai());
+		subjectList.add(subject59);
+
+		Subject subject60 = new Subject();
+		subject60.setId(60);
+		subject60.setSubjectCode("SWE 692");
+		subject60.setNameThai("การศึกษาเฉพาะเรื่องทางวิศวกรรมซอฟต์แวร์ 3");
+		subject60.setCredit("3");
+		subject60.setDetailThai("Detail: " + subject60.getNameThai());
+		subjectList.add(subject60);
+
+		Subject subject61 = new Subject();
+		subject61.setId(61);
+		subject61.setSubjectCode("SWE 700");
+		subject61.setNameThai("วิทยานิพนธ์");
+		subject61.setCredit("3");
+		subject61.setDetailThai("Detail: " + subject61.getNameThai());
+		subjectList.add(subject61);
+
+		Subject subject62 = new Subject();
+		subject62.setId(62);
+		subject62.setSubjectCode("SWE 701");
+		subject62.setNameThai("การศึกษาโครงการเฉพาะเรื่อง");
+		subject62.setCredit("3");
+		subject62.setDetailThai("Detail: " + subject62.getNameThai());
+		subjectList.add(subject62);
+
+		Subject subject63 = new Subject();
+		subject63.setId(63);
+		subject63.setSubjectCode("SWE 702");
+		subject63.setNameThai("ระเบียบวิธีการวิจัย");
+		subject63.setCredit("3");
+		subject63.setDetailThai("Detail: " + subject63.getNameThai());
+		subjectList.add(subject63);
+
+		return subjectList;
 	}
 }
