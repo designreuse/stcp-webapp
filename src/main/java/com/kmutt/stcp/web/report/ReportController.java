@@ -11,10 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Created by Gift on 23-Feb-16.
@@ -32,29 +30,12 @@ public class ReportController {
     public String index(Map<String, Object> model) {
         logger.debug("index() is executed!");
 
-        model.put("title", "test");
-        model.put("msg", "message test test test");
-
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new WeakHashMap<>();
         map.put("studentId", "Student ID");
         map.put("staffId", "Staff ID");
         model.put("idOption", map);
 
-        //displayReportList
-        List<ReportMaster> records = new ArrayList<>();
-        ReportMaster master = new ReportMaster();
-        master.setReportName("Courses");
-        records.add(master);
-
-        master = new ReportMaster();
-        master.setReportName("Study Plan");
-        records.add(master);
-
-        master = new ReportMaster();
-        master.setReportName("Summary");
-        records.add(master);
-
-        model.put("records", records);
+        model.put("records", ReportTemplate.values());
 
         return "report/report-controller";
 //        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);

@@ -24,7 +24,7 @@ pageEncoding="UTF-8"%>
         <div class="panel panel-default">
 
             <div class="panel-heading">
-                Filter
+                Report Parameters
             </div>
 
             <div class="input-group" style="width:100%">

@@ -17,5 +17,13 @@ public enum ReportTemplate {
         this.reportTemplateName = reportTemplateName;
     }
 
+    public String getReportName() {
+        return reportName;
+    }
+
+    public String getReportTemplateName() {
+        return reportTemplateName;
+    }
+
 }
 
