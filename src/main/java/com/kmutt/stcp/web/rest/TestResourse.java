@@ -2,6 +2,10 @@ package com.kmutt.stcp.web.rest;
 
 import com.kmutt.stcp.entity.Course;
 import com.kmutt.stcp.repository.CourseRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,48 +18,50 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/test/rest")
 public class TestResourse {
 
-    @Autowired
-    private CourseRepository courseRepository;
+	@Autowired
+	private CourseRepository courseRepository;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Course getDummyEmployee() {
-        Course course = new Course();
-        course.setName("name");
-        course.setCode("code");
-        return course;
-    }
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Course> getDummyEmployee() {
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    boolean createEmployee(@RequestBody Course course) {
+		Course course = new Course();
+//		course.setName("name");
+//		course.setCode("code");
 
-        Course c = new Course();
-        c.setCode(course.getCode());
-        c.setName(course.getName());
+		ArrayList<Course> courseList = new ArrayList<>();
+		courseList.add(course);
+		courseList.add(course);
+		courseList.add(course);
+		
+		return courseList;
+	}
 
-        boolean _success = false;
-        try {
-            System.out.println("create course");
-            _success = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return _success;
-    }
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public @ResponseBody boolean createEmployee(@RequestBody Course course) {
 
-    @RequestMapping(value = "/delete", method = RequestMethod.PUT)
-    public
-    @ResponseBody
-    Course deleteEmployee(@PathVariable("code") String code) {
+		Course c = new Course();
+//		c.setCode(course.getCode());
+//		c.setName(course.getName());
 
-        Course c = new Course();
-        c.setCode(code);
+		boolean _success = false;
+		try {
+			System.out.println("create course");
+			_success = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return _success;
+	}
 
-        courseRepository.delete(c);
-        return c;
-    }
+	@RequestMapping(value = "/delete", method = RequestMethod.PUT)
+	public @ResponseBody Course deleteEmployee(@PathVariable("code") String code) {
+
+		Course c = new Course();
+//		c.setCode(code);
+
+		courseRepository.delete(c);
+		return c;
+	}
 
 }
