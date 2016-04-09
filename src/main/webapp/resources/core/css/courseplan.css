@@ -1,0 +1,177 @@
+/**
+* for CoursePlan Module
+*
+*/
+div#i_containTab {
+	position: relative;
+	display: block;
+	width: 540px; /* กำหนดความกว้างทั้งหมด   */
+	border: 1px solid #CCC;
+}
+
+ul#navi_containTab {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	background-color: #FCF;
+}
+
+ul#navi_containTab li {
+	display: block;
+	float: left;
+	height: 30px;
+	width: 25%; /* กำหนดความกว้างทั้งหมด  หารด้วยจำนวนเมนูแท็บ  */
+	border: 0px solid #CCC;
+	line-height: 25px;
+	cursor: pointer;
+	text-align: center;
+	border: 1px solid #e0e0e0;
+	padding: 3px 5px;
+}
+/* class รูปแบบของแต่ละเมนู */
+.tabNavi1 {
+	background-color: #848484;
+	color: #ffffff;
+}
+
+.tabNavi2 {
+	background-color: #A4A4A4;
+	color: #ffffff;
+}
+
+ul#detail_containTab {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+ul#detail_containTab li {
+	float: left;
+	width: 100%;
+	height: 250px;
+}
+/* class รูปแบบของแต่ละเนื้อหา */
+.detailContent1 {
+	background-color: white;
+	border: 1px solid black;
+	display: block;
+}
+
+.detailContent2 {
+	background-color: white;
+	border: 1px solid black;
+	display: none;
+}
+
+.table-subject {
+	border: 1px solid black;
+	width: 100%;
+}
+
+.td-subject {
+	border: 1px solid black;
+	width: 40%;
+}
+
+.td-credit {
+	border: 1px solid black;
+	width: 30%;
+	text-align: center;
+}
+
+.td-delete {
+	border: 1px solid black;
+	width: 30%;
+}
+
+/*========================================*/
+
+/* Tab Navigation */
+.nav-tabs {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.nav-tabs>li {
+	width: 50%;
+}
+
+.nav-tabs>li>a {
+	background: #F5F5F5;
+	border-radius: 5px 5px 0px 0px;
+	box-shadow: inset 0 -8px 7px -9px rgba(0, 0, 0, .4), -2px -2px 5px -2px
+		rgba(0, 0, 0, .4);
+	font-weight: bold;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover {
+	/* background: #DADADA; */
+	box-shadow: inset 0 0 0 0 rgba(0, 0, 0, .4), -2px -3px 5px -2px
+		rgba(0, 0, 0, .4);
+}
+
+/* Tab Content */
+.tab-pane {
+	/* background: #F5F5F5; */
+	box-shadow: 0 0 4px rgba(0, 0, 0, .4);
+	border-radius: 0;
+	text-align: center;
+	padding: 10px;
+}
+
+#courseplanlist th {
+	text-align: center;
+	background-color: #800000;
+	color: #F0FFFF;
+}
+
+.optionDisabled {
+	/* text-decoration: line-through; */
+	color: #ADD8E6;
+}
+
+.popover-title {
+	background-color: #E7E7E7;
+}
+
+.optionEllipsis {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.optionEllipsis:hover {
+	text-overflow : inherit;
+	overflow: visible;
+	/* z-index: 99; */
+}
+
+div[role=tabpanel] tbody td{
+	vertical-align: middle;
+}
+
+.colorgraph {
+	height: 5px;
+	border-top: 0;
+	background: #c4e17f;
+	border-radius: 5px;
+	background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%,
+		#f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%,
+		#db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
+		#669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%,
+		#f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%,
+		#db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
+		#669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca
+		25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe
+		50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1
+		87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca
+		25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe
+		50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1
+		87.5%, #62c2e4 87.5%, #62c2e4);
+}

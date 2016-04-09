@@ -88,6 +88,13 @@
 	               <span>Course Offerring</span>
 	             </a>
 	           	</li>
+	           	
+	           	<li class="treeview">
+	           		<a href="${root}/coursePlanner/">
+	           			<i class="glyphicon glyphicon-list-alt"></i>
+	           			<span>Course Planner</span>
+	           		</a>
+	           	</li>
 	        </ul>
         </section>
         <!-- /.sidebar -->
