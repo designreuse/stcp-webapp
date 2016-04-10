@@ -1,6 +1,7 @@
 package com.kmutt.stcp.web.report;
 
 import com.kmutt.stcp.entity.User;
+import org.apache.commons.collections.keyvalue.AbstractMapEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -8,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -35,6 +38,7 @@ public class ReportController {
         map.put("staffId", "Staff ID");
         model.put("idOption", map);
 
+        //displayReportList by role
         model.put("records", ReportTemplate.values());
 
         return "report/report-controller";
@@ -53,7 +57,7 @@ public class ReportController {
 
     //onSelectedReport
     @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> reportCenterGenerator(/*@RequestBody String json*/) {
+    public ResponseEntity<byte[]> reportCenterGenerator(Map<String, Object> model) {
         ReportGenerator generator = new ReportGenerator();
 //        r.generateReport(0,null);
 
@@ -63,7 +67,9 @@ public class ReportController {
 //        // generate the file
 //        PdfUtil.showHelp(emp);
 
-        byte[] pdfContents = generator.generateReport(0,null);
+        Map.Entry<String,Object> e1 = new AbstractMap.SimpleEntry<>("k1","v1");
+        Map.Entry<String,Object> e2 = new AbstractMap.SimpleEntry<>("k2","v2");
+        byte[] pdfContents = generator.generateReport(0, e1,e2);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -80,8 +86,7 @@ public class ReportController {
 
         ReportGenerator generator = new ReportGenerator();
         //FIXME edit arguments
-        if(generator.isReportValid(0)){
-
+        if(generator.isReportValid(0,2)){
             byte[] pdfContents = generator.generateReport(0,null);
 
             HttpHeaders headers = new HttpHeaders();

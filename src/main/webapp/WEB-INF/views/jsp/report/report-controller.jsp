@@ -27,15 +27,34 @@ pageEncoding="UTF-8"%>
                 Report Parameters
             </div>
 
-            <div class="input-group" style="width:100%">
-                    <span class="input-group-addon" style="width:110px;padding:0px;border:none;">
-                        <select class="form-control" disabled>
-                            <option>${idOption.studentId}</option>
-                            <option>${idOption.staffId}</option>
-                        </select>
-                    </span>
-                <input type="text" class="form-control" placeholder="รหัสประจำตัว" disabled value="12345678"/>
+            <!--<div class="input-group" style="width:100%">-->
+                    <!--<span class="input-group-addon" style="width:110px;padding:0px;border:none;">-->
+                        <!--<select class="form-control" disabled>-->
+                            <!--<option>${idOption.studentId}</option>-->
+                            <!--<option>${idOption.staffId}</option>-->
+                        <!--</select>-->
+                    <!--</span>-->
+                <!--<input type="text" class="form-control" placeholder="รหัสประจำตัว" disabled value="12345678"/>-->
+            <!--</div>-->
+
+            <div class="input-group">
+                <span class="input-group-addon" id="yearLabel">ปีการศึกษา</span>
+                <input type="number" class="form-control" />
+                <span class="input-group-addon" id="semesterLabel">ภาคเรียนที่</span>
+                <input type="number" class="form-control" />
             </div>
+
+
+            <div class="input-group">
+                <span class="input-group-addon" id="curriculumLabel">หลักสูตร</span>
+                <select class="form-control">
+                    <option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>
+                    <option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>
+                    <option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>
+                    <option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>
+                </select>
+            </div>
+
 
             <!--<div class="input-group">-->
             <!--<span class="input-group-addon" id="yearLabel">ชั้นปีที่</span>-->
@@ -57,7 +76,7 @@ pageEncoding="UTF-8"%>
 
             <a href="reportModuleGenerator">click export</a>
             <br/>
-            <a href="reportCenterGenerator">click row</a>
+            <a href="reportCenterGenerator?test=ttt">click row</a>
             <div class="panel-footer text-center">
                 <p>
                     <button type="button" class="btn btn-primary btn-sm">
@@ -85,7 +104,7 @@ pageEncoding="UTF-8"%>
                         <c:out value="${status.count}"/>
                     </td>
                     <td>
-                        <c:out value="${master.reportName}"/>
+                        <c:out value="${master.reportName}"/> <span class="badge">4</span>
                     </td>
                 </tr>
             </c:forEach>
