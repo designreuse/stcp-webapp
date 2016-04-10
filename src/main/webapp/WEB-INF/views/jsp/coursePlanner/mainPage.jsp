@@ -37,7 +37,7 @@
 				<c:forEach var="subject" items="${subjectlist}">
 					<option id="${subject.id}" value="${subject.id}" class="hasPop${subject.status == 1? ' optionDisabled': ''}"
 						data-subjectcode="${subject.nameThai}" data-credit="${subject.credit}"
-						title="${subject.subjectCode}&nbsp;${subject.nameThai}" data-content="${subject.detailThai}"
+						title="${subject.subjectCode} ${subject.nameThai}" data-content="${subject.detailThai}"
 						${subject.status == 1? ' isdisabled="true"': ''}>${subject.subjectCode}&nbsp;${subject.nameThai}</option>
 				</c:forEach>
 			</select>
@@ -76,7 +76,7 @@
 					<!-- Tab panes -->
 					<div id="courseplanlist" class="tab-content">
 						<c:forEach var="year" items="${semesterYearList}" varStatus="pos">
-						<div role="tabpanel" class="tab-pane fade${pos.first? ' in active' : ''}" id="${year}1" data-semesterterm="1">
+						<div role="tabpanel" class="tab-pane fade${pos.first? ' in active' : ''}" id="${year}1" data-semesteryear="${year}" data-semesterterm="1">
 							<table class="table table-bordered table-hover" style="max-height: 284px !important;">
 								<thead class="thead-default">
 									<tr>
@@ -88,7 +88,7 @@
 								<tbody>
 								<c:forEach var="semester" items="${semesterList}">
 									<c:if test="${semester.semesterYear == year && semester.semesterTerm == 1}">
-										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}">
+										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}" data-semesterid="${semester.id}">
 											<td class="text-left">${semester.subject.subjectCode}&nbsp;${semester.subject.nameThai}</td>
 											<td>${semester.subject.credit}</td>
 											<td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td>
@@ -98,7 +98,7 @@
 								</tbody>
 							</table>
 						</div>
-						<div role="tabpanel" class="tab-pane fade" id="${year}2" data-semesterterm="2">
+						<div role="tabpanel" class="tab-pane fade" id="${year}2" data-semesteryear="${year}" data-semesterterm="2">
 							<table class="table table-bordered table-hover">
 								<thead class="thead-default">
 									<tr>
@@ -110,7 +110,7 @@
 								<tbody>
 								<c:forEach var="semester" items="${semesterList}">
 									<c:if test="${semester.semesterYear == year && semester.semesterTerm == 2}">
-										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}">
+										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}" data-semesterid="${semester.id}">
 											<td class="text-left">${semester.subject.subjectCode}&nbsp;${semester.subject.nameThai}</td>
 											<td>${semester.subject.credit}</td>
 											<td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td>

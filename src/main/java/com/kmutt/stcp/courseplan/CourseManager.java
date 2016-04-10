@@ -2,15 +2,14 @@ package com.kmutt.stcp.courseplan;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kmutt.stcp.entity.*;
-import com.kmutt.stcp.repository.CourseRepository;
 import com.kmutt.stcp.repository.SubjectRepository;
-import com.kmutt.stcp.web.CoursePlannerController;
 
 public class CourseManager {
 
@@ -20,7 +19,7 @@ public class CourseManager {
 	@Autowired
 	private SubjectRepository subjectRepository;
 	
-	private ArrayList<Subject> subjectList;
+	private List<Subject> subjectList;
 	private Account student;
 
 	// Constructor//
@@ -29,10 +28,10 @@ public class CourseManager {
 	}
 
 	// Method//
-	public ArrayList<Subject> getSubjectList() {
+	public List<Subject> getSubjectList() {
 
 		// should get subjectList from Common Entity module.
-		// return this.subjectRepository.findAll(); 
+		// TODO: return this.subjectRepository.findAll(); 
 		return this.dummySubjectList(this.student);
 
 	}
@@ -48,7 +47,7 @@ public class CourseManager {
 		try {
 
 			//Should change this to get from Common Entity module.
-			//resultSubject = this.subjectRepository.findAll().stream()
+			// TODO: resultSubject = this.subjectRepository.findAll().stream()
 			resultSubject = this.subjectList.stream()
 					.filter(subject -> subject.getSubjectCode().toLowerCase().equals(code.toLowerCase()))
 					.findFirst()
@@ -76,7 +75,7 @@ public class CourseManager {
 		try {
 
 			//Should change this to get from Common Entity module.
-			//resultSubject = this.subjectRepository.findAll().stream()
+			// TODO: resultSubject = this.subjectRepository.findAll().stream()
 			resultSubject = this.subjectList.stream()
 					.filter(subject -> subject.getId() == id)
 					.findFirst()
@@ -92,8 +91,49 @@ public class CourseManager {
 
 	}
 
+	public List<Subject> searchSubject(String criteria){
+		
+		if (this.subjectList == null) {
+			this.subjectList = this.getSubjectList();
+		}
+
+		List<Subject> resultSubject  = new ArrayList<Subject>();
+
+		try {
+			
+			if(criteria != null && !criteria.isEmpty()) {
+
+				//Should change this to get from Common Entity module.
+				// TODO: resultSubject = this.subjectRepository.findAll().stream()
+				resultSubject = this.subjectList.stream()
+						.filter(subject -> {													
+							if (subject.getSubjectCode().toLowerCase().contains(criteria.toLowerCase())
+									|| subject.getNameThai().toLowerCase().contains(criteria.toLowerCase())) {
+								return true;														
+							} else {														
+								return false;														
+							}
+						}).collect(Collectors.toList());
+			} else {
+				
+				resultSubject = this.subjectList;
+				
+			}
+				
+			
+		} catch (Exception e) {
+
+			logger.error("Method:searchSubject|Err:" + e.getMessage());
+			resultSubject = new ArrayList<Subject>();
+
+		}
+
+		return resultSubject;
+
+	}
+	
 	//Dummy//
-	private ArrayList<Subject> dummySubjectList(Account student) {
+	private List<Subject> dummySubjectList(Account student) {
 		
 		subjectList = new ArrayList<>();
 
