@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.entity.courseplan.MessageResult;
+import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
 import com.kmutt.stcp.courseplan.*;
 
 @Controller
@@ -42,24 +43,23 @@ public class CoursePlannerController {
 		CourseManager courseMng = this.getCurrentCourseManager(session);
 		CoursePlanMannager planMng = this.getCurrentPlanManger(session);
 
-		ArrayList<Integer> semesterYearList = planMng.getSemesterYearList();
+		List<Integer> semesterYearList = planMng.getSemesterYearList();
 		model.put("semesterYearList", semesterYearList);
-		
-		ArrayList<CoursePlan> semesterPlan = planMng.getCoursePlanList();
+
+		List<CoursePlan> semesterPlan = planMng.getCoursePlanList();
 		model.put("semesterList", semesterPlan);
 
-		ArrayList<Subject> subjectAll = courseMng.getSubjectList();
+		List<Subject> subjectAll = courseMng.getSubjectList();
 		subjectAll = bindSubjectIsSelected(subjectAll, planMng.getSubjectSelectedList());
 		model.put("subjectlist", subjectAll);
-	
+
 		return "coursePlanner/mainPage";
 
 	}
 
 	@RequestMapping(value = { "/courseplan/{semesteryear}" }, method = RequestMethod.GET)
 	@ResponseBody
-	public List<CoursePlan> getCoursePlanBySemester(HttpSession session,
-			@PathVariable("semesteryear") String semesterYear) {
+	public List<CoursePlan> getCoursePlanBySemester(HttpSession session, @PathVariable("semesteryear") String semesterYear) {
 
 		try {
 
@@ -89,51 +89,82 @@ public class CoursePlannerController {
 
 	}
 
-	@RequestMapping(value = { "/courseinfo" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/searchSubject" }, method = RequestMethod.GET)
 	@ResponseBody
-	public Subject getCourseInfo(HttpSession session, @RequestParam("code") String code) {
+	public List<Subject> searchSubject(HttpSession session, @RequestParam("textsearch") String textSearch) {
+
+		List<Subject> subjectSearched = new ArrayList<>();
 
 		try {
 
 			CourseManager courseMng = this.getCurrentCourseManager(session);
-			return courseMng.getSubjectByCode(code);
+			subjectSearched = courseMng.searchSubject(textSearch);
 
 		} catch (Exception e) {
 
-			System.out.println(e.getMessage());
-			return null;
-
+			logger.error("Method:searchSubject|Err:" + e.getMessage());
+			subjectSearched = new ArrayList<>();
 		}
+
+		return subjectSearched;
 
 	}
 
 	@RequestMapping(value = { "/saveplan" }, method = RequestMethod.POST)
 	@ResponseBody
-	public MessageResult savePlan(HttpSession session, @RequestBody List<CoursePlan> coursePlanList) {
+	public MessageResult savePlan(HttpSession session, @RequestBody List<PlanMessageRequest> messageRequest) {
 
 		MessageResult result = new MessageResult();
 
 		try {
 
-			// call Common Entity module to save plan.
+			if (messageRequest != null) {
 
-			result.StatusCode = "000";
-			result.IsError = false;
-			result.ErrorDescription = "";
+				CoursePlanMannager plnManger = this.getCurrentPlanManger(session);
 
-			return result;
+				if (plnManger.setCoursePlanForSave(messageRequest)) {
+
+					if(plnManger.savePlan()) {
+
+						result.StatusCode = "000";
+						result.IsError = false;
+						result.ErrorDescription = "";
+						
+					} else {
+						
+						result.StatusCode = "103";
+						result.IsError = true;
+						result.ErrorDescription = "can't save plan in database.";
+						
+					}
+
+				} else {
+
+					result.StatusCode = "102";
+					result.IsError = true;
+					result.ErrorDescription = "message can't be parsed.";
+
+				}
+				
+			} else {
+
+				result.StatusCode = "101";
+				result.IsError = true;
+				result.ErrorDescription = "message are empty";
+				
+			}
 
 		} catch (Exception e) {
 
-			System.out.println(e.getMessage());
+			logger.error("Method:savePlan|Err:" + e.getMessage());
 
 			result.StatusCode = "100";
 			result.IsError = true;
-			result.ErrorDescription = "can't save plan";
-
-			return result;
+			result.ErrorDescription = "can't save plan.";
 
 		}
+
+		return result;
 
 	}
 
@@ -194,21 +225,20 @@ public class CoursePlannerController {
 
 	}
 
-	private ArrayList<Subject> bindSubjectIsSelected(ArrayList<Subject> subjectAll, ArrayList<Subject> subjectSelectedList){
-		
+	private List<Subject> bindSubjectIsSelected(List<Subject> subjectAll, List<Subject> subjectSelectedList) {
+
 		for (Subject subject : subjectAll) {
-			
+
 			for (Subject subjectSelected : subjectSelectedList) {
-				
-				if(subject.getSubjectCode().toLowerCase().equals(subjectSelected.getSubjectCode().toLowerCase())
-						|| subject.getId() == subjectSelected.getId())
-				{
+
+				if (subject.getSubjectCode().toLowerCase().equals(subjectSelected.getSubjectCode().toLowerCase())
+						|| subject.getId() == subjectSelected.getId()) {
 					subject.setStatus(1);
 				}
 			}
 		}
-		
+
 		return subjectAll;
-		
+
 	}
 }

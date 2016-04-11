@@ -1,26 +1,38 @@
 package com.kmutt.stcp.entity.courseplan;
 
 public class PlanMessageRequest {
+
+	private int semesterId;
+	private int semesterYear;
+	private int semesterTerm;
+	private int subjectId;
+
+	public int getSemesterId() {
+		return semesterId;
+	}
+	public void setSemesterId(int semesterId) {
+		this.semesterId = semesterId;
+	}
+
+	public int getSemesterYear() {
+		return semesterYear;
+	}
+	public void setSemesterYear(int value) {
+		this.semesterYear = value;
+	}
 	
-	private int semesterid;
+	public int getSemesterTerm() {
+		return semesterTerm;
+	}
+	public void setSemesterTerm(int value) {
+		this.semesterTerm = value;
+	}
 	
-	private int courseid;
-
-	public int getSemesterid() {
-		return semesterid;
+	public int getSubjectId() {
+		return subjectId;
 	}
-
-	public void setSemesterid(int value) {
-		this.semesterid = value;
+	public void setSubjectId(int value) {
+		this.subjectId = value;
 	}
-
-	public int getCourseid() {
-		return courseid;
-	}
-
-	public void setCourseid(int value) {
-		this.courseid = value;
-	}
-
-
+	
 }

@@ -4,6 +4,7 @@
  */
 
 var currentSemester = "";
+var touchtime = 0;
 
 $(document).ready(function() {
 	
@@ -52,111 +53,8 @@ $(document).ready(function() {
 
 	});
 
-	var touchtime = 0;
+	$('#subjectListID option').on('click', doubleClickSubject);
 	
-	$('#subjectListID option').on('click', function(){
-		
-		if(touchtime == 0) {
-	        //set first click
-	        touchtime = new Date().getTime();
-	    } else {
-	        //compare first click to this click and see if they occurred within double click threshold
-	        if(((new Date().getTime())-touchtime) < 800) {
-	           
-	        	//double click occurred
-	            touchtime = 0;
-	            
-	        	if($(this).attr("isdisabled") == "true"){
-	    			
-	    			swal({
-	    				title : "Course Planner",
-	    				text : "This course has been selected.",
-	    				type : "warning"
-	    			});
-	    			
-	    			return;
-	    			
-	    		}
-	    	
-	    		if(calculateCredits(currentSemester) <= 6) {
-	    			
-	    			$(this).attr("isdisabled", "true");
-	    			$(this).addClass('optionDisabled');
-	    	
-	    			var dataSubject = new Object();
-	    			dataSubject.id = $(this).attr('id');
-	    			dataSubject.code = $(this).data('subjectcode');
-	    			dataSubject.credit = $(this).data('credit');
-	    			dataSubject.subjectname = $(this).html();
-	    	
-	    			createAddSubject($('div#' + currentSemester + ' tbody'), dataSubject);
-	    	
-	    			calculateCredits(currentSemester);
-	    			calculateAllCredits();
-	    			
-	    			$('.hasPop').popover('hide');
-	    		}
-	    		else {
-	    			
-	    			swal({
-	    				title : "Course Planner",
-	    				text : "your credits exceeded.",
-	    				type : "warning"
-	    			});
-	    			
-	    		}
-	    		
-	        } else {
-	            //not a double click so set as a new first click
-	            touchtime = new Date().getTime();
-	        }
-	    } 
-		
-	});
-	
-	/*$('#subjectListID option').dblclick(function() {
-
-		if($(this).attr("isdisabled") == "true"){
-			
-			swal({
-				title : "Course Planner",
-				text : "This course has been selected.",
-				type : "warning"
-			});
-			
-			return;
-			
-		}
-	
-		if(calculateCredits(currentSemester) <= 6) {
-			
-			$(this).attr("isdisabled", "true");
-			$(this).addClass('optionDisabled');
-	
-			var dataSubject = new Object();
-			dataSubject.id = $(this).attr('id');
-			dataSubject.code = $(this).data('subjectcode');
-			dataSubject.subjectname = $(this).html();
-	
-			createAddSubject($('div#' + currentSemester + ' tbody'), dataSubject);
-	
-			calculateCredits(currentSemester);
-			calculateAllCredits();
-			
-			$('.hasPop').popover('hide');
-		}
-		else {
-			
-			swal({
-				title : "Course Planner",
-				text : "your credits exceeded.",
-				type : "warning"
-			});
-			
-		}
-		
-	});*/
-
 	$("ul#navi_containTab > li").click(function(event) {
 
 		var tabIndex = $(this).index();
@@ -174,6 +72,55 @@ $(document).ready(function() {
 		
 		//call Ajax to search course information.
 		//and Bind course results to select option elements.
+		
+		$.ajax({
+            type: "GET",
+            url: "http://localhost:8080/stcp/coursePlanner/searchSubject",
+            dataType: "json",
+            data: { textsearch: txtSearch },
+            success: function (data) {
+            	
+            	if(data != null){
+            		            		
+            		$('#subjectListID').empty();
+            		
+            		data.forEach(function (subject) {
+						
+            			var optElement = $('<option></option>');
+            			optElement.attr('id', subject.id);
+            			optElement.attr('value', subject.id);
+            			optElement.attr('title', subject.subjectCode + ' ' + subject.nameThai);
+
+            			optElement.addClass('hasPop');
+            			            			
+            			optElement.data('subjectcode', subject.nameThai);
+            			optElement.data('credit', subject.credit);
+            			optElement.data('content', subject.detailThai);
+
+            			if(subject.status == 1) {
+            				optElement.attr('isdisabled', 'true');
+            				optElement.addClass('optionDisabled');            				
+            			}
+            			
+            			optElement.on('click', doubleClickSubject);
+            			
+            			optElement.html(subject.subjectCode + '&nbsp;' + subject.nameThai);
+            			
+            			$('#subjectListID').append(optElement);
+            			
+					});
+            	} 
+            },
+            error: function (xml, status, errMsg) {
+            	swal({
+            			title : "Course Planner",
+            			text : "Can't search subject.",
+            			type : "error",
+   					   	showCancelButton: false 
+            		});
+            }
+        });
+		
 		
 	});
 
@@ -200,28 +147,43 @@ $(document).ready(function() {
                     url: "http://localhost:8080/stcp/coursePlanner/saveplan",
                     dataType: "json",
                     contentType: "application/json; charset=UTF-8",
-                    data: semesterList,
-                    success: function (xml) {
-                        swal('success');
+                    data: JSON.stringify(semesterList),
+                    success: function (data) {
+                    	
+                    	var msg = 'can\'t save plans';
+                    	var msgType = 'error';
+                    	
+                    	if(data != null) {
+                    		
+                    		if(data.IsError) {                    			
+                    			msg = data.ErrorDescription;                    			
+                    		} else {
+                    			msg = "This plan has been saved";
+                    			msgType = 'success';
+                    		}
+                            
+                    	}
+                    	
+                        swal({ title : "Course Planner",
+	      					   text : msg,
+	      					   type : msgType,
+	      					   showCancelButton: false });
+                        
+                    	
                     },
                     error: function (xml, status, errMsg) {
-                    	swal(errMsg);
+                    	swal({ 	title: 'Course Planner',
+                    			text: errMsg != null || errMsg != ""? errMsg : 'can\'t save plans',
+                    			type: 'error',
+ 	      					   	showCancelButton: false });
                     },
                     done: function() {
-                    	swal('done');
+                    	swal({	title: "Course Planner",
+                    			text:'done',
+                    			type : 'success',
+ 	      					   	showCancelButton: false });
                     }
-                });
-				
-				setTimeout(function() {
-					swal({
-						title : "Course Planner",
-						text : "This plan has been saved",
-						type : "success",
-						confirmButtonClass : 'btn btn-success',
-						confirmButtonText : 'OK'
-					});
-				}, 2000);
-				
+                });				
 			}
 		});
 	});
@@ -335,6 +297,7 @@ function createAddSubject(tableTBody, dataObj) {
 				+ '</td><td>' + dataObj.credit + '</td><td></td></tr>');
 
 		trNew.data(dataObj);
+		trNew.data('semesterid', '0');
 		trNew.children('td:last').append(btnDelete);
 
 		tableTBody.append(trNew);
@@ -358,27 +321,83 @@ function removeSubject() {
 	}
 }
 
-function buildPlanJson(){
+function doubleClickSubject() {
 	
+	if(touchtime == 0) {
+        //set first click
+        touchtime = new Date().getTime();
+    } else {
+        //compare first click to this click and see if they occurred within double click threshold
+        if(((new Date().getTime())-touchtime) < 800) {
+           
+        	//double click occurred
+            touchtime = 0;
+            
+        	if($(this).attr("isdisabled") == "true"){
+    			
+    			swal({
+    				title : "Course Planner",
+    				text : "This course has been selected.",
+    				type : "warning"
+    			});
+    			
+    			return;
+    			
+    		}
+    	
+    		if(calculateCredits(currentSemester) <= 6) {
+    			
+    			$(this).attr("isdisabled", "true");
+    			$(this).addClass('optionDisabled');
+    	
+    			var dataSubject = new Object();
+    			dataSubject.id = $(this).attr('id');
+    			dataSubject.code = $(this).data('subjectcode');
+    			dataSubject.credit = $(this).data('credit');
+    			dataSubject.subjectname = $(this).html();
+    	
+    			createAddSubject($('div#' + currentSemester + ' tbody'), dataSubject);
+    	
+    			calculateCredits(currentSemester);
+    			calculateAllCredits();
+    			
+    			$('.hasPop').popover('hide');
+    		}
+    		else {
+    			
+    			swal({
+    				title : "Course Planner",
+    				text : "your credits exceeded.",
+    				type : "warning"
+    			});
+    			
+    		}
+    		
+        } else {
+            //not a double click so set as a new first click
+            touchtime = new Date().getTime();
+        }
+    } 
+	
+}
+
+function buildPlanJson(){
 	
 	var semesterList = [];
 	
 	try {
 
 		$('div[role=tabpanel]').each(function(i){
-			
-			var courseList = [];
+						
+			var year = $(this).data('semesteryear');
+			var term = $(this).data('semesterterm');
 			
 			$(this).find('tbody tr').each(function(j){
 				
-				var courseObj = { courseid: $(this).data('id') };
-				courseList.push(courseObj);
+				var semesterObj = { semesterId: $(this).data('semesterid'), semesterYear: year, semesterTerm: term, subjectId: $(this).data('id') };
+				semesterList.push(semesterObj);
 				
-			});
-			
-			var semesterObj = { semesterid: $(this).attr('id'), courselist: courseList };
-			semesterList.push(semesterObj);
-			
+			});			
 		});
 		
 	}
