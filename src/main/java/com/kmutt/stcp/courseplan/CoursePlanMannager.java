@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.zxing.PlanarYUVLuminanceSource;
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
 import com.kmutt.stcp.repository.*;
