@@ -1,8 +1,13 @@
 package com.kmutt.stcp.web.report;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
+
 /**
  * Created by Gift on 03-Apr-16.
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ReportTemplate {
 
     COURSE_OPENING("รายงานผลการวางแผนการเรียนของนักศึกษาแต่ละคน", "Course_Opening.jrxml"),
@@ -18,11 +23,11 @@ public enum ReportTemplate {
     }
 
     public String getReportName() {
-        return reportName;
+        return this.reportName;
     }
 
     public String getReportTemplateName() {
-        return reportTemplateName;
+        return this.reportTemplateName;
     }
 
 }

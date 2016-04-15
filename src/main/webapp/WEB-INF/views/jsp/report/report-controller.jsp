@@ -2,6 +2,7 @@
 <%@page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,13 +77,15 @@ pageEncoding="UTF-8"%>
 
             <a href="reportModuleGenerator">click export</a>
             <br/>
-            <a href="reportCenterGenerator?test=ttt">click row</a>
+            <a href="reportCenterGenerator?reportId=ttt">click row</a>
+
+
             <div class="panel-footer text-center">
                 <p>
-                    <button type="button" class="btn btn-primary btn-sm">
+                    <button id="searchBtn" type="button" class="btn btn-primary btn-sm">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
                     </button>
-                    <button type="button" class="btn btn-default btn-sm">
+                    <button id="cancelBtn" type="button" class="btn btn-default btn-sm">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
                     </button>
                 </p>
@@ -115,10 +118,12 @@ pageEncoding="UTF-8"%>
     </div>
 </div>
 
-
 <footer>
     <p>Report & Statistics Module 2016</p>
 </footer>
+
+<script type="text/javascript" src="${root}/resources/core/js/report.js" defer></script>
 </body>
+
 
 </html>

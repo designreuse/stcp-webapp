@@ -1,7 +1,7 @@
 package com.kmutt.stcp.web.report;
 
 import com.kmutt.stcp.entity.User;
-import org.apache.commons.collections.keyvalue.AbstractMapEntry;
+import com.kmutt.stcp.web.report.bean.SearchReportRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -9,13 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Created by Gift on 23-Feb-16.
@@ -46,13 +42,18 @@ public class ReportController {
     }
 
 
-    @RequestMapping(value = "/searchReport", method = RequestMethod.GET)
-    public String searchReport(Map<String, Object> model) {
-//        model.get("studentId")
+    @RequestMapping(value = "/searchReport", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity searchReport(@RequestBody SearchReportRequest request) {
 
-        //TODO get filter
-        //TODO query report "REPORT_MASTER JOIN..."
-        return "";
+        ReportTemplate[] searched = Arrays.stream(ReportTemplate.values())
+                .filter(elm -> !String.valueOf(elm.ordinal()).equals(request.getReportId()))
+                .toArray(ReportTemplate[]::new);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<>(searched, headers, HttpStatus.OK);
     }
 
     //onSelectedReport
