@@ -9,5 +9,7 @@
         <pattern>/courseofferring/*</pattern>
         <pattern>/coursePlanner/*</pattern>
     </decorator>
-    
+
+  
+   
 </decorators>

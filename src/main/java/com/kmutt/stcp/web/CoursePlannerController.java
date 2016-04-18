@@ -20,10 +20,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
+=======
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.entity.courseplan.MessageResult;
 import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
 import com.kmutt.stcp.courseplan.*;
+>>>>>>> 98a9c70d50c23ea4337a0e10c076624fa2b77eaa
 
 @Controller
 @RequestMapping("coursePlanner")
