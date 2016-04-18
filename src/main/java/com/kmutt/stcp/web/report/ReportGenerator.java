@@ -44,7 +44,9 @@ public class ReportGenerator {
 
             // Parameters for report
             Map<String, Object> reportParams = new WeakHashMap<>();
-            Arrays.stream(paramValues).forEach(entry -> reportParams.put(entry.getKey(), entry.getValue()));
+            if(paramValues != null) {
+                Arrays.stream(paramValues).forEach(entry -> reportParams.put(entry.getKey(), entry.getValue()));
+            }
 
 //            reportParams.putAll(paramValues);
             // DataSource

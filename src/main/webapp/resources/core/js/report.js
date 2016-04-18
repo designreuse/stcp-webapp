@@ -3,7 +3,7 @@
 //
 //
 //});
-$("#searchBtn").click(function(){
+$("#searchReportBtn").click(function(){
     $.ajax({
         url:"searchReport",
         method:"post",
@@ -12,7 +12,7 @@ $("#searchBtn").click(function(){
         data:JSON.stringify({"reportId":"1"})
     }).done(function(data){
         console.log(data);
-    }).fail(function(xml, status, errMsg){
+    }).fail(function(jqXHR, textStatus, errorThrown ){
         console.log(errMsg);
     });
 });

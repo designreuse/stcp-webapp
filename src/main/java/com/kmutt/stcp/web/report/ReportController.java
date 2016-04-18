@@ -10,7 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -25,8 +28,14 @@ public class ReportController {
     private ReportModule module;
     private String filterText;
 
+    private static HttpSession session() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return attr.getRequest().getSession(true); // true == allow create
+    }
+
+    //index
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Map<String, Object> model) {
+    public String displayReportList(Map<String, Object> model) {
         logger.debug("index() is executed!");
 
         Map<String, String> map = new WeakHashMap<>();
@@ -37,12 +46,14 @@ public class ReportController {
         //displayReportList by role
         model.put("records", ReportTemplate.values());
 
+        session().setAttribute("studentId","581");
+
         return "report/report-controller";
 //        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/searchReport", method = RequestMethod.POST)
+    @RequestMapping(value = "/searchReport", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseEntity searchReport(@RequestBody SearchReportRequest request) {
 
@@ -52,21 +63,17 @@ public class ReportController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
         return new ResponseEntity<>(searched, headers, HttpStatus.OK);
     }
 
     //onSelectedReport
-    @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> reportCenterGenerator(Map<String, Object> model) {
-        ReportGenerator generator = new ReportGenerator();
-//        r.generateReport(0,null);
+    @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> reportCenterGenerator(@RequestParam String reportId) {
 
-        // convert JSON to Employee
-//        Employee emp = convertSomehow(json);
-//
-//        // generate the file
-//        PdfUtil.showHelp(emp);
+//        String test = (String) session().getAttribute("studentId");
+
+        ReportGenerator generator = new ReportGenerator();
 
         Map.Entry<String,Object> e1 = new AbstractMap.SimpleEntry<>("k1","v1");
         Map.Entry<String,Object> e2 = new AbstractMap.SimpleEntry<>("k2","v2");
@@ -81,8 +88,8 @@ public class ReportController {
     }
 
     //module clicked
-    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> reportModuleGenerator(/*@RequestBody String json*/) {
+    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<byte[]> reportModuleGenerator(@RequestParam String reportId) {
         //TODO pass moduleId
 
         ReportGenerator generator = new ReportGenerator();

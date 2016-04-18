@@ -40,9 +40,9 @@ pageEncoding="UTF-8"%>
 
             <div class="input-group">
                 <span class="input-group-addon" id="yearLabel">ปีการศึกษา</span>
-                <input type="number" class="form-control" />
+                <input type="number" class="form-control" min="0" />
                 <span class="input-group-addon" id="semesterLabel">ภาคเรียนที่</span>
-                <input type="number" class="form-control" />
+                <input type="number" class="form-control" min="0" />
             </div>
 
 
@@ -80,17 +80,25 @@ pageEncoding="UTF-8"%>
             <a href="reportCenterGenerator?reportId=ttt">click row</a>
 
 
-            <div class="panel-footer text-center">
-                <p>
-                    <button id="searchBtn" type="button" class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
-                    </button>
-                    <button id="cancelBtn" type="button" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
-                    </button>
-                </p>
-            </div>
+            <!--<div class="panel-footer text-center">-->
+                <!--<p>-->
+                    <!--<button id="searchBtn" type="button" class="btn btn-primary btn-sm">-->
+                        <!--<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search-->
+                    <!--</button>-->
+                    <!--<button id="cancelBtn" type="button" class="btn btn-default btn-sm">-->
+                        <!--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear-->
+                    <!--</button>-->
+                <!--</p>-->
+            <!--</div>-->
         </div>
+
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="ค้นหารายงาน...">
+            <span class="input-group-btn">
+                <button id="searchReportBtn" class="btn btn-default glyphicon glyphicon-search" type="button"></button>
+                <!--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->
+            </span>
+        </div><!-- /input-group -->
 
         <!-- Table -->
         <table class="table table-hover">
