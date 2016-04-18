@@ -8,5 +8,7 @@
         <pattern>/report/*</pattern>
         <pattern>/courseofferring/*</pattern>
     </decorator>
-    
+
+  
+   
 </decorators>

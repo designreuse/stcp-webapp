@@ -33,5 +33,8 @@ public class CourseOfferringController {
 	        return "mergesubjectandcurriculum";
 	    }
 	
-
+	    @RequestMapping(value = "/DetailCurriculum", method = RequestMethod.GET)
+	    public String DetailCurriculum(Map<String, Object> model) {
+	        return "DetailCurriculum";
+	    }
 }
