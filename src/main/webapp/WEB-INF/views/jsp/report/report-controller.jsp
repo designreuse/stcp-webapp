@@ -1,115 +1,124 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page session="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<title>Student Course Planer</title>
-
-	<spring:url value="/resources/core/css/main.css" var="coreCss" />
-	<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
-	<link href="${bootstrapCss}" rel="stylesheet" />
-	<link href="${coreCss}" rel="stylesheet" />
+    <title>Student Course Planer</title>
 </head>
 
 <body>
-	<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
-		<!--<div class="container">-->
-			<!--<div class="navbar-header">-->
-				<!--<a class="navbar-brand" href="#">Student Course Planer</a>-->
-			<!--</div>-->
-		<!--</div>-->
-	<!--</nav>-->
-	<!--<hr>-->
-	<div class="panel panel-default">
-		<div class="panel-body">
+<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
+<!--<div class="container">-->
+<!--<div class="navbar-header">-->
+<!--<a class="navbar-brand" href="#">Student Course Planer</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</nav>-->
+<!--<hr>-->
+<div class="panel panel-default">
+    <div class="panel-body">
 
-			<div class="panel panel-default">
+        <div class="panel panel-default">
 
-				<div class="panel-heading">
-					Filter
-				</div>
+            <div class="panel-heading">
+                Report Parameters
+            </div>
 
-				<div class="input-group">
-					<div class="input-group-btn">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-						<ul class="dropdown-menu">
-							<li role="presentation"><a href="#">${idOption.studentId}</a></li>
-							<li><a href="#">${idOption.staffId}</a></li>
-						</ul>
-					</div>
-					<input type="text" class="form-control" aria-label="...">
-				</div>
+            <!--<div class="input-group" style="width:100%">-->
+                    <!--<span class="input-group-addon" style="width:110px;padding:0px;border:none;">-->
+                        <!--<select class="form-control" disabled>-->
+                            <!--<option>${idOption.studentId}</option>-->
+                            <!--<option>${idOption.staffId}</option>-->
+                        <!--</select>-->
+                    <!--</span>-->
+                <!--<input type="text" class="form-control" placeholder="รหัสประจำตัว" disabled value="12345678"/>-->
+            <!--</div>-->
 
-
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						ReportType
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-						<li><a href="#">Normal</a></li>
-						<li><a href="#">Statistics</a></li>
-					</ul>
-				</div>
-<a  href="getpdf">getpdf</a>
-				<div class="panel-footer text-center">
-					<p>
-						<button type="button" class="btn btn-primary btn-sm">
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
-						</button>
-						<button type="button" class="btn btn-default btn-sm">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
-						</button>
-					</p>
-				</div>
-			</div>
-
-			<!-- Table -->
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Report Name</th>
-						<th>Type</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="master" varStatus="status" items="${records}" >
-						<tr>
-							<td>
-								<c:out value="${status.count}" />
-							</td>
-							<td>
-								<c:out value="${master.reportName}" />
-							</td>
-							<td>
-								<c:out value="${master.reportType}" />
-							</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+            <div class="input-group">
+                <span class="input-group-addon" id="yearLabel">ปีการศึกษา</span>
+                <input type="number" class="form-control" />
+                <span class="input-group-addon" id="semesterLabel">ภาคเรียนที่</span>
+                <input type="number" class="form-control" />
+            </div>
 
 
-		</div>
-	</div>
+            <div class="input-group">
+                <span class="input-group-addon" id="curriculumLabel">หลักสูตร</span>
+                <select class="form-control">
+                    <option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>
+                    <option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>
+                    <option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>
+                    <option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>
+                </select>
+            </div>
 
 
+            <!--<div class="input-group">-->
+            <!--<span class="input-group-addon" id="yearLabel">ชั้นปีที่</span>-->
+            <!--<input type="number" class="form-control" placeholder="ระบุชั้นปีระหว่าง 1-8" min="1" max="8" />-->
+            <!--</div>-->
+            <!--<div class="input-group">-->
+            <!--<span class="input-group-addon">ชื่อรายงาน</span>-->
+            <!--<input type="text" class="form-control" placeholder="ชื่อรายงาน" />-->
+            <!--</div>-->
 
-	<footer>
-		<p>Report & Statistics Module 2015</p>
-	</footer>
+            <!--<div class="input-group">-->
+            <!--<span class="input-group-addon">ประเภทรายงาน</span>-->
+            <!--<select class="form-control">-->
+            <!--<option>All</option>-->
+            <!--<option>Normal</option>-->
+            <!--<option>Statistics</option>-->
+            <!--</select>-->
+            <!--</div>-->
+
+            <a href="reportModuleGenerator">click export</a>
+            <br/>
+            <a href="reportCenterGenerator?test=ttt">click row</a>
+            <div class="panel-footer text-center">
+                <p>
+                    <button type="button" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
+                    </button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Report Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="master" varStatus="status" items="${records}">
+                <tr>
+                    <td>
+                        <c:out value="${status.count}"/>
+                    </td>
+                    <td>
+                        <c:out value="${master.reportName}"/> <span class="badge">4</span>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    </div>
+</div>
 
-	<spring:url value="/resources/core/css/main.js" var="coreJs" />
-	<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 
-	<script src="${coreJs}"></script>
-	<script src="${bootstrapJs}"></script>
-
+<footer>
+    <p>Report & Statistics Module 2016</p>
+</footer>
 </body>
 
 </html>

@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title><decorator:title></decorator:title></title>
 
 	<!-- Tell the browser to be responsive to screen width -->
@@ -87,6 +87,13 @@
 	               <i class="fa fa-edit"></i>
 	               <span>Course Offerring</span>
 	             </a>
+	           	</li>
+	           	
+	           	<li class="treeview">
+	           		<a href="${root}/coursePlanner/">
+	           			<i class="glyphicon glyphicon-list-alt"></i>
+	           			<span>Course Planner</span>
+	           		</a>
 	           	</li>
 	        </ul>
         </section>

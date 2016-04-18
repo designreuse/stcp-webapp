@@ -1,179 +1,177 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8" />
-    <title></title>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<title>Course Planner</title>
 
-    <style type="text/css">
-        /*body{  
-    margin:0;  
-    padding:0;    
-    font-family:Tahoma, Geneva, sans-serif;  
-    font-size:12px;  
-}*/
-        div#i_containTab {
-            position: relative;
-            display: block;
-            width: 540px; /* กำหนดความกว้างทั้งหมด   */
-            border: 1px solid #CCC;
-        }
+<c:set var="root" value="${pageContext.request.contextPath}" />
 
-        ul#navi_containTab {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            background-color: #FCF;
-        }
+<c:set var="currentYear" value="<%= java.time.LocalDateTime.now().getYear() %>" />
 
-            ul#navi_containTab li {
-                display: block;
-                float: left;
-                height: 30px;
-                width: 100px; /* กำหนดความกว้างทั้งหมด  หารด้วยจำนวนเมนูแท็บ  */
-                border: 0px solid #CCC;
-                line-height: 25px;
-                cursor: pointer;
-                text-align: center;
-                /*border:1px solid black;*/
-            }
-        /* class รูปแบบของแต่ละเมนู */
-        .tabNavi1 {
-            background-color: #CEF6F5;
-        }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="${root}/resources/core/js/bootstrap.min.js"></script>
 
-        .tabNavi2 {
-            background-color: #F2E0F7;
-        }
+<!-- SweetAlert -->
+<script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
+<link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 
-
-
-        ul#detail_containTab {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-
-            ul#detail_containTab li {
-                float: left;
-                width: 100%;
-                height: 150px;
-            }
-        /* class รูปแบบของแต่ละเนื้อหา */
-        .detailContent1 {
-            background-color: white;
-            border: 1px solid black;
-            display: block;
-        }
-
-        .detailContent2 {
-            background-color: white;
-            border: 1px solid black;
-            display: none;
-        }
-    </style>
-
+<link rel="stylesheet" href="${root}/resources/core/css/courseplan.css">
 
 </head>
 <body>
-    <!-- <div style="width: 100%; height: 100px">Header</div> -->
-    <div style="float: left; width: 20%; margin-left: 10px">
-        <input name="txt1" type="text"><input name="btnSubmit1" type="submit" value="Search">
-        <br>
-        <select id="subjectListID" name="sometext" size="5" style="width: 210px;height:180px" ondblclick="dblSubject()">
-            <option id="SWE601">SWE601</option>
-            <option id="SWE602">SWE602</option>
-            <option id="SWE603">SWE603</option>
-            <option id="SWE604">SWE604</option>
-            <option id="SWE605">SWE605</option>
-        </select>
-    </div>
-    <div style="float: left; width: 70%">
-        <select style="width: 100px">
-            <option value="1">ปี1</option>
-            <option value="2">ปี2</option>
-            <option value="3">ปี3</option>
-            <option value="4">ปี4</option>
-        </select>
-        <button onclick="reset()">Reset</button>
-        <br>
 
+	<div class="row" style="margin-top: 10px;">
+		<div class="col-sm-4">
+			<div class="input-group" style="margin-bottom: 3px;">
+				<input id="tbxSearchCourse" type="text" class="form-control" placeholder="Search for...">
+				<span class="input-group-btn">
+					<button id="btnSearchCourse" class="btn btn-default" type="button">Search</button>
+				</span>
+			</div>
+			<select id="subjectListID" name="sometext" size="10" class="form-control" style="height: 350px">
+				<c:forEach var="subject" items="${subjectlist}">
+					<option id="${subject.id}" value="${subject.id}" class="hasPop${subject.status == 1? ' optionDisabled': ''}"
+						data-subjectcode="${subject.nameThai}" data-credit="${subject.credit}"
+						title="${subject.subjectCode} ${subject.nameThai}" data-content="${subject.detailThai}"
+						${subject.status == 1? ' isdisabled="true"': ''}>${subject.subjectCode}&nbsp;${subject.nameThai}</option>
+				</c:forEach>
+			</select>
+		</div>
 
-        <div>
-            <ul id="navi_containTab" onclick="clickTab()">
-                <li class="tabNavi1">เทอม 1</li>
-                <li class="tabNavi2">เทอม 2</li>
+		<div class="col-xs-12 col-sm-8 col-md-7 col-lg-6">
+			<hr class="colorgraph visible-xs" />
+			<div class="form-inline">
+				<label for="selectSemesterYear">ปีการศึกษา</label>
+				<select id="selectSemesterYear" class="form-control" style="display: inline-block; width: 150px">
+					<c:forEach var="year" items="${semesterYearList}">
+						<option value="${year}">ปีการศึกษา&nbsp;${year + 543}</option>
+					</c:forEach>
+				</select>
+				<button id="btnReset" type="button" class="btn btn-warning btn-sm">
+					&nbsp;<i class="fa fa-undo fa-lg"></i>&nbsp;Reset&nbsp;
+				</button>
+				<button id="btnSave" type="button" class="btn btn-primary btn-sm">
+					&nbsp;<i class="fa fa-floppy-o fa-lg"></i>&nbsp;Save&nbsp;
+				</button>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- Tab Control[new] -->
+					<ul id="tabSemester" class="nav nav-tabs" role="tablist">
+						<c:forEach var="year" items="${semesterYearList}">
+							<li class="text-center active" tag="${year}">
+								<a href="#${year}1" role="tab" tag="${year}1"><strong>&nbsp;ภาคการเรียนที่ 1&nbsp;</strong></a>
+							</li>
+							<li class="text-center" tag="${year}">
+								<a href="#${year}2" role="tab" tag="${year}2"><strong>&nbsp;ภาคการเรียนที่ 2&nbsp;</strong></a>
+							</li>
+						</c:forEach>
+					</ul>
+					<!-- Tab panes -->
+					<div id="courseplanlist" class="tab-content">
+						<c:forEach var="year" items="${semesterYearList}" varStatus="pos">
+						<div role="tabpanel" class="tab-pane fade${pos.first? ' in active' : ''}" id="${year}1" data-semesteryear="${year}" data-semesterterm="1">
+							<table class="table table-bordered table-hover" style="max-height: 284px !important;">
+								<thead class="thead-default">
+									<tr>
+										<th class="col-xs-8">Subject</th>
+										<th class="col-xs-2">Credit</th>
+										<th class="col-xs-2">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+								<c:forEach var="semester" items="${semesterList}">
+									<c:if test="${semester.semesterYear == year && semester.semesterTerm == 1}">
+										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}" data-semesterid="${semester.id}">
+											<td class="text-left">${semester.subject.subjectCode}&nbsp;${semester.subject.nameThai}</td>
+											<td>${semester.subject.credit}</td>
+											<td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td>
+										</tr>
+									</c:if>
+								</c:forEach>
+								</tbody>
+							</table>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="${year}2" data-semesteryear="${year}" data-semesterterm="2">
+							<table class="table table-bordered table-hover">
+								<thead class="thead-default">
+									<tr>
+										<th class="col-xs-8">Subject</th>
+										<th class="col-xs-2">Credit</th>
+										<th class="col-xs-2">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+								<c:forEach var="semester" items="${semesterList}">
+									<c:if test="${semester.semesterYear == year && semester.semesterTerm == 2}">
+										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}" data-semesterid="${semester.id}">
+											<td class="text-left">${semester.subject.subjectCode}&nbsp;${semester.subject.nameThai}</td>
+											<td>${semester.subject.credit}</td>
+											<td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td>
+										</tr>
+									</c:if>
+								</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</c:forEach>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class=" well well-sm">
+						<div class="row">
+							<div class="col-xs-6 col-sm-8 text-right">
+								<span>Total Credits :</span>
+							</div>
+							<div class="col-xs-3 col-sm-2 text-center">
+								<span id="totalCredits">9</span>
+							</div>
+							<div class="col-xs-3 col-sm-2">
+								<small>credits</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6 col-sm-8 text-right">
+								<span class="">All Years Credits :</span>
+							</div>
+							<div class="col-xs-3 col-sm-2 text-center">
+								<span id="totalAllCredits">36</span>
+							</div>
+							<div class="col-xs-3 col-sm-2">
+								<small>credits</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            </ul>
-            <ul id="detail_containTab">
-                <li class="detailContent1">
-                    <div id="tab1"> </div>
-                </li>
-                <li class="detailContent2">
-                    <div id="tab2"> </div>
-                </li>
-            </ul>
-        </div>
+			<span class="label label-warning">Warning!!!</span>
+			<br />
+			<ol class="text-warning">
+				<li>
+					Normal status allows <u class="text-danger">9</u> credits/semester
+				</li>
+				<li>
+					Total credits of all semester is <u class="text-danger">36</u> credits
+				</li>
+			</ol>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<hr class="colorgraph" />
+		</div>
+	</div>
 
+	<script type="text/javascript" src="${root}/resources/core/js/courseplan.js" defer></script>
 
-
-    </div>
-
-    <script>
-
-        term =  "0",
-
-        function reset() {
-            alert(1);
-            tab1.innerHTML = "";
-            tab2.innerHTML = "";
-        }
-
-        function clickTab() {
-            var listt = document.getElementById('navi_containTab');
-            //alert(listt.childNodes.toString);
-        }
-
-        function dblSubject() {
-            var subject = subjectListID.value;
-            
-            
-            var div = document.createElement("div");
-            div.innerHTML = subject;
-            if (term == 0) {
-                tab1.appendChild(div);
-            } else {
-                tab2.appendChild(div);
-            }
-
-            document.getElementById(subject).disabled = true;
-
-            //var btnDelete = document.createElement("BUTTON");
-            //var t = document.createTextNode("CLICK ME");
-            //btnDelete.appendChild(t);
-            //tab1.appendChild(btnDelete);
-
-        }
-
-        function btnDelete_Click() {
-            alert("ddd");
-        }
-
-
-        $("ul#navi_containTab > li").click(function (event) {
-            //alert(1);
-            var menuIndex = $(this).index();           
-            term = menuIndex.toString();
-
-            $("ul#detail_containTab > li:visible").hide();
-            $("ul#detail_containTab > li").eq(menuIndex).show();
-        });
-    </script>
 </body>
 </html>
