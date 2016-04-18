@@ -1,4 +1,4 @@
-package com.kmutt.stcp.courseplan;
+package com.kmutt.stcp.manager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kmutt.stcp.entity.*;
-import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
+import com.kmutt.stcp.dto.PlanMessageRequest;
 import com.kmutt.stcp.repository.*;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service("coursePlanMannager")
-public class CoursePlanMannager {
+@Component("coursePlanManager")
+public class CoursePlannerManager {
 
 	// Field//
-	private final Logger logger = LoggerFactory.getLogger(CoursePlanMannager.class);
+	private final Logger logger = LoggerFactory.getLogger(CoursePlannerManager.class);
 
 	@Autowired
 	private CoursePlanRepository coursePlanRespository;
@@ -27,8 +27,8 @@ public class CoursePlanMannager {
 	private List<CoursePlan> semesterPlanDeleted;
 
 	// Constructor//
-    public CoursePlanMannager() {}
-    public CoursePlanMannager(Account acount) {
+    public CoursePlannerManager() {}
+    public CoursePlannerManager(Account acount) {
 		this.student = acount;
 	}
 

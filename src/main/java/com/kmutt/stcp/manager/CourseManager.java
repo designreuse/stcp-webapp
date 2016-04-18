@@ -1,27 +1,31 @@
-package com.kmutt.stcp.courseplan;
+package com.kmutt.stcp.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kmutt.stcp.service.CoursePlannerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.repository.SubjectRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service("courseManager")
+@Component("courseManager")
 public class CourseManager {
 
 	// Field//
 	private final Logger logger = LoggerFactory.getLogger(CourseManager.class);
 	
 	@Autowired
+	private CoursePlannerService coursePlannerService;
+
+	@Autowired
 	private SubjectRepository subjectRepository;
-	
+
 	private List<Subject> subjectList;
 	private Account student;
 
@@ -32,11 +36,14 @@ public class CourseManager {
 	}
 
 	// Method//
+	public List<Subject> testCourseManager() {
+        return coursePlannerService.getSubjectListTest();
+	}
+
 	public List<Subject> getSubjectList() {
 
 		// should get subjectList from Common Entity module.
-        List<Subject> subjects = subjectRepository.findAll();
-		// TODO: return this.subjectRepository.findAll(); 
+		// TODO: return this.subjectRepository.findAll();
 		return this.dummySubjectList(this.student);
 
 	}

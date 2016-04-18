@@ -13,7 +13,8 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @ComponentScan({
         "com.kmutt.stcp.web",
-        "com.kmutt.stcp.courseplan"
+        "com.kmutt.stcp.manager",
+        "com.kmutt.stcp.service"
 })
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 

@@ -1,12 +1,12 @@
 package com.kmutt.stcp.web;
 
-import com.kmutt.stcp.courseplan.CourseManager;
-import com.kmutt.stcp.courseplan.CoursePlanMannager;
+import com.kmutt.stcp.manager.CourseManager;
+import com.kmutt.stcp.manager.CoursePlannerManager;
 import com.kmutt.stcp.entity.Account;
 import com.kmutt.stcp.entity.CoursePlan;
 import com.kmutt.stcp.entity.Subject;
-import com.kmutt.stcp.entity.courseplan.MessageResult;
-import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
+import com.kmutt.stcp.dto.MessageResult;
+import com.kmutt.stcp.dto.PlanMessageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,32 +31,36 @@ public class CoursePlannerController {
     private CourseManager courseManager;
 
     @Autowired
-    private CoursePlanMannager coursePlanMannager;
+    private CoursePlannerManager coursePlannerManager;
 
     @Autowired
 	private HttpServletRequest request;
 
 	// Action//
+	@RequestMapping(value = { "/test", "/index" }, method = RequestMethod.GET)
+	public String test(HttpSession session, Map<String, Object> model) {
+
+
+        List<Subject> list = courseManager.testCourseManager();
+
+
+		return "coursePlanner/mainPage";
+
+	}
+
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 
-
-        List<Subject> subjects = courseManager.getSubjectList();
-
-
-
-
 		CourseManager courseMng = this.getCurrentCourseManager(session);
-		CoursePlanMannager planMng = this.getCurrentPlanManger(session);
+		CoursePlannerManager planMng = this.getCurrentPlanManger(session);
 
-
-		List<Integer> semesterYearList = coursePlanMannager.getSemesterYearList();
+		List<Integer> semesterYearList = planMng.getSemesterYearList();
 		model.put("semesterYearList", semesterYearList);
 
-		List<CoursePlan> semesterPlan = coursePlanMannager.getCoursePlanList();
+		List<CoursePlan> semesterPlan = planMng.getCoursePlanList();
 		model.put("semesterList", semesterPlan);
 
-		List<Subject> subjectAll = courseManager.getSubjectList();
+		List<Subject> subjectAll = courseMng.getSubjectList();
 		subjectAll = bindSubjectIsSelected(subjectAll, planMng.getSubjectSelectedList());
 		model.put("subjectlist", subjectAll);
 
@@ -83,7 +87,7 @@ public class CoursePlannerController {
 
 			}
 
-			CoursePlanMannager coursePlanMng = this.getCurrentPlanManger(session);
+			CoursePlannerManager coursePlanMng = this.getCurrentPlanManger(session);
 
 			return coursePlanMng.getCoursePlanList(_semesterYear);
 
@@ -127,7 +131,7 @@ public class CoursePlannerController {
 
 			if (messageRequest != null) {
 
-				CoursePlanMannager plnManger = this.getCurrentPlanManger(session);
+				CoursePlannerManager plnManger = this.getCurrentPlanManger(session);
 
 				if (plnManger.setCoursePlanForSave(messageRequest)) {
 
@@ -205,23 +209,23 @@ public class CoursePlannerController {
 	}
 
 	@SuppressWarnings("finally")
-	private CoursePlanMannager getCurrentPlanManger(HttpSession session) {
+	private CoursePlannerManager getCurrentPlanManger(HttpSession session) {
 
-		CoursePlanMannager _coursePlanManage = null;
+		CoursePlannerManager _coursePlanManage = null;
 
 		try {
 
-			_coursePlanManage = (CoursePlanMannager) session.getAttribute("planMng");
+			_coursePlanManage = (CoursePlannerManager) session.getAttribute("planMng");
 
 			if (_coursePlanManage == null) {
-				_coursePlanManage = new CoursePlanMannager(new Account());
+				_coursePlanManage = new CoursePlannerManager(new Account());
 			}
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
 
-			_coursePlanManage = new CoursePlanMannager(new Account());
+			_coursePlanManage = new CoursePlannerManager(new Account());
 
 		} finally {
 
