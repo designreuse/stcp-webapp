@@ -1,32 +1,23 @@
 package com.kmutt.stcp.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import java.util.ArrayList;
-import java.util.List;
-
-<<<<<<< HEAD
-=======
-import com.kmutt.stcp.entity.*;
+import com.kmutt.stcp.courseplan.CourseManager;
+import com.kmutt.stcp.courseplan.CoursePlanMannager;
+import com.kmutt.stcp.entity.Account;
+import com.kmutt.stcp.entity.CoursePlan;
+import com.kmutt.stcp.entity.Subject;
 import com.kmutt.stcp.entity.courseplan.MessageResult;
 import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
-import com.kmutt.stcp.courseplan.*;
->>>>>>> 98a9c70d50c23ea4337a0e10c076624fa2b77eaa
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("coursePlanner")
@@ -36,23 +27,36 @@ public class CoursePlannerController {
 	// Field//
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
 
-	@Autowired
+    @Autowired
+    private CourseManager courseManager;
+
+    @Autowired
+    private CoursePlanMannager coursePlanMannager;
+
+    @Autowired
 	private HttpServletRequest request;
 
 	// Action//
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 
+
+        List<Subject> subjects = courseManager.getSubjectList();
+
+
+
+
 		CourseManager courseMng = this.getCurrentCourseManager(session);
 		CoursePlanMannager planMng = this.getCurrentPlanManger(session);
 
-		List<Integer> semesterYearList = planMng.getSemesterYearList();
+
+		List<Integer> semesterYearList = coursePlanMannager.getSemesterYearList();
 		model.put("semesterYearList", semesterYearList);
 
-		List<CoursePlan> semesterPlan = planMng.getCoursePlanList();
+		List<CoursePlan> semesterPlan = coursePlanMannager.getCoursePlanList();
 		model.put("semesterList", semesterPlan);
 
-		List<Subject> subjectAll = courseMng.getSubjectList();
+		List<Subject> subjectAll = courseManager.getSubjectList();
 		subjectAll = bindSubjectIsSelected(subjectAll, planMng.getSubjectSelectedList());
 		model.put("subjectlist", subjectAll);
 

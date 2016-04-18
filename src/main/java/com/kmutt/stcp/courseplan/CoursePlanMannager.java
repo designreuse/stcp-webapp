@@ -10,7 +10,9 @@ import java.util.List;
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
 import com.kmutt.stcp.repository.*;
+import org.springframework.stereotype.Service;
 
+@Service("coursePlanMannager")
 public class CoursePlanMannager {
 
 	// Field//
@@ -25,7 +27,8 @@ public class CoursePlanMannager {
 	private List<CoursePlan> semesterPlanDeleted;
 
 	// Constructor//
-	public CoursePlanMannager(Account acount) {
+    public CoursePlanMannager() {}
+    public CoursePlanMannager(Account acount) {
 		this.student = acount;
 	}
 

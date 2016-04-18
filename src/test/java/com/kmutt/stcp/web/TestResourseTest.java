@@ -51,20 +51,20 @@ public class TestResourseTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtils.APPLICATION_JSON_UTF8));
     }
-
-    @Test
-    public void userNotFound() throws Exception {
-        Course c = new Course();
-        c.setCode("code");
-        c.setName("name");
-
-        mockMvc.perform(post("/test/rest/create")
-                        .contentType(TestUtils.APPLICATION_JSON_UTF8)
-                        .content(TestUtils.convertObjectToJsonBytes(c))
-        ).andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-        ;
-    }
+//
+//    @Test
+//    public void userNotFound() throws Exception {
+//        Course c = new Course();
+//        c.setCode("code");
+//        c.setName("name");
+//
+//        mockMvc.perform(post("/test/rest/create")
+//                        .contentType(TestUtils.APPLICATION_JSON_UTF8)
+//                        .content(TestUtils.convertObjectToJsonBytes(c))
+//        ).andDo(MockMvcResultHandlers.print())
+//                .andExpect(status().isOk())
+//        ;
+//    }
 
 
 }

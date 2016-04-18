@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.repository.SubjectRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service("courseManager")
 public class CourseManager {
 
 	// Field//
@@ -23,7 +26,8 @@ public class CourseManager {
 	private Account student;
 
 	// Constructor//
-	public CourseManager(Account student) {
+    public CourseManager() { }
+    public CourseManager(Account student) {
 		this.student = student;
 	}
 
@@ -31,6 +35,7 @@ public class CourseManager {
 	public List<Subject> getSubjectList() {
 
 		// should get subjectList from Common Entity module.
+        List<Subject> subjects = subjectRepository.findAll();
 		// TODO: return this.subjectRepository.findAll(); 
 		return this.dummySubjectList(this.student);
 
