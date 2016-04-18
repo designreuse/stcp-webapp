@@ -4,15 +4,17 @@
 //
 //});
 $("#searchReportBtn").click(function(){
+    var reportFilterText = $("#reportFilterText").val();
+    reportFilterText = reportFilterText == "" || reportFilterText == undefined ? "" : $("#reportFilterText").val();
+
     $.ajax({
         url:"searchReport",
-        method:"post",
+        method:"POST",
         dataType: "json",
-        contentType: "application/json; charset=UTF-8",
-        data:JSON.stringify({"reportId":"1"})
+        data:{"filterText": reportFilterText}
     }).done(function(data){
         console.log(data);
-    }).fail(function(jqXHR, textStatus, errorThrown ){
-        console.log(errMsg);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+        console.log(errorThrown);
     });
 });

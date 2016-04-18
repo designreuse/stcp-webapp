@@ -93,7 +93,7 @@ pageEncoding="UTF-8"%>
         </div>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="ค้นหารายงาน...">
+            <input id="reportFilterText" type="text" class="form-control" placeholder="ค้นหารายงาน...">
             <span class="input-group-btn">
                 <button id="searchReportBtn" class="btn btn-default glyphicon glyphicon-search" type="button"></button>
                 <!--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>-->

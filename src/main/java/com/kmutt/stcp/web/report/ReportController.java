@@ -26,14 +26,17 @@ public class ReportController {
 
     private User authorizedUser;
     private ReportModule module;
-    private String filterText;
 
     private static HttpSession session() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest().getSession(true); // true == allow create
     }
 
-    //index
+    /**
+     * index of report center
+     * @param model view mapping
+     * @return path to report center
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String displayReportList(Map<String, Object> model) {
         logger.debug("index() is executed!");
@@ -46,19 +49,21 @@ public class ReportController {
         //displayReportList by role
         model.put("records", ReportTemplate.values());
 
-        session().setAttribute("studentId","581");
-
         return "report/report-controller";
 //        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);
     }
 
-
-    @RequestMapping(value = "/searchReport", method = RequestMethod.POST, produces = "application/json")
+    /**
+     * filter report table by search box
+     * @param filterText text input
+     * @return json data
+     */
+    @RequestMapping(value = "/searchReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity searchReport(@RequestBody SearchReportRequest request) {
+    public ResponseEntity searchReport(@RequestParam String filterText) {
 
         ReportTemplate[] searched = Arrays.stream(ReportTemplate.values())
-                .filter(elm -> !String.valueOf(elm.ordinal()).equals(request.getReportId()))
+                .filter(elm -> elm.getReportName().contains(filterText))
                 .toArray(ReportTemplate[]::new);
 
         HttpHeaders headers = new HttpHeaders();
@@ -66,12 +71,15 @@ public class ReportController {
         return new ResponseEntity<>(searched, headers, HttpStatus.OK);
     }
 
-    //onSelectedReport
+    /**
+     * on selected report from report center's table,
+     * generate PDF report
+     * @param reportId unique value for report
+     * @return pdf media
+     */
     @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
-    public ResponseEntity<byte[]> reportCenterGenerator(@RequestParam String reportId) {
-
-//        String test = (String) session().getAttribute("studentId");
+    public ResponseEntity<byte[]> reportCenterGenerator(@RequestParam int reportId) {
 
         ReportGenerator generator = new ReportGenerator();
 
@@ -87,15 +95,20 @@ public class ReportController {
         return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
     }
 
-    //module clicked
+    /**
+     * for others module linked for report,
+     * generate PDF report
+     * @param reportId unique value for report
+     * @return pdf media
+     */
     @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.GET, produces = "application/pdf")
-    public ResponseEntity<byte[]> reportModuleGenerator(@RequestParam String reportId) {
+    public ResponseEntity<byte[]> reportModuleGenerator(@RequestParam int reportId) {
         //TODO pass moduleId
 
         ReportGenerator generator = new ReportGenerator();
         //FIXME edit arguments
         if(generator.isReportValid(0,2)){
-            byte[] pdfContents = generator.generateReport(0,null);
+            byte[] pdfContents = generator.generateReport(0);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/pdf"));
