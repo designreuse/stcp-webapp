@@ -1,7 +1,6 @@
 package com.kmutt.stcp.web.report;
 
 import com.kmutt.stcp.entity.User;
-import com.kmutt.stcp.web.report.bean.SearchReportRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -9,12 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Created by Gift on 23-Feb-16.
@@ -34,6 +39,7 @@ public class ReportController {
 
     /**
      * index of report center
+     *
      * @param model view mapping
      * @return path to report center
      */
@@ -55,6 +61,7 @@ public class ReportController {
 
     /**
      * filter report table by search box
+     *
      * @param filterText text input
      * @return json data
      */
@@ -74,6 +81,7 @@ public class ReportController {
     /**
      * on selected report from report center's table,
      * generate PDF report
+     *
      * @param reportId unique value for report
      * @return pdf media
      */
@@ -83,9 +91,9 @@ public class ReportController {
 
         ReportGenerator generator = new ReportGenerator();
 
-        Map.Entry<String,Object> e1 = new AbstractMap.SimpleEntry<>("k1","v1");
-        Map.Entry<String,Object> e2 = new AbstractMap.SimpleEntry<>("k2","v2");
-        byte[] pdfContents = generator.generateReport(0, e1,e2);
+        Map.Entry<String, Object> e1 = new AbstractMap.SimpleEntry<>("k1", "v1");
+        Map.Entry<String, Object> e2 = new AbstractMap.SimpleEntry<>("k2", "v2");
+        byte[] pdfContents = generator.generateReport(0, e1, e2);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -98,6 +106,7 @@ public class ReportController {
     /**
      * for others module linked for report,
      * generate PDF report
+     *
      * @param reportId unique value for report
      * @return pdf media
      */
@@ -107,7 +116,7 @@ public class ReportController {
 
         ReportGenerator generator = new ReportGenerator();
         //FIXME edit arguments
-        if(generator.isReportValid(0,2)){
+        if (generator.isReportValid(0, 2)) {
             byte[] pdfContents = generator.generateReport(0);
 
             HttpHeaders headers = new HttpHeaders();
