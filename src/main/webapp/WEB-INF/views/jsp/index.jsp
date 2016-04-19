@@ -16,6 +16,8 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="coursePlanner">Student Course Planer</a>
+            <a class="navbar-brand" href="courseOffering">Course Offering</a>
+            	
         </div>
     </div>
 </nav>

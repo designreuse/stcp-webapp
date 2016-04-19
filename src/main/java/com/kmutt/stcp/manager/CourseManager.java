@@ -1,33 +1,45 @@
-package com.kmutt.stcp.courseplan;
+package com.kmutt.stcp.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kmutt.stcp.service.CoursePlannerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.repository.SubjectRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component("courseManager")
 public class CourseManager {
 
     // Field//
     private final Logger logger = LoggerFactory.getLogger(CourseManager.class);
 
     @Autowired
+	private CoursePlannerService coursePlannerService;
+
+	@Autowired
     private SubjectRepository subjectRepository;
 
     private List<Subject> subjectList;
     private Account student;
 
     // Constructor//
+    public CourseManager() { }
     public CourseManager(Account student) {
         this.student = student;
     }
 
     // Method//
+	public List<Subject> testCourseManager() {
+        return coursePlannerService.getSubjectListTest();
+	}
+
     public List<Subject> getSubjectList() {
 
         // TODO: should get subjectList from Common Entity module.
@@ -88,10 +100,51 @@ public class CourseManager {
 
     }
 
-    //Dummy//
-    private List<Subject> dummySubjectList(Account student) {
+	public List<Subject> searchSubject(String criteria){
+		
+		if (this.subjectList == null) {
+			this.subjectList = this.getSubjectList();
+		}
 
-        subjectList = new ArrayList<>();
+		List<Subject> resultSubject  = new ArrayList<Subject>();
+
+		try {
+			
+			if(criteria != null && !criteria.isEmpty()) {
+
+				//Should change this to get from Common Entity module.
+				// TODO: resultSubject = this.subjectRepository.findAll().stream()
+				resultSubject = this.subjectList.stream()
+						.filter(subject -> {													
+							if (subject.getSubjectCode().toLowerCase().contains(criteria.toLowerCase())
+									|| subject.getNameThai().toLowerCase().contains(criteria.toLowerCase())) {
+								return true;														
+							} else {														
+								return false;														
+							}
+						}).collect(Collectors.toList());
+			} else {
+				
+				resultSubject = this.subjectList;
+				
+			}
+				
+			
+		} catch (Exception e) {
+
+			logger.error("Method:searchSubject|Err:" + e.getMessage());
+			resultSubject = new ArrayList<Subject>();
+
+		}
+
+		return resultSubject;
+
+	}
+	
+	//Dummy//
+private List<Subject> dummySubjectList(Account student) {
+		
+		subjectList = new ArrayList<>();
 
         Subject subject1 = new Subject();
         subject1.setId(1);
@@ -597,45 +650,6 @@ public class CourseManager {
         subject63.setDetailThai("Detail: " + subject63.getNameThai());
         subjectList.add(subject63);
 
-        return subjectList;
-    }
-
-    public List<Subject> searchSubject(String criteria) {
-
-        if (this.subjectList == null) {
-            this.subjectList = this.getSubjectList();
-        }
-
-        List<Subject> resultSubject = new ArrayList<Subject>();
-
-        try {
-
-            if (criteria != null && !criteria.isEmpty()) {
-
-                resultSubject = this.subjectList.stream()
-                        .filter(subject -> {
-                            if (subject.getSubjectCode().toLowerCase().contains(criteria.toLowerCase())
-                                    || subject.getNameThai().toLowerCase().contains(criteria.toLowerCase())) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }).collect(Collectors.toList());
-            } else {
-
-                resultSubject = this.subjectList;
-
-            }
-
-
-        } catch (Exception e) {
-
-            logger.error("Method:searchSubject|Err:" + e.getMessage());
-            resultSubject = new ArrayList<Subject>();
-
-        }
-
-        return resultSubject;
-
-    }
+		return subjectList;
+	}
 }

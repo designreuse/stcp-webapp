@@ -38,7 +38,11 @@
 				<a href="${root}/courseofferring/mergesubjectandcurriculum" class="btn btn-default">Merge Subject && Curriculum</a>
       		</div><!-- /.box-body -->
       	</td>
-      	
+      	<td>
+      		<div class="box-body">
+				<a href="${root}/courseofferring/DetailCurriculum" class="btn btn-default">DetailCurriculum Test</a>
+      		</div><!-- /.box-body -->
+      	</td>
       </tr>
       </table>
       
