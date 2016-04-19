@@ -64,8 +64,8 @@
 				<div class="col-xs-12">
 					<!-- Tab Control[new] -->
 					<ul id="tabSemester" class="nav nav-tabs" role="tablist">
-						<c:forEach var="year" items="${semesterYearList}">
-							<li class="text-center active" tag="${year}">
+						<c:forEach var="year" items="${semesterYearList}" varStatus="pos">
+							<li class="text-center${pos.first? ' active' : ''}" tag="${year}">
 								<a href="#${year}1" role="tab" tag="${year}1"><strong>&nbsp;ภาคการเรียนที่ 1&nbsp;</strong></a>
 							</li>
 							<li class="text-center" tag="${year}">

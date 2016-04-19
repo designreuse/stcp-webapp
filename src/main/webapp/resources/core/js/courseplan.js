@@ -200,7 +200,8 @@ $(document).ready(function() {
 			closeOnConfirm : false
 		}, function(isConfirm) {
 			if (isConfirm) {
-				window.location.href = window.location.href;
+				//window.location.href = window.location.;
+				window.location.reload(true);
 			}
 		});
 	});
