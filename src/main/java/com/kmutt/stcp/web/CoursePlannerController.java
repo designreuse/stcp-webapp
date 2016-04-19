@@ -3,7 +3,7 @@ package com.kmutt.stcp.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+//import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+//import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
@@ -33,13 +35,18 @@ public class CoursePlannerController {
 	// Field//
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
 
-	@Autowired
-	private HttpServletRequest request;
+//	@Autowired
+//	private HttpServletRequest request;
 
 	// Action//
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 
+		//TODO: Dummy Student Account
+		Account student = new Account();
+		student.setId(1);
+		session.setAttribute("account", student);
+		
 		CourseManager courseMng = this.getCurrentCourseManager(session);
 		CoursePlanMannager planMng = this.getCurrentPlanManger(session);
 
@@ -179,14 +186,15 @@ public class CoursePlannerController {
 			_courseManage = (CourseManager) session.getAttribute("courseMng");
 
 			if (_courseManage == null) {
-				_courseManage = new CourseManager(new Account());
+				//TODO: change session name to get account
+				_courseManage = new CourseManager((Account) session.getAttribute("account"));
 			}
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
 
-			_courseManage = new CourseManager(new Account());
+			_courseManage = new CourseManager(null);
 
 		} finally {
 
@@ -207,14 +215,15 @@ public class CoursePlannerController {
 			_coursePlanManage = (CoursePlanMannager) session.getAttribute("planMng");
 
 			if (_coursePlanManage == null) {
-				_coursePlanManage = new CoursePlanMannager(new Account());
+				//TODO: change session name to get account
+				_coursePlanManage = new CoursePlanMannager((Account) session.getAttribute("account"));
 			}
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
 
-			_coursePlanManage = new CoursePlanMannager(new Account());
+			_coursePlanManage = new CoursePlanMannager(null);
 
 		} finally {
 
