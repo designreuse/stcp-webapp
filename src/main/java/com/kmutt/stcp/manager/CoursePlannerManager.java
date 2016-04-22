@@ -9,7 +9,8 @@ import java.util.List;
 
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.dto.PlanMessageRequest;
-import com.kmutt.stcp.repository.*;
+import com.kmutt.stcp.service.CoursePlannerService;
+
 import org.springframework.stereotype.Component;
 
 @Component("coursePlanManager")
@@ -17,9 +18,9 @@ public class CoursePlannerManager {
 
     // Field//
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerManager.class);
-
+	
     @Autowired
-    private CoursePlanRepository coursePlanRespository;
+    private CoursePlannerService coursePlanService;
 
     private Account student;
     private List<CoursePlan> semesterPlanList;
@@ -32,7 +33,15 @@ public class CoursePlannerManager {
 		this.student = acount;
 	}
 
-    // Method//
+    // Properties //
+    public Account getStudent() {
+		return student;
+	}
+	public void setStudent(Account value) {
+		this.student = value;
+	}
+	
+	// Method//
     public List<CoursePlan> getCoursePlanList() {
 
         if (this.semesterPlanList == null) {
@@ -119,50 +128,50 @@ public class CoursePlannerManager {
 
         try {
 
-            if (semesterObj != null) {
+			if (semesterObj != null) {
 
-                CourseManager courseMng = new CourseManager(this.student);
+				CourseManager courseMng = new CourseManager(this.student);
 
-                semesterPlanNew = new ArrayList<>();
+				semesterPlanNew = new ArrayList<>();
 
-                for (PlanMessageRequest obj : semesterObj) {
+				for (PlanMessageRequest obj : semesterObj) {
 
-                    if (obj.getSemesterId() == 0) {
+					if (obj.getSemesterId() == 0) {
 
-                        CoursePlan newCoursePlan = new CoursePlan();
-                        newCoursePlan.setAccount(this.student);
-                        newCoursePlan.setSemesterYear(obj.getSemesterYear());
-                        newCoursePlan.setSemesterTerm(obj.getSemesterTerm());
-                        newCoursePlan.setSubject(courseMng.getSubjectByID(obj.getSubjectId()));
+						CoursePlan newCoursePlan = new CoursePlan();
+						newCoursePlan.setAccount(this.student);
+						newCoursePlan.setSemesterYear(obj.getSemesterYear());
+						newCoursePlan.setSemesterTerm(obj.getSemesterTerm());
+						newCoursePlan.setSubject(courseMng.getSubjectByID(obj.getSubjectId()));
 
-                        semesterPlanNew.add(newCoursePlan);
+						semesterPlanNew.add(newCoursePlan);
 
-                    }
-                }
+					}
+				}
 
-                semesterPlanDeleted = new ArrayList<>();
+				semesterPlanDeleted = new ArrayList<>();
 
-                for (CoursePlan coursePlan : semesterPlanList) {
+				for (CoursePlan coursePlan : this.getCoursePlanList()) {
 
-                    Boolean isDeleted = true;
+					Boolean isDeleted = true;
 
-                    for (PlanMessageRequest planMessageRequest : semesterObj) {
+					for (PlanMessageRequest planMessageRequest : semesterObj) {
 
-                        if (coursePlan.getId().equals(planMessageRequest.getSemesterId())) {
+						if (coursePlan.getId().equals(planMessageRequest.getSemesterId())) {
 
-                            isDeleted = false;
-                            break;
+							isDeleted = false;
+							break;
 
-                        }
-                    }
+						}
+					}
 
-                    if (isDeleted) {
-                        semesterPlanDeleted.add(coursePlan);
-                    }
+					if (isDeleted) {
+						semesterPlanDeleted.add(coursePlan);
+					}
 
-                }
+				}
 
-            }
+			}
 
             return true;
 
@@ -185,14 +194,14 @@ public class CoursePlannerManager {
             // Delete semesters before insert new subject
             for (CoursePlan semesterDeleted : semesterPlanDeleted) {
 
-                coursePlanRespository.delete(semesterDeleted);
+                //coursePlanService.delete(semesterDeleted);
 
             }
 
             // Insert new subject.
             for (CoursePlan coursePlan : semesterPlanNew) {
 
-                coursePlanRespository.create(coursePlan);
+                //coursePlanService.create(coursePlan);
 
             }
 
