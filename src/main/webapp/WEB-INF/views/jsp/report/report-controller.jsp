@@ -76,8 +76,6 @@ pageEncoding="UTF-8"%>
             <!--</div>-->
 
             <a href="reportModuleGenerator">click export</a>
-            <br/>
-            <a href="reportCenterGenerator?reportId=ttt">click row</a>
 
 
             <!--<div class="panel-footer text-center">-->
@@ -110,7 +108,7 @@ pageEncoding="UTF-8"%>
             </thead>
             <tbody>
             <c:forEach var="master" varStatus="status" items="${records}">
-                <tr>
+                <tr onclick="window.location='reportCenterGenerator?reportId=${master.reportId}'">
                     <td>
                         <c:out value="${status.count}"/>
                     </td>

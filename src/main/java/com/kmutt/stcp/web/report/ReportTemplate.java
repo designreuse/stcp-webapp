@@ -22,6 +22,10 @@ public enum ReportTemplate {
         this.reportTemplateName = reportTemplateName;
     }
 
+    public int getReportId() {
+        return this.ordinal();
+    }
+
     public String getReportName() {
         return this.reportName;
     }

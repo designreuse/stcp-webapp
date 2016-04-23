@@ -33,10 +33,12 @@ public class ReportGenerator {
         return false;
     }
 
+
     @SafeVarargs
     public final byte[] generateReport(Integer reportId, Map.Entry<String, Object>... paramValues) {
         try {
-            InputStream in = this.getClass().getClassLoader().getResourceAsStream("report-templates/Student_Planning.jrxml");
+            ReportTemplate template = ReportTemplate.values()[reportId];
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream("report-templates/"+template.getReportTemplateName());
             JasperDesign jrDesign = JRXmlLoader.load(in);
 
             // Compile jrxml file.
@@ -60,7 +62,7 @@ public class ReportGenerator {
 
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {
-            e.printStackTrace();
+            log.error("generate report error", e);
         }
 
         return null;

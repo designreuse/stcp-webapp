@@ -93,7 +93,7 @@ public class ReportController {
 
         Map.Entry<String, Object> e1 = new AbstractMap.SimpleEntry<>("k1", "v1");
         Map.Entry<String, Object> e2 = new AbstractMap.SimpleEntry<>("k2", "v2");
-        byte[] pdfContents = generator.generateReport(0, e1, e2);
+        byte[] pdfContents = generator.generateReport(reportId, e1, e2);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
