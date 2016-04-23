@@ -1,4 +1,4 @@
-package com.kmutt.stcp.entity.courseplan;
+package com.kmutt.stcp.dto;
 
 public class MessageResult {
 

@@ -1,32 +1,25 @@
 package com.kmutt.stcp.web;
 
+import com.kmutt.stcp.manager.CourseManager;
+import com.kmutt.stcp.manager.CoursePlannerManager;
+import com.kmutt.stcp.entity.Account;
+import com.kmutt.stcp.entity.CoursePlan;
+import com.kmutt.stcp.entity.Subject;
+import com.kmutt.stcp.dto.MessageResult;
+import com.kmutt.stcp.dto.PlanMessageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+//import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.List;
-
-<<<<<<< HEAD
-=======
-import com.kmutt.stcp.entity.*;
-import com.kmutt.stcp.entity.courseplan.MessageResult;
-import com.kmutt.stcp.entity.courseplan.PlanMessageRequest;
-import com.kmutt.stcp.courseplan.*;
->>>>>>> 98a9c70d50c23ea4337a0e10c076624fa2b77eaa
+import java.util.Map;
 
 @Controller
 @RequestMapping("coursePlanner")
@@ -36,15 +29,37 @@ public class CoursePlannerController {
 	// Field//
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
 
-	@Autowired
-	private HttpServletRequest request;
+    @Autowired
+    private CourseManager courseManager;
+
+    @Autowired
+    private CoursePlannerManager coursePlannerManager;
+
+//    @Autowired
+//	private HttpServletRequest request;
 
 	// Action//
+	@RequestMapping(value = { "/test", "/index" }, method = RequestMethod.GET)
+	public String test(HttpSession session, Map<String, Object> model) {
+
+
+        List<Subject> list = courseManager.testCourseManager();
+
+
+		return "coursePlanner/mainPage";
+
+	}
+
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 
+		//TODO: Dummy Student Account
+		Account student = new Account();
+		student.setId(1);
+		session.setAttribute("account", student);
+		
 		CourseManager courseMng = this.getCurrentCourseManager(session);
-		CoursePlanMannager planMng = this.getCurrentPlanManger(session);
+		CoursePlannerManager planMng = this.getCurrentPlanManger(session);
 
 		List<Integer> semesterYearList = planMng.getSemesterYearList();
 		model.put("semesterYearList", semesterYearList);
@@ -79,7 +94,7 @@ public class CoursePlannerController {
 
 			}
 
-			CoursePlanMannager coursePlanMng = this.getCurrentPlanManger(session);
+			CoursePlannerManager coursePlanMng = this.getCurrentPlanManger(session);
 
 			return coursePlanMng.getCoursePlanList(_semesterYear);
 
@@ -123,7 +138,7 @@ public class CoursePlannerController {
 
 			if (messageRequest != null) {
 
-				CoursePlanMannager plnManger = this.getCurrentPlanManger(session);
+				CoursePlannerManager plnManger = this.getCurrentPlanManger(session);
 
 				if (plnManger.setCoursePlanForSave(messageRequest)) {
 
@@ -182,14 +197,15 @@ public class CoursePlannerController {
 			_courseManage = (CourseManager) session.getAttribute("courseMng");
 
 			if (_courseManage == null) {
-				_courseManage = new CourseManager(new Account());
+				//TODO: change session name to get account
+				_courseManage = new CourseManager((Account) session.getAttribute("account"));
 			}
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
 
-			_courseManage = new CourseManager(new Account());
+			_courseManage = new CourseManager(null);
 
 		} finally {
 
@@ -201,23 +217,24 @@ public class CoursePlannerController {
 	}
 
 	@SuppressWarnings("finally")
-	private CoursePlanMannager getCurrentPlanManger(HttpSession session) {
+	private CoursePlannerManager getCurrentPlanManger(HttpSession session) {
 
-		CoursePlanMannager _coursePlanManage = null;
+		CoursePlannerManager _coursePlanManage = null;
 
 		try {
 
-			_coursePlanManage = (CoursePlanMannager) session.getAttribute("planMng");
+			_coursePlanManage = (CoursePlannerManager) session.getAttribute("planMng");
 
 			if (_coursePlanManage == null) {
-				_coursePlanManage = new CoursePlanMannager(new Account());
+				//TODO: change session name to get account
+				_coursePlanManage = new CoursePlannerManager((Account) session.getAttribute("account"));
 			}
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
 
-			_coursePlanManage = new CoursePlanMannager(new Account());
+			_coursePlanManage = new CoursePlannerManager(null);
 
 		} finally {
 
