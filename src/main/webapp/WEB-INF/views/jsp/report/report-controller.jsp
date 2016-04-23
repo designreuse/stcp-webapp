@@ -75,7 +75,7 @@ pageEncoding="UTF-8"%>
             <!--</select>-->
             <!--</div>-->
 
-            <a href="reportModuleGenerator">click export</a>
+            <a href="reportModuleGenerator?reportId=0">click export</a>
 
 
             <!--<div class="panel-footer text-center">-->
@@ -99,30 +99,43 @@ pageEncoding="UTF-8"%>
         </div><!-- /input-group -->
 
         <!-- Table -->
-        <table class="table table-hover">
+        <table id="reportCenterTable" class="table table-hover">
             <thead>
-            <tr>
-                <th>#</th>
-                <th>Report Name</th>
-            </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Report Name</th>
+                </tr>
             </thead>
             <tbody>
-            <c:forEach var="master" varStatus="status" items="${records}">
-                <tr onclick="window.location='reportCenterGenerator?reportId=${master.reportId}'">
-                    <td>
-                        <c:out value="${status.count}"/>
-                    </td>
-                    <td>
-                        <c:out value="${master.reportName}"/> <span class="badge">4</span>
-                    </td>
-                </tr>
-            </c:forEach>
+                <c:forEach var="report" varStatus="status" items="${reportList}">
+                    <!--<tr onclick="window.location='reportCenterGenerator?reportId=${report.reportId}'">-->
+                    <tr>
+                        <td><c:out value="${status.count}"/></td>
+                        <td><c:out value="${report.reportName}"/><input type="hidden" value="${report.reportId}"/></td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
 
 
     </div>
 </div>
+
+<!-- Small modal -->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>-->
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="reportModalTitle">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="reportModalTitle">Small modal</h4>
+            </div>
+            <div id="reportModalBody" class="modal-body"> ...</div>
+        </div>
+    </div>
+</div>
+
 
 <footer>
     <p>Report & Statistics Module 2016</p>

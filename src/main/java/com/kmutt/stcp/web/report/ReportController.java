@@ -1,6 +1,7 @@
 package com.kmutt.stcp.web.report;
 
 import com.kmutt.stcp.entity.User;
+import com.kmutt.stcp.web.report.bean.ReportAjaxBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -8,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -30,7 +28,6 @@ public class ReportController {
     private final Logger logger = LoggerFactory.getLogger(ReportController.class);
 
     private User authorizedUser;
-    private ReportModule module;
 
     private static HttpSession session() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -53,7 +50,7 @@ public class ReportController {
         model.put("idOption", map);
 
         //displayReportList by role
-        model.put("records", ReportTemplate.values());
+        model.put("reportList", ReportTemplate.values());
 
         return "report/report-controller";
 //        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);
@@ -79,18 +76,58 @@ public class ReportController {
     }
 
     /**
+     * check required parameter for generating report (from report center)
+     * @param bean ajax request bean
+     * @return ajax response with errorMsg if something wrong
+     */
+    @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity reportCenterGenerator(@RequestBody ReportAjaxBean bean) {
+
+        //STUDENT_PLANNING needs userId, othewise courseId
+        //กรุณาเลือก courseId
+        ReportGenerator gen = new ReportGenerator();
+        if(!gen.isReportValid(authorizedUser.getId(),bean.getReportId())) {
+            bean.setErrorMsg("ไม่มีสิทธิ์ในการใช้งาน");
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(bean, headers, HttpStatus.OK);
+    }
+
+    /**
+     * check required parameter for generating report (from module)
+     * @param bean ajax request bean
+     * @return ajax response
+     */
+    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity reportModuleGenerator(@RequestBody ReportAjaxBean bean) {
+
+        //TODO reportCenterGenerator
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(bean, headers, HttpStatus.OK);
+    }
+
+    /**
      * on selected report from report center's table,
      * generate PDF report
      *
      * @param reportId unique value for report
      * @return pdf media
      */
-    @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.GET, produces = "application/pdf")
+    @RequestMapping(value = "/reportCenterGenerator/pdf", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
-    public ResponseEntity<byte[]> reportCenterGenerator(@RequestParam int reportId) {
+    public ResponseEntity<byte[]> reportCenterGeneratorPDF(@RequestParam int reportId) {
 
         ReportGenerator generator = new ReportGenerator();
 
+        //TODO isReportValid
+
+        //FIXME edit parameters
         Map.Entry<String, Object> e1 = new AbstractMap.SimpleEntry<>("k1", "v1");
         Map.Entry<String, Object> e2 = new AbstractMap.SimpleEntry<>("k2", "v2");
         byte[] pdfContents = generator.generateReport(reportId, e1, e2);
@@ -99,19 +136,20 @@ public class ReportController {
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         headers.add("content-disposition", "inline;filename=exported.pdf");
 
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
     }
 
-    /**
+ /*   *//**
      * for others module linked for report,
      * generate PDF report
      *
      * @param reportId unique value for report
      * @return pdf media
-     */
-    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.GET, produces = "application/pdf")
-    public ResponseEntity<byte[]> reportModuleGenerator(@RequestParam int reportId) {
+     *//*
+    @RequestMapping(value = "/reportModuleGenerator/pdf", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> reportModuleGeneratorPDF(@RequestParam int reportId) {
         //TODO pass moduleId
 
         ReportGenerator generator = new ReportGenerator();
@@ -123,11 +161,11 @@ public class ReportController {
             headers.setContentType(MediaType.parseMediaType("application/pdf"));
             headers.add("content-disposition", "inline;filename=exported.pdf");
 
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
         }
 
         return null;
-    }
+    }*/
 
 }

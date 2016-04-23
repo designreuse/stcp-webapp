@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.stream.Stream;
@@ -26,13 +27,12 @@ public class ReportGenerator {
      * @return
      */
     public boolean isReportValid(Integer userId, Integer reportId) {
-        return true;
+        return false;
     }
 
     public boolean isReportValid(Integer userId, Integer reportId, Integer moduleId) {
         return false;
     }
-
 
     @SafeVarargs
     public final byte[] generateReport(Integer reportId, Map.Entry<String, Object>... paramValues) {
@@ -57,6 +57,7 @@ public class ReportGenerator {
             JRDataSource dataSource = new JREmptyDataSource();
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, reportParams, dataSource);
+
 
             log.debug("report generated");
 

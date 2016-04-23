@@ -10,9 +10,9 @@ import java.io.Serializable;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ReportTemplate {
 
-    COURSE_OPENING("รายงานผลการวางแผนการเรียนของนักศึกษาแต่ละคน", "Course_Opening.jrxml"),
-    STUDENT_PLANNING("รายงานผลรวมการวางแผนการเรียนของนักศึกษา", "Student_Planning.jrxml"),
-    SUMMARY_PLANNING("รายงานรายวิชาที่เปิดสอนในแต่ละเทอม", "Summary_Planning.jrxml"),
+    STUDENT_PLANNING("รายงานผลการวางแผนการเรียนของนักศึกษาแต่ละคน", "Student_Planning.jrxml"),
+    SUMMARY_PLANNING("รายงานผลรวมการวางแผนการเรียนของนักศึกษา", "Summary_Planning.jrxml"),
+    COURSE_OPENING("รายงานรายวิชาที่เปิดสอนในแต่ละเทอม", "Course_Opening.jrxml"),
     COURSE_DESCRIPTION("รายงานคำอธิบายรายวิชา", "Course_Description.pdf");
 
     private String reportName;
