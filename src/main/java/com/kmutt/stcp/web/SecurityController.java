@@ -50,6 +50,36 @@ public class SecurityController {
 		return "RegisterUser";
 	}
 	
+	@RequestMapping(value = { "/SentMailConfirm" }, method = RequestMethod.GET)
+	@ResponseBody 
+	public String SentMailConfirm(HttpSession session, @RequestParam("email") String textUserName) {
+		String msg = "";
+		
+		try {
+			securityManager.sendMail(textUserName);
+			
+			msg = "success";
+		} catch (Exception e) {
+			logger.error("Method:SentMailConfirm|Err:" + e.getMessage());
+			msg = e.getMessage();
+		}
+
+		String res = "{\"msg\":\"" + msg + "\"}";
+		
+		return res;
+	}
+	
+	@RequestMapping(value = "/RegistrationComplete", method = RequestMethod.GET)
+	public String RegistrationComplete(Map<String, Object> model) {
+
+		logger.debug("RegistrationComplete() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "RegistrationComplete";
+	}
+	
 	@RequestMapping(value = "/ForgotPassword", method = RequestMethod.GET)
 	public String ForgotPassword(Map<String, Object> model) {
 
@@ -87,30 +117,7 @@ public class SecurityController {
 		return subjectSearched;
 	}
 	
-	@RequestMapping(value = { "/SentMailConfirm" }, method = RequestMethod.GET)
-	@ResponseBody 
-	public List<Account> SentMailConfirm(HttpSession session, @RequestParam("email") String textUserName) {
-		List<Account> accountList =  new ArrayList<>();
-		
-		try {
-			securityManager.sendMail(textUserName);
-			
-			Account acc = new Account();
-			acc.setUsername(textUserName);
-			
-			accountList.add(acc);
-		} catch (Exception e) {
-			logger.error("Method:SentMailConfirm|Err:" + e.getMessage());
-			Account acc = new Account();
-			acc.setUsername(e.getMessage());
-			
-			accountList.add(acc);
-		}
-
-
-		return accountList;
-
-	}
+	
 	
 	// Method//
 		@SuppressWarnings("finally")
