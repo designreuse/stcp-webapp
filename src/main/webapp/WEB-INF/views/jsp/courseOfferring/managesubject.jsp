@@ -105,8 +105,8 @@ dropbtn {
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
-		        <li><a href="#">Search</a></li>
-		        <li><a href="${root}/courseofferring/DetailCurriculum">New</a></li>
+		        <li><a href="searchSubject();return false;">Search</a></li>
+		        <li><a href="${root}/courseofferring/addSubject">New</a></li>
 		        <li><a href="#">Cancel</a></li>
 		        <li><a href="#">Close</a></li>
 		    </ul>
@@ -131,6 +131,9 @@ dropbtn {
 	</nav>
 	<!-- End Navigator -->
 	
+	<form id="searchSubject" name="searchSubject" method="POST" action="${root}/courseofferring/managesubject">
+	
+	
 	<div class="container-fluid">
 		<div class="row" style="margin-bottom:10px; text-align;left;">			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Course ID ::</div>
@@ -151,7 +154,10 @@ dropbtn {
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject ID ::</div>
 			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
 			<div class="col-xs-12 col-md-8"></div>
-		</div>			
+		</div>		
+		
+	</form>
+		
 		<div style="margin-bottom:20px;"></div>	<!-- empty -->
 		<div class="panel panel-default">
     		<div class="panel-heading">Search Result</div>
@@ -178,6 +184,6 @@ dropbtn {
   		</div>
   	</div>
 
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/manageSubject.js"></script>
 </body>
 </html>
