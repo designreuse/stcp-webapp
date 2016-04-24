@@ -7,7 +7,7 @@ pageEncoding="UTF-8"%>
 <html lang="en">
 
 <head>
-    <title>Student Course Planer</title>
+    <title>Report & Statistics</title>
 </head>
 
 <body>
@@ -152,11 +152,6 @@ pageEncoding="UTF-8"%>
         </div>
     </div>
 </div>
-
-
-<footer>
-    <p>Report & Statistics Module 2016</p>
-</footer>
 
 <script type="text/javascript" src="${root}/resources/core/js/report.js" defer></script>
 </body>

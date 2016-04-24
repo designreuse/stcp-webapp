@@ -95,6 +95,16 @@
 	           			<span>Course Planner</span>
 	           		</a>
 	           	</li>
+
+
+
+
+                <li class="treeview">
+                    <a href="${root}/report/">
+                        <i class="glyphicon glyphicon-file"></i>
+                        <span>Report</span>
+                    </a>
+                </li>
 	        </ul>
         </section>
         <!-- /.sidebar -->
