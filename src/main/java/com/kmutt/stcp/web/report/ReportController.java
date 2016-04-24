@@ -84,7 +84,12 @@ public class ReportController {
     @ResponseBody
     public ResponseEntity reportCenterGenerator(@RequestBody ReportAjaxBean bean) {
 
-        //STUDENT_PLANNING needs userId, othewise courseId
+        //STUDENT_PLANNING needs userId, othewise curriculumId
+//
+//      มันต้องเป็น curriculum year กับ curriculumn name
+//      เอา 2 ค่าจาก table curriculum ไป map เป็น curriculum id
+
+
         //กรุณาเลือก courseId
 //        ReportGenerator gen = new ReportGenerator();
 //        if(!gen.isReportValid(authorizedUser.getId(),bean.getReportId())) {

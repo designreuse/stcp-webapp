@@ -39,9 +39,7 @@ pageEncoding="UTF-8"%>
             <!--</div>-->
 
             <div class="input-group">
-                <span class="input-group-addon" id="yearLabel">ปีการศึกษา</span>
-                <input type="number" class="form-control" min="0" />
-                <span class="input-group-addon" id="semesterLabel">ภาคเรียนที่</span>
+                <span class="input-group-addon" id="semesterLabel">หลักสูตรปี</span>
                 <input type="number" class="form-control" min="0" />
             </div>
 
