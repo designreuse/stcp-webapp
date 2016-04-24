@@ -102,7 +102,6 @@ dropbtn {
 	<!-- /.box-header -->
 	<!-- Navigator -->
 	<nav class="navbar navbar-default">
-<<<<<<< HEAD
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
@@ -113,7 +112,6 @@ dropbtn {
 		    </ul>
 	    </div>
 	  </div>
-=======
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -121,16 +119,15 @@ dropbtn {
 				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="myNavbar">
+			<%-- <div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Search</a></li>
 					<li><a href="${root}/courseofferring/addSubject">New</a></li>
 					<li><a href="#">Cancel</a></li>
 					<li><a href="#">Close</a></li>
 				</ul>
-			</div>
+			</div> --%>
 		</div>
->>>>>>> efe7a865d391e23a5d22fc0f7348f5ecaa0d5f79
 	</nav>
 	<!-- End Navigator -->
 	
