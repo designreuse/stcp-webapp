@@ -22,9 +22,9 @@
 	  		<div class="container-fluid">
 	    		<div class="navbar-header">
 					<ul class="nav nav-pills">
-				        <li><a href="${root}/courseofferring/managesubject">Manage Subject</a></li>
+				        <li><a href="${root}/courseofferring/managesubject">Manage Subject</a</li>
 				        <li><a href="${root}/courseofferring/managecurriculum">Manage Curriculum</a></li>
-				        <li><a href="${root}/courseofferring/managecourse">Merge Subject && Curriculum</a></li>
+				        <li><a href="${root}/courseofferring/mergesubjectandcurriculum">Merge Subject && Curriculum</a></li>
 				        <li><a href="${root}/courseofferring/DetailCurriculum">DetailCurriculum Test</a></li>
 				    </ul>
 			    </div>

@@ -28,9 +28,9 @@ public class CourseOfferringController {
 	        return "managecurriculum";
 	    }
 	    
-	    @RequestMapping(value = "/mergesubjectandcurriculum", method = RequestMethod.GET)
-	    public String mergesubjectandcurriculum(Map<String, Object> model) {
-	        return "mergesubjectandcurriculum";
+	    @RequestMapping(value = "/managecourse", method = RequestMethod.GET)
+	    public String managecourse(Map<String, Object> model) {
+	        return "managecourse";
 	    }
 	
 	    @RequestMapping(value = "/DetailCurriculum", method = RequestMethod.GET)

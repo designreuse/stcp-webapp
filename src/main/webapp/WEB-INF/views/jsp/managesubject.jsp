@@ -100,88 +100,68 @@ dropbtn {
 		<h3 class="box-title">Manage Subject</h3>
 	</div>
 	<!-- /.box-header -->
+	<!-- Navigator -->
 	<nav class="navbar navbar-default">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#myNavbar">
-				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Search</a></li>
-					<li><a href="#">New</a></li>
-					<li><a href="#">Cancel</a></li>
-					<li><a href="#">Close</a></li>
-				</ul>
-			</div>
-		</div>
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+			<ul class="nav nav-pills">
+		        <li><a href="#">Search</a></li>
+		        <li><a href="${root}/courseofferring/DetailCurriculum">New</a></li>
+		        <li><a href="#">Cancel</a></li>
+		        <li><a href="#">Close</a></li>
+		    </ul>
+	    </div>
+	  </div>
 	</nav>
-
-
-	<div class="container">
-		<div class="row" style="margin-bottom: 10px;">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-2">Course ID ::</div>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="txtCurriID">
-			</div>
-			<div class="col-sm-4"></div>
+	<!-- End Navigator -->
+	
+	<div class="container-fluid">
+		<div class="row" style="margin-bottom:10px; text-align;left;">			
+			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Course ID ::</div>
+			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtYear"  size="20"></div>
+			<div class="col-xs-12 col-md-8"></div>
 		</div>
-
-		<div class="row" style="margin-bottom: 10px;">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-2">Subject Type ::</div>
-			<div class="col-sm-2">
-				<div class="dropdown">
-					<span>Mouse over me</span>
-					<div class="dropdown-content">
-						<p>Hello World!</p>
-					</div>
-				</div>
-
-			</div>
-
-			<div class="col-sm-4"></div>
-		</div>
-
-		<div class="row" style="margin-bottom: 10px;">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-2">Subject Status ::</div>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="txtStatusType">
-			</div>
-			<div class="col-sm-4"></div>
-		</div>
-		<div class="row" style="margin-bottom: 10px;">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-2">Subject ID ::</div>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="txtSubjectID">
-			</div>
-			<div class="col-sm-4"></div>
-		</div>
-	</div>
-
-	<dr>
-
-
-	<div>
+		<div class="row" style="margin-bottom:10px; text-align;left;">			
+			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Type ::</div>
+			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-8"></div>
+		</div>	
+		<div class="row" style="margin-bottom:10px; text-align;left;">	
+			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Status ::</div>
+			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-8"></div>
+		</div>	
+		<div class="row" style="margin-bottom:10px; text-align;left;">	
+			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject ID ::</div>
+			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-8"></div>
+		</div>			
+		<div style="margin-bottom:20px;"></div>	<!-- empty -->
 		<div class="panel panel-default">
-			<div class="panel-heading" style="text-align: center;">Search
-				Result</div>
-			<div class="panel-body">
-				<table class="table table-bordered">
-					<tr>
-						<th style="text-align: center;">Subject ID</th>
-						<th style="text-align: center;">Subject Name(Thai).</th>
-						<th style="text-align: center;">Subject Name(Eng).</th>
-						<th style="text-align: center;">Credit.</th>
-						<th style="text-align: center;">Subject Type.</th>
-					</tr>
-					</div>
-					</div>
-				</table>
+    		<div class="panel-heading">Search Result</div>
+    		<div class="panel-body">
+     			<table class="table table-condensed">
+ 		 			<tr>
+ 		 				<th></th>
+						<th>Subject ID</th>
+						<th>Subject Name(Thai).</th>
+						<th>Subject Name(Eng).</th>
+						<th>Credit.</th>
+						<th>Subject Type.</th>
+  					</tr>
+ 		 			<tr>
+ 		 				<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr> 					
+  				</table>
+    		</div>
+  		</div>
+  	</div>
+
+
 </body>
 </html>

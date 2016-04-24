@@ -7,24 +7,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 <title>Student Course Planner</title>
 </head>
- <style>
+<style>
  .navbar {
-      padding-top: 15px;
-      padding-bottom: 15px;
-      border: 0;
-      border-radius: 0;
-      margin-bottom: 0;
-      font-size: 12px;
-      letter-spacing: 5px;
+ 	left: 0px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    
   }
   table {
     border-collapse: collapse;
@@ -45,12 +45,10 @@ th {
  </style>
 <body>
 
-      <!-- Main content -->
-      <div class="box-header">
-      Manage Curriculum
-      </div><!-- /.box-header -->
-     
-
+	<!-- Main content -->
+	<div class="box-header">
+		<h3 class="box-title">Manage Course</h3>
+	</div><!-- /.box-header -->
 	<!-- Navigator -->
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
@@ -64,7 +62,9 @@ th {
 	    </div>
 	  </div>
 	</nav>
-
+	<!-- End Navigator -->
+	
+	<!-- Merge -->
 	<div class="container-fluid">
 		<div class="row" style="margin-bottom:10px; text-align;left;">			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">ปีการศึกษา  ::</div>
@@ -75,7 +75,7 @@ th {
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">รหัสหลักสูตร  ::</div>
 			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
 			<div class="col-xs-12 col-md-8"></div>
-		</div>
+		</div>	
 		<div style="margin-bottom:20px;"></div>	<!-- empty -->
 		<div class="panel panel-default">
     		<div class="panel-heading">Search Result</div>
@@ -99,8 +99,8 @@ th {
   					</tr> 					
   				</table>
     		</div>
-  		</div>	
-	</div>
-    
+  		</div>
+  	</div>
+      
 </body>
 </html>
