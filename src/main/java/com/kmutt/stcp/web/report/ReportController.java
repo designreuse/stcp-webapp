@@ -86,10 +86,10 @@ public class ReportController {
 
         //STUDENT_PLANNING needs userId, othewise courseId
         //กรุณาเลือก courseId
-        ReportGenerator gen = new ReportGenerator();
-        if(!gen.isReportValid(authorizedUser.getId(),bean.getReportId())) {
-            bean.setErrorMsg("ไม่มีสิทธิ์ในการใช้งาน");
-        }
+//        ReportGenerator gen = new ReportGenerator();
+//        if(!gen.isReportValid(authorizedUser.getId(),bean.getReportId())) {
+//            bean.setErrorMsg("ไม่มีสิทธิ์ในการใช้งาน");
+//        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
