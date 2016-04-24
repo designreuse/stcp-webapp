@@ -44,7 +44,7 @@ public class CourseOfferringController {
 	    public String searchsubject(HttpServletRequest  request,HttpServletResponse response) {
 	    	List<Subject> subjObj = subjectManager.getAllSubject();
 	    	
-	    	request.setAttribute("subjectList", subjObj);
+	    	request.setAttribute("subjectSearchList", subjObj);
 	    	
 	        return "courseOfferring/managesubject";
 	    }
