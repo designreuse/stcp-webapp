@@ -1,11 +1,7 @@
 package com.kmutt.stcp.manager;
-import java.io.UnsupportedEncodingException;
-/*
-import org.springframework.ma
-import org.springframework.mail.SimpleMailMessage;
-*/
-import java.util.*;
 
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -13,18 +9,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import org.springframework.stereotype.Component;
-/*
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
-*/
-
+import com.kmutt.stcp.manager.PasswordManager;
 
 @Component("sentmailManager")
 public class SentMailManager {
@@ -34,8 +21,10 @@ public class SentMailManager {
 	 final String password = "testsendsit1234";
 	 final String from = "testsendsit@gmail.com";
 	
+	 private PasswordManager _passwordManager;
+	 
 	 public SentMailManager(){
-		 
+		 _passwordManager = new PasswordManager();
 	 }
 	 
 	 public void SentMail(String email){
@@ -108,9 +97,19 @@ public class SentMailManager {
 		 String link = "";
 		 String token = Email;
 		 
-		 link += "http://localhost:8080/stcp/regitrationConfirm.html?token=";
-		 link += token;
+		 link += "http://localhost:8080/stcp/RegitrationConfirm?token=";
+		 link += GenerateToken(Email);
 		 
 		 return link;
+	 }
+	 
+	 private String GenerateToken(String Email){
+		 String token = "";
+		 try {
+			 token  = _passwordManager.encrypt(Email);
+		 } catch (Exception e) {
+		 }
+		 
+		 return token;
 	 }
 }

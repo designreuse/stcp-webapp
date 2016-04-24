@@ -15,6 +15,14 @@
     
   	<link href="${bootstrapCss}" rel="stylesheet"/>
     <link href="${coreCss}" rel="stylesheet"/>
+    
+    <!-- for include script -->
+	<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs"/>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="${coreJs}"></script>
+	<script src="${bootstrapJs}"></script>
+	 
 </head>
 <body>
 	<div class="jumbotron" style="background-color:#dd4b39">
@@ -43,20 +51,29 @@
 				        <button class="btn btn-lg btn-primary btn-block" id="btnRegister">Register</button>
 					</div>
 				</div>
-				
-				
 			</div>
 		</div>
 	</div>
 	
-	<!-- for include script -->
-	<spring:url value="/resources/core/css/main.js" var="coreJs"/>
-	<spring:url value="/resources/core/css/bootstrap.min.js" var="bootstrapJs"/>
+	<!-- Loading Modal -->
+	<div id="loadingModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="reportModalTitle">
+	    <div class="modal-dialog modal-sm">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+	                <h4 class="modal-title">Loading</h4>
+	            </div>
+	            <div class="modal-body">
+	                <div class="progress">
+	                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+	                        <span class="sr-only">45% Complete</span>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 	
-	<script src="${coreJs}"></script>
-	<script src="${bootstrapJs}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/security.js" defer></script>
 </body>
 </html>

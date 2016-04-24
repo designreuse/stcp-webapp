@@ -25,14 +25,14 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-8 col-xs-offset-4 col-md-8 col-md-4-offset">
+			<div class="col-xs-12 col-xs-offset-2 col-md-12 col-md-2-offset">
 				<div class="row">
 					<div class="col-xs-12 col-md-12">
 						<h2 class="form-register-heading">Registration Complete</h2>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-6 col-md-6">
+					<div class="col-xs-10 col-md-10">
 						<h4>We've just sent you an email to the address you entered. Please follow the link in the email to confirm your account.</h4>
 					</div>
 				</div>

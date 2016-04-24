@@ -61,12 +61,14 @@ $(document).ready(function() {
 		
 		var txtEmail = $('#tbxRegisterEmail').val();
 		
+		$("#loadingModal").modal("show");
 		$.ajax({
             type: "GET",
             url: "http://localhost:8080/stcp/SentMailConfirm",
             dataType: "json",
             data: { email: txtEmail },
             success: function (data) {
+            	$("#loadingModal").modal("hide");
             	if(data != null){
             		if(data.msg == "success"){
             			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
@@ -104,6 +106,7 @@ $(document).ready(function() {
             	}
         	},
             error: function (xml, status, errMsg) {
+            	$("#loadingModal").modal("hide");
             	//alert(xml);
             	alert(status);
             	alert(errMsg);
