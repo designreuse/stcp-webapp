@@ -6,7 +6,9 @@ import com.kmutt.stcp.entity.Subject;
 import com.kmutt.stcp.repository.PrerequisiteRepository;
 import com.kmutt.stcp.repository.SubjectRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,15 +42,16 @@ public class SubjectManager {
 	public void addSubject(Subject subject,String preSubjectId) {
 		
 		subjectRepository.create(subject);
-//		Subject newSubject = subjectRepository.createAndReturnObject(subject);
 		
+//		System.out.println(subject.getId()+"---------------");
+//
 //		Prerequisite prerequisite = new Prerequisite();
 //		
 //		Subject preSubject = new Subject();
 //		preSubject.setId(Integer.parseInt(preSubjectId));
 //		
 //		prerequisite.setSubjectByPresubjectId(preSubject);
-//		prerequisite.setSubjectBySubjectId(newSubject);
+//		prerequisite.setSubjectBySubjectId(subject);
 //		
 //		prerequisiteRepository.create(prerequisite);
 	}
