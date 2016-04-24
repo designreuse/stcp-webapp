@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpSession;
 
 import com.kmutt.stcp.service.CoursePlannerService;
@@ -17,7 +19,9 @@ import com.kmutt.stcp.repository.AccountRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.kmutt.stcp.manager.*;
+import com.kmutt.stcp.manager.SentMailManager;
+
+import com.kmutt.stcp.repository.AccountRepository;
 
 @Component("securityManager")
 public class SecurityManager {
@@ -27,18 +31,43 @@ public class SecurityManager {
     @Autowired
     private SentMailManager sentmailManager;
     
+    @Autowired
+    private AccountRepository accountRepository;
+    
     public SecurityManager(){
     }
     
     public SecurityManager(HttpSession session){
     	sentmailManager = this.getCurrentSentMailManager(session);
+    	accountRepository = this.getCurrentAccountRepository(session);
+    	
     }
+    
+    public String ValidateBeforeSentEmail(String Email){
+    	String result = "";
+    	
+    	if(isValidEmail(Email)==false){
+    		result = "Email Invalid format";
+    	}
+    	else if(isExistEmail(Email)){
+    		result = "User is exist ,Please Login";
+    	}
+    	
+    	return result;
+    }
+    
+    public List<Account> TestSQL(String tt){
+    	List<Account> test = accountRepository.querySQL("SELECT * FROM Account");
+    	
+    	return test;
+    }
+    
     
     public void sendMail(String to){
     	sentmailManager.SentMail(to);
     }
     
- // Method//
+    // Method//
  	@SuppressWarnings("finally")
  	private SentMailManager getCurrentSentMailManager(HttpSession session) {
 
@@ -49,7 +78,6 @@ public class SecurityManager {
  			_sendMailManage = (SentMailManager) session.getAttribute("sendMailMng");
 
  			if (_sendMailManage == null) {
- 				//TODO: change session name to get account
  				_sendMailManage = new SentMailManager();
  			}
 
@@ -68,24 +96,56 @@ public class SecurityManager {
 
  	}
     
-    
-   /* private MailSender mailSender;
-    
-    public SecurityManager() {}
-    
-    public void setMailSender(MailSender mailSender) {
-		this.mailSender = mailSender;
-	}
-	
-	public void sendMail(String from, String to, String subject, String msg) {
+ 	@SuppressWarnings("finally")
+	private AccountRepository getCurrentAccountRepository(HttpSession session) {
 
-		SimpleMailMessage message = new SimpleMailMessage();
-		
-		message.setFrom(from);
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(msg);
-		mailSender.send(message);	
-	}*/
+ 		AccountRepository _accountRepo = null;
+
+ 		try {
+
+ 			_accountRepo = (AccountRepository) session.getAttribute("accountRepo");
+
+ 			if (_accountRepo == null) {
+ 				_accountRepo = new AccountRepository();
+ 			}
+
+ 		} catch (Exception e) {
+
+ 			logger.error(e.getMessage());
+
+ 			_accountRepo = new AccountRepository();
+
+ 		} finally {
+
+ 			session.setAttribute("accountRepo", _accountRepo);
+ 			return _accountRepo;
+
+ 		}
+
+ 	}
     
+    private Boolean isValidEmail(String Email){
+    	Boolean result = true;
+    	
+    	try {
+    		InternetAddress emailAddr = new InternetAddress(Email);
+    		emailAddr.validate();
+		} catch (AddressException  e) {
+			result = false;
+		}
+    	
+    	return result;
+    }
+    
+    private Boolean isExistEmail(String Email){
+    	Boolean result = false;
+    	
+    	try {
+			//TODO wait connect db
+		} catch (Exception e) {
+			
+		}
+    	
+    	return result;
+    }
 }

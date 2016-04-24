@@ -40,9 +40,9 @@ public class SecurityController {
 	}
 	
 	@RequestMapping(value = "/Register", method = RequestMethod.GET)
-	public String RegisterUser(Map<String, Object> model) {
+	public String Register(Map<String, Object> model) {
 
-		logger.debug("RegisterUser() is executed!");
+		logger.debug("Register() is executed!");
 
 		model.put("title", "title");
 		model.put("msg", "message");
@@ -50,15 +50,22 @@ public class SecurityController {
 		return "RegisterUser";
 	}
 	
-	@RequestMapping(value = { "/SentMailConfirm" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/RegisterUser" }, method = RequestMethod.GET)
 	@ResponseBody 
-	public String SentMailConfirm(HttpSession session, @RequestParam("email") String textUserName) {
+	public String RegisterUser(HttpSession session, @RequestParam("Email") String textEmail) {
 		String msg = "";
 		
 		try {
-			securityManager.sendMail(textUserName);
 			
-			msg = "success";
+			String validateResult = securityManager.ValidateBeforeSentEmail(textEmail);
+			
+			if(validateResult.isEmpty()){
+				securityManager.sendMail(textEmail);
+				msg = "success";
+			}
+			else{
+				msg = validateResult;
+			}
 		} catch (Exception e) {
 			logger.error("Method:SentMailConfirm|Err:" + e.getMessage());
 			msg = e.getMessage();
@@ -68,6 +75,30 @@ public class SecurityController {
 		
 		return res;
 	}
+	
+	/*@RequestMapping(value = { "/RegisterUser" }, method = RequestMethod.GET)
+	@ResponseBody 
+	public List<Account> RegisterUser(HttpSession session, @RequestParam("Email") String textEmail) {
+		List<Account> accountList = new ArrayList();
+		
+		try {
+			accountList = securityManager.TestSQL(textEmail);
+			
+			securityManager.sendMail(textEmail);
+			
+			msg = "success";
+			
+			Account nn = new Account();
+			nn.setUsername("aa");
+			
+			accountList.add(nn);
+		} catch (Exception e) {
+			logger.error("Method:SentMailConfirm|Err:" + e.getMessage());
+			accountList = new ArrayList();
+		}
+
+		return accountList;
+	}*/
 	
 	@RequestMapping(value = "/RegistrationComplete", method = RequestMethod.GET)
 	public String RegistrationComplete(Map<String, Object> model) {
