@@ -111,7 +111,7 @@ dropbtn {
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Search</a></li>
-					<li><a href="#">New</a></li>
+					<li><a href="${root}/courseofferring/addSubject">New</a></li>
 					<li><a href="#">Cancel</a></li>
 					<li><a href="#">Close</a></li>
 				</ul>
