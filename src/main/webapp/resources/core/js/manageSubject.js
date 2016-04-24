@@ -17,7 +17,7 @@ $(document).ready(function() {
 
 function searchSubject(){
 	swal({
-		title : "Add Subject",
+		title : "Search Subject",
 		text : "Are you want to search this subject?",
 		type : "warning",
 		showCancelButton : true,

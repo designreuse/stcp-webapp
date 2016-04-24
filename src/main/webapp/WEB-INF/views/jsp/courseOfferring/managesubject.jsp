@@ -1,7 +1,8 @@
-<%@page session="true"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="root" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -18,6 +19,10 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
+	<!-- SweetAlert -->
+<script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
+<link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 <title>Student Course Planner</title>
 </head>
 <style>
@@ -105,7 +110,7 @@ dropbtn {
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
-		        <li><a href="searchSubject();return false;">Search</a></li>
+		        <li><a href="javascript:searchSubject();">Search</a></li>
 		        <li><a href="${root}/courseofferring/addSubject">New</a></li>
 		        <li><a href="#">Cancel</a></li>
 		        <li><a href="#">Close</a></li>
@@ -171,14 +176,33 @@ dropbtn {
 						<th>Credit.</th>
 						<th>Subject Type.</th>
   					</tr>
- 		 			<tr>
- 		 				<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-  					</tr> 					
+  					
+ 		 			<c:if test="${ subjectSearchList != null}">
+ 		 				<c:forEach items="${subjectSearchList}" var="item"  varStatus="loop">
+	 		 				<tr>
+	 		 					<td>
+	 		 						${loop.index+1}
+	 		 					</td>
+	 		 					<td>
+	 		 						${item.subjectCode}
+	 		 					</td>
+	 		 					<td>
+	 		 						${item.nameThai}
+	 		 					</td>
+	 		 					<td>
+	 		 						${item.nameEng}
+	 		 					</td>
+	 		 					<td>
+	 		 						${item.credit}
+	 		 					</td>
+	 		 					<td>
+	 		 						${item.subjectType}
+	 		 					</td>
+	 		 				</tr>
+						</c:forEach>
+ 		 			</c:if>
+	 		 			
+  										
   				</table>
     		</div>
   		</div>
