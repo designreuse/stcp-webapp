@@ -11,7 +11,7 @@
 </head>
 <body>
      <div class="box-header">
-        <h3 class="box-title">Manage Curriculum</h3>
+        <h3 class="box-title">Detail Curriculum</h3>
      </div><!-- /.box-header -->
       
 </body>

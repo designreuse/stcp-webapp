@@ -28,39 +28,39 @@ public class CourseOfferringController {
 
 	    @RequestMapping(value = "/courseofferring", method = RequestMethod.GET)
 	    public String courseofferring(Map<String, Object> model) {
-	        return "courseofferring";
+	        return "courseOfferring/courseofferring";
 	    }
 	    
 	    @RequestMapping(value = "/managesubject", method = RequestMethod.GET)
 	    public String managesubject(Map<String, Object> model) {
-	        return "managesubject";
+	        return "courseOfferring/managesubject";
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.GET)
 	    public String prepareAddSubject(Model model) {
 	    	model.addAttribute("subjectForm", new Subject());
-	        return "addSubject";
+	        return "courseOfferring/addSubject";
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
 	    public String addSubject(@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
 	    	subjectManager.addSubject(subject,preSubjectId);
-	        return "managesubject";
+	        return "courseOfferring/managesubject";
 	    }
 	    
 	    @RequestMapping(value = "/managecurriculum", method = RequestMethod.GET)
 	    public String managecurriculum(Map<String, Object> model) {
-	        return "managecurriculum";
+	        return "courseOfferring/managecurriculum";
 	    }
 	    
 	    @RequestMapping(value = "/managecourse", method = RequestMethod.GET)
 	    public String managecourse(Map<String, Object> model) {
-	        return "managecourse";
+	        return "courseOfferring/managecourse";
 	    }
 	
 	    @RequestMapping(value = "/DetailCurriculum", method = RequestMethod.GET)
 	    public String DetailCurriculum(Map<String, Object> model) {
-	        return "DetailCurriculum";
+	        return "courseOfferring/DetailCurriculum";
 	    }
 	    
 	    @ModelAttribute("subjectTypeList")
