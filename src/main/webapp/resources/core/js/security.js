@@ -62,11 +62,48 @@ $(document).ready(function() {
 		var txtEmail = $('#tbxRegisterEmail').val();
 		
 		$("#loadingModal").modal("show");
+		//RegisterUser
 		$.ajax({
             type: "GET",
-            url: "http://localhost:8080/stcp/SentMailConfirm",
+            url: "http://localhost:8080/stcp/RegisterUser",
             dataType: "json",
-            data: { email: txtEmail },
+            data: { Email: txtEmail },
+            success: function (data) {
+            	$("#loadingModal").modal("hide");
+            	if(data != null){
+            		if(data.msg == "success"){
+            			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
+            		}
+            		else{
+            			alert(data.msg);
+            		}
+            	}
+            	else{
+            		alert("Error");
+            	}
+        	},
+            error: function (xml, status, errMsg) {
+            	$("#loadingModal").modal("hide");
+            	//alert(xml);
+            	alert(status);
+            	alert(errMsg);
+            }
+        });
+		
+	});
+	
+	$("#btnCreateUser").on('click', function(e){
+		e.preventDefault();
+		
+		var txtPassword = $('#tbxPassword').val();
+		
+		$("#loadingModal").modal("show");
+		//RegisterUser
+		$.ajax({
+            type: "GET",
+            url: "http://localhost:8080/stcp/CreateUser",
+            dataType: "json",
+            data: { Password: txtPassword },
             success: function (data) {
             	$("#loadingModal").modal("hide");
             	if(data != null){
@@ -112,5 +149,6 @@ $(document).ready(function() {
             	alert(errMsg);
             }
         });
+		
 	});
 });
