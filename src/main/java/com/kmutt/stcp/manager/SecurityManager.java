@@ -52,7 +52,7 @@ public class SecurityManager {
     	else if(isExistEmailInUser(Email) == true){
     		result = "User is exist ,Please Login";
     	}
-    	else if(isExistEmailInAccount(Email) == false){
+    	else if(isExistEmailInAccount(Email) == true){
     		result = "Email is not KMUTT Email Account";
     	}
     	

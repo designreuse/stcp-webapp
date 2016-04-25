@@ -75,35 +75,11 @@ $(document).ready(function() {
             			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
             		}
             		else{
-            			swal({
-                			title : "Student Course Planner",
-                			text : data.msg,
-                			type : "error",
-                			showCancelButton : false,
-                			confirmButtonClass : 'btn btn-info',
-                			confirmButtonText : "OK",
-                			closeOnConfirm : false
-                		}, function(isConfirm) {
-                			if (isConfirm) {
-                				window.location.href = window.location.href;
-                			}
-                		});
+            			alert(data.msg);
             		}
             	}
             	else{
-            		swal({
-            			title : "Student Course Planner",
-            			text : "Error",
-            			type : "error",
-            			showCancelButton : false,
-            			confirmButtonClass : 'btn btn-info',
-            			confirmButtonText : "OK",
-            			closeOnConfirm : false
-            		}, function(isConfirm) {
-            			if (isConfirm) {
-            				window.location.href = window.location.href;
-            			}
-            		});
+            		alert("Error");
             	}
         	},
             error: function (xml, status, errMsg) {
@@ -113,11 +89,21 @@ $(document).ready(function() {
             	alert(errMsg);
             }
         });
-		/*$.ajax({
+		
+	});
+	
+	$("#btnCreateUser").on('click', function(e){
+		e.preventDefault();
+		
+		var txtPassword = $('#tbxPassword').val();
+		
+		$("#loadingModal").modal("show");
+		//RegisterUser
+		$.ajax({
             type: "GET",
-            url: "http://localhost:8080/stcp/SentMailConfirm",
+            url: "http://localhost:8080/stcp/CreateUser",
             dataType: "json",
-            data: { email: txtEmail },
+            data: { Password: txtPassword },
             success: function (data) {
             	$("#loadingModal").modal("hide");
             	if(data != null){
@@ -162,6 +148,7 @@ $(document).ready(function() {
             	alert(status);
             	alert(errMsg);
             }
-        });*/
+        });
+		
 	});
 });
