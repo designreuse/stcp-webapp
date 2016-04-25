@@ -1,8 +1,10 @@
 package com.kmutt.stcp.manager;
 
 import com.kmutt.stcp.entity.CoursePlan;
+import com.kmutt.stcp.entity.CurriculumSubject;
 import com.kmutt.stcp.entity.Prerequisite;
 import com.kmutt.stcp.entity.Subject;
+import com.kmutt.stcp.repository.CurriculumSubjectRepository;
 import com.kmutt.stcp.repository.PrerequisiteRepository;
 import com.kmutt.stcp.repository.SubjectRepository;
 
@@ -29,6 +31,9 @@ public class SubjectManager {
     
     @Autowired
     private SubjectRepository subjectRepository;
+    
+    @Autowired
+    private CurriculumSubjectRepository curriculumSubjectRepository;
 
     
     @Autowired
@@ -69,6 +74,49 @@ public class SubjectManager {
 	// Method//
 		public List<Subject> getAllSubject() {
 			return subjectRepository.findAll();
+		}
+	
+		// Method//
+		public List<CurriculumSubject> searchProjectByCriteria(String curiID,String subjectType,String status,String subjectCode) {
+			
+			String hql = "";
+			
+			if(!curiID.equals("")){
+				hql = "from CurriculumSubject as curs join curs.curriculum as cur"
+						+ "							  join curs.subject as sub  "
+						+ " where cur.id="+curiID;
+				
+				if(!subjectType.equals("")){
+					hql += " and sub.subjectType = "+subjectType;
+				}
+				
+				if(!status.equals("")){
+					hql += " and sub.status = "+status;
+				}
+				
+				if(!subjectCode.equals("")){
+					hql += " and sub.subjectCode = '"+subjectCode+"' ";
+				}
+			}else{
+				hql = "from Subject where 1=1 ";
+				
+				if(!subjectType.equals("")){
+					hql += " and subjectType = "+subjectType;
+				}
+				
+				if(!status.equals("")){
+					hql += " and status = "+status;
+				}
+				
+				if(!subjectCode.equals("")){
+					hql += " and subjectCode = '"+subjectCode+"' ";
+				}
+			}
+			
+			List<CurriculumSubject> curriculumSubjectRepositoryList = curriculumSubjectRepository.queryHQL(hql);
+			//System.out.println(curriculumSubjectRepositoryList.size()+"--");
+			
+			return curriculumSubjectRepositoryList;
 		}
    
 }

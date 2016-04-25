@@ -55,10 +55,23 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/managesubject", method = RequestMethod.POST)
-	    public String searchsubject(HttpServletRequest  request,HttpServletResponse response) {
-	    	List<Subject> subjObj = subjectManager.getAllSubject();
+	    public String searchsubject(HttpServletRequest  request,HttpServletResponse response,
+	    							@ModelAttribute("curiID") String curiID,
+	    							@ModelAttribute("subjectType") String subjectType,
+	    							@ModelAttribute("status") String status,
+	    							@ModelAttribute("subjectCode") String subjectCode) {
 	    	
-	    	request.setAttribute("subjectSearchList", subjObj);
+	    	if(curiID.equals("") && subjectType.equals("") && status.equals("") && subjectCode.equals("")){
+	    		List<Subject> subjObj = subjectManager.getAllSubject();
+		    	
+	    		request.setAttribute("entity", "subject");
+		    	request.setAttribute("subjectSearchList", subjObj);
+	    	}else{
+	    		List<CurriculumSubject> curSubObj = subjectManager.searchProjectByCriteria(curiID, subjectType, status, subjectCode);
+	    		
+	    		request.setAttribute("entity", "crriculumSubject");
+	    		request.setAttribute("subjectSearchList", curSubObj);
+	    	}
 	    	
 	        return "courseOfferring/managesubject";
 	    }

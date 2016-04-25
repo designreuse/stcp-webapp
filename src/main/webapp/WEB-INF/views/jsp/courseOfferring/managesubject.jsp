@@ -142,22 +142,39 @@ dropbtn {
 	<div class="container-fluid">
 		<div class="row" style="margin-bottom:10px; text-align;left;">			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Course ID ::</div>
-			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtYear"  size="20"></div>
+			<div class="col-xs-12 col-md-2">
+				<input type="text" class="form-control" id="curiID" name="curiID"  size="20">
+			</div>
 			<div class="col-xs-12 col-md-8"></div>
 		</div>
 		<div class="row" style="margin-bottom:10px; text-align;left;">			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Type ::</div>
-			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-2">
+				<select id="subjectType" name="subjectType">
+					<option value="">--- Select Subject Type---</option>
+					<c:forEach items="${subjectTypeList}" var="item">
+						<option value="${item.key}">${item.value}</option>
+					</c:forEach>
+				</select>
+			</div>
 			<div class="col-xs-12 col-md-8"></div>
 		</div>	
 		<div class="row" style="margin-bottom:10px; text-align;left;">	
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Status ::</div>
-			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-2">
+				<select id="status" name="status">
+					<option value="">--- Select Subject Status---</option>
+					<option value="1">Active</option>
+					<option value="0">Inactive</option>
+				</select>
+			</div>
 			<div class="col-xs-12 col-md-8"></div>
 		</div>	
 		<div class="row" style="margin-bottom:10px; text-align;left;">	
-			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject ID ::</div>
-			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Code ::</div>
+			<div class="col-xs-12 col-md-2">
+				<input type="text" class="form-control" id="subjectCode" name="subjectCode" width="20">
+			</div>
 			<div class="col-xs-12 col-md-8"></div>
 		</div>		
 		
@@ -181,23 +198,42 @@ dropbtn {
  		 				<c:forEach items="${subjectSearchList}" var="item"  varStatus="loop">
 	 		 				<tr>
 	 		 					<td>
-	 		 						${loop.index+1}
-	 		 					</td>
-	 		 					<td>
-	 		 						${item.subjectCode}
-	 		 					</td>
-	 		 					<td>
-	 		 						${item.nameThai}
-	 		 					</td>
-	 		 					<td>
-	 		 						${item.nameEng}
-	 		 					</td>
-	 		 					<td>
-	 		 						${item.credit}
-	 		 					</td>
-	 		 					<td>
-	 		 						${item.subjectType}
-	 		 					</td>
+		 		 					${loop.index+1}
+		 		 				</td>
+	 		 					<c:if test="${entity == 'subject' }">
+		 		 					<td>
+		 		 						${item.subjectCode}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item.nameThai}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item.nameEng}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item.credit}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item.subjectType}
+		 		 					</td>
+	 		 					</c:if>
+	 		 					<c:if test="${entity == 'crriculumSubject' }">
+		 		 					<td>
+		 		 						${item[0].subject.subjectCode}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item[0].subject.nameThai}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item[0].subject.nameEng}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item[0].subject.credit}
+		 		 					</td>
+		 		 					<td>
+		 		 						${item[0].subject.subjectType}
+		 		 					</td>
+	 		 					</c:if>
 	 		 				</tr>
 						</c:forEach>
  		 			</c:if>
