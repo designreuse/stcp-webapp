@@ -10,9 +10,9 @@
 <title>Student Course Planner</title>
 </head>
 <body>
-      <div class="box-header">
-        <h3 class="box-title">Merge Subject && Curriculum</h3>
-      </div><!-- /.box-header -->
+     <div class="box-header">
+        <h3 class="box-title">Detail Curriculum</h3>
+     </div><!-- /.box-header -->
       
 </body>
 </html>
