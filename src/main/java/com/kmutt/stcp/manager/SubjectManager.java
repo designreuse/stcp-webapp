@@ -46,10 +46,6 @@ public class SubjectManager {
     // Method//
 	public void addSubject(Subject subject,String preSubjectId) {
 		
-		subjectRepository.create(subject);
-		
-//		System.out.println(subject.getId()+"---------------");
-//
 //		Prerequisite prerequisite = new Prerequisite();
 //		
 //		Subject preSubject = new Subject();
@@ -58,8 +54,46 @@ public class SubjectManager {
 //		prerequisite.setSubjectByPresubjectId(preSubject);
 //		prerequisite.setSubjectBySubjectId(subject);
 //		
-//		prerequisiteRepository.create(prerequisite);
+//		Set<Prerequisite> prerequisitesForSubjectId = new HashSet<Prerequisite>();
+//		prerequisitesForSubjectId.add(prerequisite);
+//		
+//		subject.setPrerequisitesForPresubjectId(prerequisitesForSubjectId);
+//		subject.setPrerequisitesForSubjectId(prerequisitesForSubjectId);
+
+		subjectRepository.create(subject);
+		
+		
+		
 	}
+	
+	// Method//
+		public void addPrerequisite(Subject subject,String preSubjectId) {
+			
+			Subject mainSubject = new Subject();
+			String hqlMainSubject = "from Subject where subjectCode = '"+subject.getSubjectCode()+"' "
+					+ "									and nameThai = '"+subject.getNameThai()+"' "
+					+ "									and nameEng = '"+subject.getNameEng()+"' "
+					+ "									and subjectType = '"+subject.getSubjectType()+"' "
+					+ "									and credit = '"+subject.getCredit()+"' "
+					+ "									and status = 1 "
+					+ "									and detailThai = '"+subject.getDetailThai()+"' "
+					+ "									and detailEng = '"+subject.getDetailEng()+"' ";
+			
+			mainSubject = (Subject) subjectRepository.queryHQL(hqlMainSubject).get(0);
+			
+			
+			Subject foreignSubject = new Subject();
+			
+			String hqlForeignSubject = "from Subject where id = "+Integer.parseInt(preSubjectId)+" ";
+			
+			foreignSubject = (Subject) subjectRepository.queryHQL(hqlForeignSubject).get(0);
+			
+			Prerequisite prerequisite = new Prerequisite();
+			prerequisite.setSubjectByPresubjectId(foreignSubject);
+			prerequisite.setSubjectBySubjectId(mainSubject);
+			
+			prerequisiteRepository.create(prerequisite);
+		}
 	
 	// Method//
 	public void updateSubject(Subject subject) {

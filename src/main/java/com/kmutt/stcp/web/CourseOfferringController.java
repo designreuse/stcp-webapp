@@ -84,7 +84,9 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
 	    public String addSubject(@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
+	    	subject.setStatus(1);
 	    	subjectManager.addSubject(subject,preSubjectId);
+	    	subjectManager.addPrerequisite(subject, preSubjectId);
 	        return "courseOfferring/managesubject";
 	    }
 	    
