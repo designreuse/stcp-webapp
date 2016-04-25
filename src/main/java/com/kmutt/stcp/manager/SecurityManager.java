@@ -46,14 +46,26 @@ public class SecurityManager {
     public String ValidateBeforeSentEmail(String Email){
     	String result = "";
     	
-    	if(isValidEmail(Email)==false){
+    	if(isValidEmail(Email) == false){
     		result = "Email Invalid format";
     	}
-    	else if(isExistEmail(Email)){
+    	else if(isExistEmailInUser(Email) == true){
     		result = "User is exist ,Please Login";
+    	}
+    	else if(isExistEmailInAccount(Email) == false){
+    		result = "Email is not KMUTT Email Account";
     	}
     	
     	return result;
+    }
+    
+    public String RegisterConfirm(String token){
+    	String Email = "";
+    	
+    	//TODO ; check Emai
+    	
+    	
+    	return "";
     }
     
     public List<Account> TestSQL(String tt){
@@ -61,7 +73,6 @@ public class SecurityManager {
     	
     	return test;
     }
-    
     
     public void sendMail(String to){
     	sentmailManager.SentMail(to);
@@ -137,7 +148,19 @@ public class SecurityManager {
     	return result;
     }
     
-    private Boolean isExistEmail(String Email){
+    private Boolean isExistEmailInAccount(String Email){
+    	Boolean result = false;
+    	
+    	try {
+			//TODO wait connect db
+		} catch (Exception e) {
+			
+		}
+    	
+    	return result;
+    }
+    
+    private Boolean isExistEmailInUser(String Email){
     	Boolean result = false;
     	
     	try {

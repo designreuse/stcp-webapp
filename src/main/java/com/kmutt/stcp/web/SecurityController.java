@@ -101,10 +101,12 @@ public class SecurityController {
 	}*/
 	
 	@RequestMapping(value = "/RegistrationComplete", method = RequestMethod.GET)
-	public String RegistrationComplete(Map<String, Object> model) {
+	public String RegistrationComplete(Map<String, Object> model,@RequestParam("token") String textToken) {
 
 		logger.debug("RegistrationComplete() is executed!");
 
+		securityManager.RegisterConfirm(textToken);
+		
 		model.put("title", "title");
 		model.put("msg", "message");
 		
