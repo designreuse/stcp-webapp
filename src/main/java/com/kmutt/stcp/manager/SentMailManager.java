@@ -98,7 +98,7 @@ public class SentMailManager {
 		 String token = Email;
 		 
 		 link += "http://localhost:8080/stcp/RegitrationConfirm?token=";
-		 link += GenerateToken(Email);
+		 link += Email; // GenerateToken(Email);
 		 
 		 return link;
 	 }

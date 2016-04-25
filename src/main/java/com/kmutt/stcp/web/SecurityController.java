@@ -76,42 +76,58 @@ public class SecurityController {
 		return res;
 	}
 	
-	/*@RequestMapping(value = { "/RegisterUser" }, method = RequestMethod.GET)
-	@ResponseBody 
-	public List<Account> RegisterUser(HttpSession session, @RequestParam("Email") String textEmail) {
-		List<Account> accountList = new ArrayList();
-		
-		try {
-			accountList = securityManager.TestSQL(textEmail);
-			
-			securityManager.sendMail(textEmail);
-			
-			msg = "success";
-			
-			Account nn = new Account();
-			nn.setUsername("aa");
-			
-			accountList.add(nn);
-		} catch (Exception e) {
-			logger.error("Method:SentMailConfirm|Err:" + e.getMessage());
-			accountList = new ArrayList();
-		}
-
-		return accountList;
-	}*/
-	
 	@RequestMapping(value = "/RegistrationComplete", method = RequestMethod.GET)
-	public String RegistrationComplete(Map<String, Object> model,@RequestParam("token") String textToken) {
+	public String RegistrationComplete(Map<String, Object> model) {
 
 		logger.debug("RegistrationComplete() is executed!");
 
-		securityManager.RegisterConfirm(textToken);
+		//securityManager.RegisterConfirm(textToken);
 		
 		model.put("title", "title");
 		model.put("msg", "message");
 		
 		return "RegistrationComplete";
 	}
+	
+	@RequestMapping(value = "/RegitrationConfirm", method = RequestMethod.GET)
+	public String RegitrationConfirm(Map<String, Object> model,@RequestParam("token") String textToken) {
+
+		logger.debug("RegistrationComplete() is executed!");
+
+		//securityManager.RegisterConfirm(textToken);
+		
+		model.put("title", "title");
+		model.put("msg", "message");
+		model.put("emailtoken", textToken);
+		
+		return "RegitrationConfirm";
+	}
+	
+	
+	
+	
+	@RequestMapping(value = { "/CreateUser" }, method = RequestMethod.GET)
+	@ResponseBody 
+	public String CreateUser(HttpSession session, @RequestParam("Password") String textPassword) {
+		String msg = "";
+		
+		try {
+			// TODO ; Validate Password
+			
+			// TODO ; Create User and insert to table Account
+			
+			msg = "success";
+			
+		} catch (Exception e) {
+			logger.error("Method:CreateUser|Err:" + e.getMessage());
+			msg = e.getMessage();
+		}
+
+		String res = "{\"msg\":\"" + msg + "\"}";
+		
+		return res;
+	}
+	
 	
 	@RequestMapping(value = "/ForgotPassword", method = RequestMethod.GET)
 	public String ForgotPassword(Map<String, Object> model) {
