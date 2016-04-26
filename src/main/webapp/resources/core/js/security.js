@@ -3,6 +3,7 @@
  */
 
 $(document).ready(function() {
+	// for login (in screen index)
 	$("#btnSignIn").on('click', function(e){
 		e.preventDefault();
 		
@@ -17,7 +18,7 @@ $(document).ready(function() {
             success: function (data) {
             	if(data != null){
             		if(data.msg == "success"){
-            			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
+            			window.location.href = "http://localhost:8080/stcp/main"
             		}
             		else{
             			swal({
@@ -48,6 +49,7 @@ $(document).ready(function() {
         });
 	});
 	
+	// for validate email and sent mail to create user (in screen RegisterUser)
 	$("#btnRegister").on('click', function(e){
 		e.preventDefault();
 		
@@ -99,6 +101,7 @@ $(document).ready(function() {
 		
 	});
 	
+	// for create user after click email confirm (in screen RegistrationConfirm)
 	$("#btnCreateUser").on('click', function(e){
 		e.preventDefault();
 		
@@ -116,7 +119,7 @@ $(document).ready(function() {
             	
             	if(data != null){
             		if(data.msg == "success"){
-            			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
+            			window.location.href = "http://localhost:8080/stcp/RegistrationSuccess"
             		}
             		else{
             			swal({

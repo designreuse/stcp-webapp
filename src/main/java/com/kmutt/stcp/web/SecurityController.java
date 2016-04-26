@@ -23,7 +23,7 @@ public class SecurityController {
 	@Autowired
 	private SecurityManager securityManager;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = { "/", "/index" } , method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 		logger.debug("index() is executed!");
 
@@ -78,11 +78,8 @@ public class SecurityController {
 
 		logger.debug("RegistrationComplete() is executed!");
 
-		List<User> usr = securityManager.TestSQL("");
-		
 		model.put("title", "title");
 		model.put("msg", "message");
-		model.put("accountlist",usr);
 		
 		return "RegistrationComplete";
 	}
@@ -131,6 +128,18 @@ public class SecurityController {
 		return res;
 	}
 	
+	// show screen registration success
+	@RequestMapping(value = "/RegistrationSuccess", method = RequestMethod.GET)
+	public String RegistrationSuccess(Map<String, Object> model) {
+
+		logger.debug("RegistrationSuccess() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "RegistrationSuccess";
+	}
+		
 	// call function to login
 	@RequestMapping(value = "/Login", method = RequestMethod.GET)
 	@ResponseBody 
@@ -154,6 +163,18 @@ public class SecurityController {
 		
 		return res;
 	}
+	
+	// show screen (main page after login)
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String LoginSuccess(Map<String, Object> model) {
+		logger.debug("LoginSuccess() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "main";
+	}
+			
 	
 	@RequestMapping(value = "/ForgotPassword", method = RequestMethod.GET)
 	public String ForgotPassword(Map<String, Object> model) {
