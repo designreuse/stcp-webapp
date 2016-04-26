@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Course_Openning" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6702f896-d5ee-4cf6-af1b-bccc7a273b8d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Course_Openning" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6702f896-d5ee-4cf6-af1b-bccc7a273b8d">
 	<property name="ireport.zoom" value="1.7715610000000013"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="ID_CURRICULUM" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select @n := @n + 1 AS 'No',curriculum_id, a.subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, name_eng, subject_type, credit, semester_term, class_min,class_max
 ,semester_yesr,study_time,exam_time
@@ -10,7 +11,7 @@ from curriculum_subject a, curriculum b, subject c, course d,(SELECT @n := 0) m
 where a.curriculum_id = b.id and
       a.subject_id = c.id and
       c.id = d.subject_id and
-      b.id = 5 /* Parameter = id ของ Table Curriculum*/
+      b.id = $P{ID_CURRICULUM} /* Parameter = id ของ Table Curriculum*/
 order by semester_yesr,semester_term,subject_code]]>
 	</queryString>
 	<field name="No" class="java.lang.Double"/>
@@ -190,14 +191,14 @@ Subject Type]]></text>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
-			<textField pattern="###0">
+			<textField pattern="###0" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="37" height="35" uuid="289dd0aa-7c1f-46d7-a46d-bca1c52c99dd"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{No}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="107" y="0" width="64" height="35" uuid="746cfece-bd42-4195-ab8f-ff9672154285"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
@@ -225,7 +226,7 @@ Subject Type]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{credit}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="171" y="0" width="173" height="35" uuid="7d22b547-645f-4183-ae84-30e2d7619781"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
@@ -239,7 +240,7 @@ Subject Type]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subject_type}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="37" y="0" width="70" height="35" uuid="893f73a8-c7f3-4235-9e9f-54b6ecd84cb6"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>

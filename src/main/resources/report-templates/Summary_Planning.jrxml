@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Summary_Planning" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2489a7b1-23be-4aa6-b917-f9f3c683a8b4">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Summary_Planning" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2489a7b1-23be-4aa6-b917-f9f3c683a8b4">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="ID_CURRICULUM" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select curriculum_id, a.subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, name_eng, subject_type, credit, d.semester_term, d.semester_year, count(distinct d.account_id) as count_student
 from curriculum_subject a, curriculum b, subject c, course_plan d
 where a.curriculum_id = b.id and
       a.subject_id = c.id and
       c.id = d.subject_id and
-      b.id = 5 /* Parameter = id ของ Table Curriculum*/
+      b.id = $P{ID_CURRICULUM}/* Parameter = id ของ Table Curriculum*/
 Group by curriculum_id, a.subject_id, name  , started_year , subject_code, name_thai, name_eng, subject_type, credit, d.semester_term, d.semester_year
 order by d.semester_year, d.semester_term, subject_code;]]>
 	</queryString>
@@ -158,7 +161,7 @@ No of Student]]></text>
 	</columnHeader>
 	<detail>
 		<band height="35" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="496" y="0" width="59" height="35" uuid="8a4ecc22-bf6e-4772-9f2c-e87064d79cb1"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
@@ -171,21 +174,21 @@ No of Student]]></text>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="107" y="0" width="52" height="35" uuid="e2030ed2-9945-4125-9e1a-d14e3f3f66ef"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subject_code}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="437" y="0" width="60" height="35" uuid="d61f0212-f018-4048-98d4-b189a8ea20a8"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{credit}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="159" y="0" width="222" height="35" uuid="d4e24998-9299-41e4-ae4c-95c525bc137d"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
@@ -193,7 +196,7 @@ No of Student]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name_thai} + "\n" + "(" + $F{name_eng} + ")"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="0" width="99" height="35" forecolor="#000000" uuid="1713442b-7396-4be9-9f16-689962ca4e1c"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="12"/>
