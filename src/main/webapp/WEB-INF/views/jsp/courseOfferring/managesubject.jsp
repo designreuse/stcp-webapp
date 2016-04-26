@@ -192,6 +192,7 @@ dropbtn {
 						<th>Subject Name(Eng).</th>
 						<th>Credit.</th>
 						<th>Subject Type.</th>
+						<th>Manage</th>
   					</tr>
   					
  		 			<c:if test="${ subjectSearchList != null}">
@@ -234,6 +235,17 @@ dropbtn {
 		 		 						${item[0].subject.subjectType}
 		 		 					</td>
 	 		 					</c:if>
+	 		 					<td>
+	 		 					
+								    <a class="btn btn-success btn-sm" href="${root}/courseofferring/editSubject?subjectId=${item.id}"><span class="fa fa-edit">&nbsp;</span></a>
+									<!-- <a class="btn btn-danger btn-sm" href="${root}/courseofferring/deleteSubject"><span class="fa fa-times">&nbsp;</span></a> -->
+									
+
+									<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item.id}');"><span class="fa fa-times">&nbsp;</span></a>
+									
+									<form id="delSubjForm${item.id}" method="post" action="${root}/courseofferring/deleteSubject?subjectId=${item.id}">
+									</form>
+	 		 					</td>
 	 		 				</tr>
 						</c:forEach>
  		 			</c:if>

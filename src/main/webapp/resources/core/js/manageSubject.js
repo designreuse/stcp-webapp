@@ -34,3 +34,26 @@ function searchSubject(){
 		}
 	});
 }
+
+
+function delSubject(id){
+	swal({
+		title : "Delete Subject",
+		text : "Are you want to delete this subjectId : "+id+" ?",
+		type : "warning",
+		showCancelButton : true,
+		confirmButtonClass : 'btn btn-info',
+		confirmButtonText : "Yes",
+		cancelButtonText : "No",
+		closeOnConfirm : false,
+		showLoaderOnConfirm : true
+		
+	}, function(isConfirm) {
+		
+		if (isConfirm) {
+			document.getElementById("delSubjForm"+id).submit();
+		}
+	});
+	
+}
+

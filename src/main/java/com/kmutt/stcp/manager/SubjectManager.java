@@ -95,14 +95,56 @@ public class SubjectManager {
 			prerequisiteRepository.create(prerequisite);
 		}
 	
+		
 	// Method//
-	public void updateSubject(Subject subject) {
+	public void updateSubject(Subject subject,int preRequisiteId,int newPreSubject) {
 		subjectRepository.update(subject);
+		
+		Prerequisite prerequisite = new Prerequisite();
+		
+		if(newPreSubject!=0){
+			Subject foreignSubject = new Subject();
+			
+			String hqlForeignSubject = "from Subject where id = "+newPreSubject+" ";
+			
+			foreignSubject = (Subject) subjectRepository.queryHQL(hqlForeignSubject).get(0);
+			
+			
+			if(preRequisiteId==0){
+				
+				prerequisite.setSubjectByPresubjectId(foreignSubject);
+				prerequisite.setSubjectBySubjectId(subject);
+				
+				prerequisiteRepository.create(prerequisite);
+			}else{
+				prerequisite.setId(preRequisiteId);
+				prerequisite.setSubjectBySubjectId(subject);
+				prerequisite.setSubjectByPresubjectId(foreignSubject);
+					
+				prerequisiteRepository.update(prerequisite);
+			}
+			
+		}else{
+			
+			String hql = "from Prerequisite where id = "+preRequisiteId+" ";
+			
+			prerequisite = (Prerequisite) prerequisiteRepository.queryHQL(hql).get(0);
+			
+			prerequisiteRepository.delete(prerequisite);
+		}
+		
+		
 	}
 	
 	// Method//
 	public void deleteSubject(int subjectId) {
-		subjectRepository.deleteById(subjectId);
+		Subject subject = new Subject();
+		
+		String hql = "from Subject where id = "+subjectId+" ";
+		
+		subject = (Subject) subjectRepository.queryHQL(hql).get(0);
+		
+		subjectRepository.delete(subject);
 	}
 
 	// Method//
@@ -153,4 +195,34 @@ public class SubjectManager {
 			return curriculumSubjectRepositoryList;
 		}
    
+		
+	// Method//
+	public Subject getSubjectById(int id) {
+		
+		Subject subject = new Subject();
+		
+		String hql = "from Subject where id = "+id+" ";
+		
+		subject = (Subject) subjectRepository.queryHQL(hql).get(0);
+		
+		return subject;
+	}
+	
+	public Object getPrerequisiteById(int id){
+		
+		String hql = "from Prerequisite pre join pre.subjectBySubjectId as subs "
+				+ "							join pre.subjectByPresubjectId as subp "
+				+ "							 where subs.id = "+id+" ";
+		
+		List<Prerequisite> prerequisiteList = prerequisiteRepository.queryHQL(hql);
+		
+		if(prerequisiteList.size()!=0){
+			return prerequisiteList.get(0);
+		}else{
+			return null;
+		}
+		
+		
+	}
+	
 }

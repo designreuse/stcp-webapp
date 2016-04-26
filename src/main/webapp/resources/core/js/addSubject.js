@@ -7,7 +7,7 @@ var currentSemester = "";
 var touchtime = 0;
 
 $(document).ready(function() {
-
+	
 
 	$("#btnSave").click(function() {
 		swal({
@@ -30,7 +30,7 @@ $(document).ready(function() {
 	});
 
 	$("#btnReset").click(function() {
-		
+		$("#preSubjectId").select2();
 		swal({
 			title : "Add Subject",
 			text : "Are you want to reset this subject?",
