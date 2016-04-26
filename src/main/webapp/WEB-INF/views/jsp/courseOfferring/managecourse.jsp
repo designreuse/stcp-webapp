@@ -55,7 +55,7 @@ th {
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
 		        <li><a href="#">Search</a></li>
-		        <li><a href="${root}/courseofferring/DetailCurriculum">New</a></li>
+		        <li><a href="${root}/courseofferring/addCourse">New</a></li>
 		        <li><a href="#">Cancel</a></li>
 		        <li><a href="#">Close</a></li>
 		    </ul>

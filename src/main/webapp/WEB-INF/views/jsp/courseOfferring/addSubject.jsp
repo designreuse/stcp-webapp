@@ -135,7 +135,7 @@ dropbtn {
 				<div class="col-sm-2">ประเภทวิชา ::</div>
 				<div class="col-sm-2">
 					<form:select path="subjectType">
-						<form:option value="0" label="--- เลือกประเภทวิชา ---"/>
+						<form:option value="" label="--- เลือกประเภทวิชา ---"/>
 						<form:options items="${subjectTypeList}" />
 					</form:select>
 				</div>
