@@ -1,10 +1,10 @@
 package com.kmutt.stcp.web;
 
+import com.kmutt.stcp.manager.PasswordManager;
 import com.kmutt.stcp.manager.SecurityManager;
 import com.kmutt.stcp.entity.Account;
-import com.kmutt.stcp.entity.Subject;
-/*import com.kmutt.stcp.dto.MessageResult;
-import com.kmutt.stcp.dto.PlanMessageRequest;*/
+import com.kmutt.stcp.entity.User;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 @Controller
@@ -26,11 +23,8 @@ public class SecurityController {
 	@Autowired
 	private SecurityManager securityManager;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = { "/", "/index" } , method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
-
-		securityManager = this.getCurrentSecurityManager(session);
-		
 		logger.debug("index() is executed!");
 
 		model.put("title", "title");
@@ -39,6 +33,7 @@ public class SecurityController {
 		return "index";
 	}
 	
+	// show screen for input email
 	@RequestMapping(value = "/Register", method = RequestMethod.GET)
 	public String Register(Map<String, Object> model) {
 
@@ -50,6 +45,7 @@ public class SecurityController {
 		return "RegisterUser";
 	}
 	
+	// call function to validate email and sent mail
 	@RequestMapping(value = { "/RegisterUser" }, method = RequestMethod.GET)
 	@ResponseBody 
 	public String RegisterUser(HttpSession session, @RequestParam("Email") String textEmail) {
@@ -76,25 +72,25 @@ public class SecurityController {
 		return res;
 	}
 	
+	// show screen registration complete
 	@RequestMapping(value = "/RegistrationComplete", method = RequestMethod.GET)
 	public String RegistrationComplete(Map<String, Object> model) {
 
 		logger.debug("RegistrationComplete() is executed!");
 
-		//securityManager.RegisterConfirm(textToken);
-		
 		model.put("title", "title");
 		model.put("msg", "message");
 		
 		return "RegistrationComplete";
 	}
 	
+	// show screen from click link in email and for input password
 	@RequestMapping(value = "/RegitrationConfirm", method = RequestMethod.GET)
 	public String RegitrationConfirm(Map<String, Object> model,@RequestParam("token") String textToken) {
 
-		logger.debug("RegistrationComplete() is executed!");
-
-		//securityManager.RegisterConfirm(textToken);
+		logger.debug("RegitrationConfirm() is executed!");
+		
+		//String textEmail = securityManager.GetEmailFromToken(textToken);
 		
 		model.put("title", "title");
 		model.put("msg", "message");
@@ -103,21 +99,25 @@ public class SecurityController {
 		return "RegitrationConfirm";
 	}
 	
-	
-	
-	
+	// call function to create user
 	@RequestMapping(value = { "/CreateUser" }, method = RequestMethod.GET)
 	@ResponseBody 
-	public String CreateUser(HttpSession session, @RequestParam("Password") String textPassword) {
+	public String CreateUser(HttpSession session,@RequestParam("Email") String textEmail, @RequestParam("Password") String textPassword) {
 		String msg = "";
 		
 		try {
 			// TODO ; Validate Password
+			String result = securityManager.ValidatePasswordBeforeCreateUser(textPassword);
 			
-			// TODO ; Create User and insert to table Account
+			if(result.isEmpty()){
+				result = securityManager.CreateUser(textEmail, textPassword);
+				
+				if(result.isEmpty()){
+					result = "success";
+				}
+			}
 			
-			msg = "success";
-			
+			msg = result;
 		} catch (Exception e) {
 			logger.error("Method:CreateUser|Err:" + e.getMessage());
 			msg = e.getMessage();
@@ -128,6 +128,53 @@ public class SecurityController {
 		return res;
 	}
 	
+	// show screen registration success
+	@RequestMapping(value = "/RegistrationSuccess", method = RequestMethod.GET)
+	public String RegistrationSuccess(Map<String, Object> model) {
+
+		logger.debug("RegistrationSuccess() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "RegistrationSuccess";
+	}
+		
+	// call function to login
+	@RequestMapping(value = "/Login", method = RequestMethod.GET)
+	@ResponseBody 
+	public String Login(HttpSession session, @RequestParam("Usr") String textUserName, @RequestParam("Pwd") String textPassword) {
+		String msg = "";
+		
+		try {
+			String result = securityManager.Login(textUserName, textPassword);
+			
+			if(result.isEmpty()){
+				result = "success";
+			}
+			
+			msg = result;
+		} catch (Exception e) {
+			logger.error("Method:CreateUser|Err:" + e.getMessage());
+			msg = e.getMessage();
+		}
+
+		String res = "{\"msg\":\"" + msg + "\"}";
+		
+		return res;
+	}
+	
+	// show screen (main page after login)
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String LoginSuccess(Map<String, Object> model) {
+		logger.debug("LoginSuccess() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "main";
+	}
+			
 	
 	@RequestMapping(value = "/ForgotPassword", method = RequestMethod.GET)
 	public String ForgotPassword(Map<String, Object> model) {
@@ -140,62 +187,6 @@ public class SecurityController {
 		return "ForgotPassword";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	@ResponseBody 
-	public List<Subject> Login(HttpSession session, @RequestParam("textsearch") String textSearch) {
-
-		List<Subject> subjectSearched = new ArrayList<>();
-
-		try {
-				for (Integer i = 0; i < 5; i++) {
-					Subject ss = new Subject();
-					
-					ss.setDetailThai(textSearch + i.toString());
-					
-					subjectSearched.add(ss);	
-				}
-				
-			
-			
-		} catch (Exception e) {
-
-			logger.error("Method:searchSubject|Err:" + e.getMessage());
-			subjectSearched = new ArrayList<>();
-		}
-
-		return subjectSearched;
-	}
 	
-	
-	
-	// Method//
-		@SuppressWarnings("finally")
-		private SecurityManager getCurrentSecurityManager(HttpSession session) {
-
-			SecurityManager _securityManage = null;
-
-			try {
-
-				_securityManage = (SecurityManager) session.getAttribute("securityMng");
-
-				if (_securityManage == null) {
-					//TODO: change session name to get account
-					_securityManage = new SecurityManager(session);
-				}
-
-			} catch (Exception e) {
-
-				logger.error(e.getMessage());
-
-				_securityManage = new SecurityManager(null);
-
-			} finally {
-
-				session.setAttribute("securityMng", _securityManage);
-				return _securityManage;
-
-			}
-
-		}
 	
 }

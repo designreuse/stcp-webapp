@@ -3,66 +3,60 @@
  */
 
 $(document).ready(function() {
+	// for login (in screen index)
 	$("#btnSignIn").on('click', function(e){
 		e.preventDefault();
 		
+		var txtUserName = $('#tbxUserName').val();
+		var txtPassword = $('#tbxPassword').val();
+		
 		$.ajax({
             type: "GET",
-            url: "http://localhost:8080/stcp/login",
+            url: "http://localhost:8080/stcp/Login",
             dataType: "json",
-            data: { textsearch: "testinput" },
+            data: { Usr: txtUserName, Pwd: txtPassword },
             success: function (data) {
             	if(data != null){
-            		if(data[0].msg == "success"){
-            			alert("success");
+            		if(data.msg == "success"){
+            			window.location.href = "http://localhost:8080/stcp/main"
             		}
             		else{
             			swal({
                 			title : "Student Course Planner",
-                			text : "Error",
+                			text : data.msg,
                 			type : "error",
-                			showCancelButton : false,
-                			confirmButtonClass : 'btn btn-info',
-                			confirmButtonText : "OK",
-                			closeOnConfirm : false
-                		}, function(isConfirm) {
-                			if (isConfirm) {
-                				window.location.href = window.location.href;
-                			}
+       					   	showCancelButton: false 
                 		});
             		}
             	}
             	else{
             		swal({
             			title : "Student Course Planner",
-            			text : "Error",
+            			text : "System Error, Please contact system admin",
             			type : "error",
-            			showCancelButton : false,
-            			confirmButtonClass : 'btn btn-info',
-            			confirmButtonText : "OK",
-            			closeOnConfirm : false
-            		}, function(isConfirm) {
-            			if (isConfirm) {
-            				window.location.href = window.location.href;
-            			}
+   					   	showCancelButton: false 
             		});
             	}
             },
             error: function (xml, status, errMsg) {
-            	alert(xml);
-            	alert(status);
-            	alert(errMsg);
+            	swal({
+        			title : "Student Course Planner",
+        			text : "System Error, Please contact system admin",
+        			type : "error",
+					   	showCancelButton: false 
+        		});
             }
         });
 	});
 	
+	// for validate email and sent mail to create user (in screen RegisterUser)
 	$("#btnRegister").on('click', function(e){
 		e.preventDefault();
 		
 		var txtEmail = $('#tbxRegisterEmail').val();
 		
 		$("#loadingModal").modal("show");
-		//RegisterUser
+	
 		$.ajax({
             type: "GET",
             url: "http://localhost:8080/stcp/RegisterUser",
@@ -70,42 +64,7 @@ $(document).ready(function() {
             data: { Email: txtEmail },
             success: function (data) {
             	$("#loadingModal").modal("hide");
-            	if(data != null){
-            		if(data.msg == "success"){
-            			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
-            		}
-            		else{
-            			alert(data.msg);
-            		}
-            	}
-            	else{
-            		alert("Error");
-            	}
-        	},
-            error: function (xml, status, errMsg) {
-            	$("#loadingModal").modal("hide");
-            	//alert(xml);
-            	alert(status);
-            	alert(errMsg);
-            }
-        });
-		
-	});
-	
-	$("#btnCreateUser").on('click', function(e){
-		e.preventDefault();
-		
-		var txtPassword = $('#tbxPassword').val();
-		
-		$("#loadingModal").modal("show");
-		//RegisterUser
-		$.ajax({
-            type: "GET",
-            url: "http://localhost:8080/stcp/CreateUser",
-            dataType: "json",
-            data: { Password: txtPassword },
-            success: function (data) {
-            	$("#loadingModal").modal("hide");
+            	
             	if(data != null){
             		if(data.msg == "success"){
             			window.location.href = "http://localhost:8080/stcp/RegistrationComplete"
@@ -115,38 +74,80 @@ $(document).ready(function() {
                 			title : "Student Course Planner",
                 			text : data.msg,
                 			type : "error",
-                			showCancelButton : false,
-                			confirmButtonClass : 'btn btn-info',
-                			confirmButtonText : "OK",
-                			closeOnConfirm : false
-                		}, function(isConfirm) {
-                			if (isConfirm) {
-                				window.location.href = window.location.href;
-                			}
+       					   	showCancelButton: false 
                 		});
             		}
             	}
             	else{
             		swal({
             			title : "Student Course Planner",
-            			text : "Error",
+            			text : "System Error, Please contact system admin",
             			type : "error",
-            			showCancelButton : false,
-            			confirmButtonClass : 'btn btn-info',
-            			confirmButtonText : "OK",
-            			closeOnConfirm : false
-            		}, function(isConfirm) {
-            			if (isConfirm) {
-            				window.location.href = window.location.href;
-            			}
+   					   	showCancelButton: false 
             		});
             	}
         	},
             error: function (xml, status, errMsg) {
             	$("#loadingModal").modal("hide");
-            	//alert(xml);
-            	alert(status);
-            	alert(errMsg);
+            	
+            	swal({
+        			title : "Student Course Planner",
+        			text : errMsg,
+        			type : "error",
+					   	showCancelButton: false 
+        		});
+            }
+        });
+		
+	});
+	
+	// for create user after click email confirm (in screen RegistrationConfirm)
+	$("#btnCreateUser").on('click', function(e){
+		e.preventDefault();
+		
+		var txtEmail = $('#tbxEmail').val();
+		var txtPassword = $('#tbxPassword').val();
+		
+		$("#loadingModal").modal("show");
+		$.ajax({
+            type: "GET",
+            url: "http://localhost:8080/stcp/CreateUser",
+            dataType: "json",
+            data: { Email: txtEmail, Password: txtPassword },
+            success: function (data) {
+            	$("#loadingModal").modal("hide");
+            	
+            	if(data != null){
+            		if(data.msg == "success"){
+            			window.location.href = "http://localhost:8080/stcp/RegistrationSuccess"
+            		}
+            		else{
+            			swal({
+                			title : "Student Course Planner",
+                			text : data.msg,
+                			type : "error",
+       					   	showCancelButton: false 
+                		});
+            		}
+            	}
+            	else{
+            		swal({
+            			title : "Student Course Planner",
+            			text : "System Error, Please contact system admin",
+            			type : "error",
+   					   	showCancelButton: false 
+            		});
+            	}
+        	},
+            error: function (xml, status, errMsg) {
+            	$("#loadingModal").modal("hide");
+            	
+            	swal({
+        			title : "Student Course Planner",
+        			text : errMsg,
+        			type : "error",
+					   	showCancelButton: false 
+        		});
             }
         });
 		
