@@ -1,9 +1,13 @@
 package com.kmutt.stcp.web.report;
 
+import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.User;
+import com.kmutt.stcp.manager.CourseManager;
+import com.kmutt.stcp.manager.ReportManager;
 import com.kmutt.stcp.web.report.bean.ReportAjaxBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +30,10 @@ import java.util.WeakHashMap;
 @RequestMapping("/report")
 public class ReportController {
     private final Logger logger = LoggerFactory.getLogger(ReportController.class);
+
+
+    @Autowired
+    private ReportManager reportManager;
 
     private User authorizedUser;
 
@@ -88,6 +96,7 @@ public class ReportController {
 //
 //      มันต้องเป็น curriculum year กับ curriculumn name
 //      เอา 2 ค่าจาก table curriculum ไป map เป็น curriculum id
+//        reportManager.findCourseId(bean.get)
 
 
         //กรุณาเลือก courseId
