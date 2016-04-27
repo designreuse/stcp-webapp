@@ -16,14 +16,16 @@
 <link href="http://fonts.googleapis.com/css?family=Montserrat"
 	rel="stylesheet">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 <!-- SweetAlert -->
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
-	
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#preSubjectId').select2();
+});
+</script>
 <title>Student Course Planner</title>
 </head>
 <style>
@@ -120,12 +122,13 @@ dropbtn {
 
 
 	<div class="container">
-		<form:form method="post" modelAttribute="subjectForm">
+		<form:form method="post" modelAttribute="subjectForm" onsubmit="verifyForm();return false;">
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสวิชา ::</div>
 				<div class="col-sm-2">
-					<form:input path="subjectCode" />
+					<form:input path="subjectCode" cssClass="form-control" />
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -134,10 +137,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ประเภทวิชา ::</div>
 				<div class="col-sm-2">
-					<form:select path="subjectType">
+					<form:select path="subjectType"  cssClass="form-control">
 						<form:option value="" label="--- เลือกประเภทวิชา ---"/>
 						<form:options items="${subjectTypeList}" />
 					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -146,7 +150,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ชื่อวิชา(ไทย) ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameThai" />
+					<form:input path="nameThai" cssClass="form-control" />
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -155,7 +160,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ชื่อวิชา(อังกฤษ) ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameEng" />
+					<form:input path="nameEng" cssClass="form-control" />
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -164,7 +170,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รายละเอียด(ไทย) ::</div>
 				<div class="col-sm-2">
-					<form:input path="detailThai" />
+					<form:input path="detailThai" cssClass="form-control" />
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -173,7 +179,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รายละเอียด(อังกฤษ) ::</div>
 				<div class="col-sm-2">
-					<form:input path="detailEng"/>
+					<form:input path="detailEng" cssClass="form-control"/>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -185,8 +191,8 @@ dropbtn {
 					<input type="checkbox" id="chkPre" name="chkPre"> วิชาบังคับก่อน
 					&nbsp;
 					<span id="preSubSpan" style="display:none;">
-						<select id="preSubjectId" name="preSubjectId">
-							<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
+						<select id="preSubjectId" name="preSubjectId" style="width:250px;">
+							<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
 							<c:forEach items="${subjectList}" var="item">
 								<option value="${item.key}">${item.value}</option>
 							</c:forEach>
@@ -201,10 +207,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">หน่่วยกิต ::</div>
 				<div class="col-sm-2">
-					<form:select path="credit">
+					<form:select path="credit" cssClass="form-control">
 						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
 						<form:options items="${creditList}" />
 					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>

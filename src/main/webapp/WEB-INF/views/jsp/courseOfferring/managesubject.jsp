@@ -15,14 +15,33 @@
 <meta charset="utf-8">
 <link href="http://fonts.googleapis.com/css?family=Montserrat"
 	rel="stylesheet">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 	<!-- SweetAlert -->
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#dataTable').DataTable();
+	
+	if("${addSuccess}"=="Y"){
+		setTimeout(function(){ 
+			swal("Add Subject is success.!", "", "success");
+		
+		}, 100);
+	}
+	
+	if("${editSuccess}"=="Y"){
+		setTimeout(function(){ 
+			swal("Edit Subject is success.!", "", "success");
+		
+		}, 100);
+	}
+	
+});
+</script>
 <title>Student Course Planner</title>
 </head>
 <style>
@@ -150,7 +169,7 @@ dropbtn {
 		<div class="row" style="margin-bottom:10px; text-align;left;">			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Type ::</div>
 			<div class="col-xs-12 col-md-2">
-				<select id="subjectType" name="subjectType">
+				<select id="subjectType" name="subjectType" class="form-control">
 					<option value="">--- Select Subject Type---</option>
 					<c:forEach items="${subjectTypeList}" var="item">
 						<option value="${item.key}">${item.value}</option>
@@ -162,7 +181,7 @@ dropbtn {
 		<div class="row" style="margin-bottom:10px; text-align;left;">	
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">Subject Status ::</div>
 			<div class="col-xs-12 col-md-2">
-				<select id="status" name="status">
+				<select id="status" name="status" class="form-control">
 					<option value="">--- Select Subject Status---</option>
 					<option value="1">Active</option>
 					<option value="0">Inactive</option>
@@ -179,23 +198,25 @@ dropbtn {
 		</div>		
 		
 	</form>
-		
+
 		<div style="margin-bottom:20px;"></div>	<!-- empty -->
 		<div class="panel panel-default">
+		<c:if test="${ subjectSearchList != null}">
     		<div class="panel-heading">Search Result</div>
     		<div class="panel-body">
-     			<table class="table table-condensed">
- 		 			<tr>
- 		 				<th></th>
-						<th>Subject ID</th>
-						<th>Subject Name(Thai).</th>
-						<th>Subject Name(Eng).</th>
-						<th>Credit.</th>
-						<th>Subject Type.</th>
-						<th>Manage</th>
-  					</tr>
-  					
- 		 			<c:if test="${ subjectSearchList != null}">
+     			<table class="display" id="dataTable">
+     				<thead>
+	 		 			<tr>
+	 		 				<th></th>
+							<th>Subject ID</th>
+							<th>Subject Name(Thai).</th>
+							<th>Subject Name(Eng).</th>
+							<th>Credit.</th>
+							<th>Subject Type.</th>
+							<th>Manage</th>
+	  					</tr>
+  					</thead>
+ 		 			<tbody>
  		 				<c:forEach items="${subjectSearchList}" var="item"  varStatus="loop">
 	 		 				<tr>
 	 		 					<td>
@@ -217,6 +238,19 @@ dropbtn {
 		 		 					<td>
 		 		 						${item.subjectType}
 		 		 					</td>
+		 		 					
+		 		 					<td>
+	 		 					
+									    <a class="btn btn-success btn-sm" href="${root}/courseofferring/editSubject?subjectId=${item.id}"><span class="fa fa-edit">&nbsp;</span></a>
+										<!-- <a class="btn btn-danger btn-sm" href="${root}/courseofferring/deleteSubject"><span class="fa fa-times">&nbsp;</span></a> -->
+										
+	
+										<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item.id}');"><span class="fa fa-times">&nbsp;</span></a>
+										
+										<form id="delSubjForm${item.id}" method="post" action="${root}/courseofferring/deleteSubject">
+											<input type="hidden" name="subjectId" value="${item.id}">
+										</form>
+		 		 					</td>
 	 		 					</c:if>
 	 		 					<c:if test="${entity == 'crriculumSubject' }">
 		 		 					<td>
@@ -234,25 +268,29 @@ dropbtn {
 		 		 					<td>
 		 		 						${item[0].subject.subjectType}
 		 		 					</td>
-	 		 					</c:if>
-	 		 					<td>
+		 		 					
+		 		 					<td>
 	 		 					
-								    <a class="btn btn-success btn-sm" href="${root}/courseofferring/editSubject?subjectId=${item.id}"><span class="fa fa-edit">&nbsp;</span></a>
-									<!-- <a class="btn btn-danger btn-sm" href="${root}/courseofferring/deleteSubject"><span class="fa fa-times">&nbsp;</span></a> -->
-									
-
-									<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item.id}');"><span class="fa fa-times">&nbsp;</span></a>
-									
-									<form id="delSubjForm${item.id}" method="post" action="${root}/courseofferring/deleteSubject?subjectId=${item.id}">
-									</form>
-	 		 					</td>
+									    <a class="btn btn-success btn-sm" href="${root}/courseofferring/editSubject?subjectId=${item[0].id}"><span class="fa fa-edit">&nbsp;</span></a>
+										<!-- <a class="btn btn-danger btn-sm" href="${root}/courseofferring/deleteSubject"><span class="fa fa-times">&nbsp;</span></a> -->
+										
+	
+										<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item[0].id}');"><span class="fa fa-times">&nbsp;</span></a>
+										
+										<form id="delSubjForm${item[0].id}" method="post" action="${root}/courseofferring/deleteSubject">
+											<input type="hidden" name="subjectId" value="${item[0].id}">
+										</form>
+		 		 					</td>
+	 		 					</c:if>
+	 		 					
 	 		 				</tr>
 						</c:forEach>
- 		 			</c:if>
-	 		 			
+ 		 			
+	 		 			</tbody>
   										
   				</table>
     		</div>
+    	</c:if>
   		</div>
   	</div>
 
