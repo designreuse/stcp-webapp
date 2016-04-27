@@ -196,7 +196,7 @@ dropbtn {
 						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()" checked> วิชาบังคับก่อน
 						&nbsp;
 						<span id="preSubSpan">
-							<select id="preSubjectId" name="preSubjectId">
+							<select id="preSubjectId" name="preSubjectId" style="width:250px;">
 								<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
 								<c:forEach items="${subjectList}" var="item">
 									<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
@@ -215,7 +215,7 @@ dropbtn {
 						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()"> วิชาบังคับก่อน
 						&nbsp;
 						<span id="preSubSpan" style="display:none;">
-							<select id="preSubjectId" name="preSubjectId">
+							<select id="preSubjectId" name="preSubjectId" style="width:250px;">
 								<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
 								<c:forEach items="${subjectList}" var="item">
 									<option value="${item.key}">${item.value}</option>
