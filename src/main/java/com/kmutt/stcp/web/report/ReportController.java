@@ -97,6 +97,20 @@ public class ReportController {
 //      มันต้องเป็น curriculum year กับ curriculumn name
 //      เอา 2 ค่าจาก table curriculum ไป map เป็น curriculum id
 //        reportManager.findCourseId(bean.get)
+        if(ReportTemplate.STUDENT_PLANNING.ordinal() == bean.getReportId()) {
+            //if studentId != null else...
+            bean.setErrorMsg("ไม่สามารถดูรายงานได้");
+        } else if(ReportTemplate.COURSE_OPENING.ordinal() == bean.getReportId()
+                || ReportTemplate.PREREQUISITE.ordinal() == bean.getReportId()
+                || ReportTemplate.SUBJECT_DETAIL.ordinal() == bean.getReportId()
+                || ReportTemplate.SUMMARY_PLANNING.ordinal() == bean.getReportId()
+                || ReportTemplate.TIME_TABLE.ordinal() == bean.getReportId()) {
+            if(bean.getCurriculumId() != null) {
+                bean.setErrorMsg("กรุณาเลือกหลักสูตร");
+            }
+        } else {
+            bean.setErrorMsg("ข้อมูลรายงานไม่ถูกต้อง");
+        }
 
 
         //กรุณาเลือก courseId

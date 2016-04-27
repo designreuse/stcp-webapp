@@ -48,12 +48,13 @@ pageEncoding="UTF-8"%>
                 <!--&lt;!&ndash; Button and dropdown menu &ndash;&gt;-->
                 <!--</div>-->
                 <input type="text" class="form-control" aria-label="..." placeholder="ปี">
-                <select class="form-control">
-                    <option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>
-                    <option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>
-                    <option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>
-                    <option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>
-                </select>
+                <input type="text" class="form-control" aria-label="..." placeholder="ชื่อหลักสูตร" >
+                <!--<select class="form-control">-->
+                    <!--<option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>-->
+                    <!--<option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>-->
+                    <!--<option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>-->
+                    <!--<option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>-->
+                <!--</select>-->
             </div>
 
             <!--<div class="input-group">-->
@@ -132,21 +133,6 @@ pageEncoding="UTF-8"%>
             </div>
         </div>
 
-    </div>
-</div>
-
-<!-- Small modal -->
-<div id="msgModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
-     aria-labelledby="reportModalTitle">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="reportModalTitle">Small modal</h4>
-            </div>
-            <div id="reportModalBody" class="modal-body"> ...</div>
-        </div>
     </div>
 </div>
 

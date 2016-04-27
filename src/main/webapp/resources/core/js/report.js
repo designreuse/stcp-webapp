@@ -51,9 +51,13 @@ $(document).on("click","#reportCenterTable > tbody > tr",function(req){
             $("#loadingModal").modal("hide");
     //        console.log(data);
             if(data.errorMsg) {
-                $("#reportModalTitle").text("ข้อความแจ้งเตือน");
-                $("#reportModalBody").text(data.errorMsg);
-                $("#msgModal").modal('show');
+                swal({
+                    title : "ข้อความแจ้งเตือน",
+                    text : data.errorMsg,
+                    type : "error",
+                    showCancelButton: false
+                });
+
             } else {
                 window.location="reportCenterGenerator/pdf?reportId="+reportId;
             }
