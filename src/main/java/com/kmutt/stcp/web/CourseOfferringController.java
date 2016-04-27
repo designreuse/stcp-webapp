@@ -84,10 +84,18 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
-	    public String addSubject(@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
+	    public String addSubject(Model model,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
 	    	subject.setStatus(1);
 	    	subjectManager.addSubject(subject,preSubjectId);
-	    	subjectManager.addPrerequisite(subject, preSubjectId);
+	    	
+	    	if(preSubjectId!=null){
+	    		if(!preSubjectId.equals("")){
+	    			subjectManager.addPrerequisite(subject, preSubjectId);
+		    	}
+	    	}
+	    	
+	    	model.addAttribute("addSuccess", "Y");
+	    	
 	        return "courseOfferring/managesubject";
 	    }
 	    
@@ -117,13 +125,14 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/editSubject", method = RequestMethod.POST)
-	    public String editSubject(@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) {
+	    public String editSubject(Model model,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) {
 	    	
 	    	preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
 	    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
 	    	
 	    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
-
+	    	
+	    	model.addAttribute("editSuccess", "Y");
 	        return "courseOfferring/managesubject";
 	    }
 	    
