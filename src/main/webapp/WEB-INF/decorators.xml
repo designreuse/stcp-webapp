@@ -10,6 +10,10 @@
         <pattern>/courseofferring/*</pattern>
         <pattern>/coursePlanner/*</pattern>
     </decorator>
+    
+    <decorator name="templateCourseOffering" page="templateCourseOffering.jsp">
+        <pattern>/courseofferring/*</pattern>
+    </decorator>
 
   
    
