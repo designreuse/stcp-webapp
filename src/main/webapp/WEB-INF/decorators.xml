@@ -4,6 +4,7 @@
         <pattern>/resources/core/css/*</pattern>
     </excludes>
     <decorator name="template" page="template.jsp">
+    	<pattern>/mains</pattern>
     	<pattern>/test/*</pattern>
         <pattern>/report/*</pattern>
         <pattern>/courseofferring/*</pattern>

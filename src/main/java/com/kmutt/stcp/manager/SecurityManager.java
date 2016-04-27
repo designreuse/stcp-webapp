@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kmutt.stcp.entity.*;
 import com.kmutt.stcp.repository.AccountRepository;
+import com.kmutt.stcp.repository.CurriculumRepository;
 import com.kmutt.stcp.repository.RoleUserRepository;
 import com.kmutt.stcp.repository.UserRepository;
 
@@ -51,6 +52,8 @@ public class SecurityManager {
     @Autowired
     RoleUserRepository roleUserRepository;
     
+    @Autowired
+    CurriculumRepository curriculumRepository;
     
     
     public SecurityManager(){
@@ -175,6 +178,32 @@ public class SecurityManager {
     	Account loginAcc = findAccountByUserName(UserName);
     	
     	return loginAcc;
+    }
+    
+    public User GetLoginUserProfile(HttpSession session){
+    	Account loginAcc = (Account) session.getAttribute("loginAccount");
+    	
+    	User loginUser = findUserByEmail(loginAcc.getUsername());
+    	
+    	if(loginUser.getCitizenId().isEmpty()){
+    		loginUser.setCitizenId("");
+    	}
+    	
+    	return loginUser;
+    }
+    
+    public Curriculum GetLoginCurriculum(User LoginUser){
+    	List<Curriculum> currList = curriculumRepository.findAll();
+    	
+    	for (Curriculum curriculum : currList) {
+			if(curriculum.getId() == LoginUser.getCurriculum().getId()){
+				return curriculum;
+			}
+		}
+    	
+    	Curriculum curriculum = new Curriculum();
+    	
+    	return curriculum;
     }
     
     public String ForgotPassword(String UserName){

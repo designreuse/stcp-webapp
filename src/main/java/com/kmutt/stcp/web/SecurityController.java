@@ -3,6 +3,7 @@ package com.kmutt.stcp.web;
 import com.kmutt.stcp.manager.PasswordManager;
 import com.kmutt.stcp.manager.SecurityManager;
 import com.kmutt.stcp.entity.Account;
+import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.User;
 
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class SecurityController {
 	
 	@RequestMapping(value = { "/", "/index" } , method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
+		session.removeAttribute("loginAccount");
+		
 		logger.debug("index() is executed!");
 
 		model.put("title", "title");
@@ -168,11 +171,16 @@ public class SecurityController {
 	
 	// show screen (main page after login)
 	@RequestMapping(value = "/mains", method = RequestMethod.GET)
-	public String LoginSuccess(Map<String, Object> model) {
+	public String LoginSuccess(HttpSession session, Map<String, Object> model) {
+		User usr = securityManager.GetLoginUserProfile(session);
+		Curriculum curr = securityManager.GetLoginCurriculum(usr);
+		
 		logger.debug("LoginSuccess() is executed!");
 
 		model.put("title", "title");
 		model.put("msg", "message");
+		model.put("loginusr",usr);
+		model.put("curricul", curr);
 		
 		return "main";
 	}
@@ -225,6 +233,8 @@ public class SecurityController {
 		
 		return "ForgotPasswordComplete";
 	}
+	
+	
 	
 	private void setLoginAccount(HttpSession session,String UserName){
 		Account loginAcc = securityManager.GetLoginAccountProfile(UserName);
