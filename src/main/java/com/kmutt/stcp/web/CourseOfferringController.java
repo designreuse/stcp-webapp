@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.CurriculumSubject;
@@ -95,6 +96,46 @@ public class CourseOfferringController {
 	    	model.addAttribute("curriculumList",curriculumRepository.findAll());
 	    	model.addAttribute("subjectList",subjectRepository.findAll());
 	        return "courseOfferring/addCourse";
+	    }
+	    
+	    @RequestMapping(value = "/editSubject", method = RequestMethod.GET)
+	    public String prepareEditSubject(Model model,@RequestParam("subjectId") String id) {
+	    	
+	    	if(id!=null && !id.equals("")){
+	    		Subject subject = new Subject();
+	    		subject = subjectManager.getSubjectById(Integer.parseInt(id));
+	    		
+
+	    		model.addAttribute("prerequisite",subjectManager.getPrerequisiteById(Integer.parseInt(id)));
+	    		
+		    	model.addAttribute("subjectForm", subject);
+		        return "courseOfferring/editSubject";
+	    	}else{
+	    		 return "courseOfferring/managesubject";
+	    	}
+	    	
+	    }
+	    
+	    @RequestMapping(value = "/editSubject", method = RequestMethod.POST)
+	    public String editSubject(@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) {
+	    	
+	    	preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
+	    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
+	    	
+	    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
+
+	        return "courseOfferring/managesubject";
+	    }
+	    
+	    
+	    @RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
+	    public String deleteSubject(Model model,@RequestParam("subjectId") String id) {
+	    	
+	    	if(id!=null && !id.equals("")){
+	    		subjectManager.deleteSubject(Integer.parseInt(id));
+	    	}
+	    	
+	        return "redirect:managesubject";
 	    }
 	    
 	    @RequestMapping(value = "/addCourse", method = RequestMethod.POST)

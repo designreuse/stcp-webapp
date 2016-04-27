@@ -18,7 +18,7 @@ $(document).ready(function() {
             success: function (data) {
             	if(data != null){
             		if(data.msg == "success"){
-            			window.location.href = "http://localhost:8080/stcp/main"
+            			window.location.href = "http://localhost:8080/stcp/mains"
             		}
             		else{
             			swal({
@@ -152,4 +152,57 @@ $(document).ready(function() {
         });
 		
 	});
+	
+	// for generate new password
+	$("#btnForgotPassword").on('click', function(e){
+		e.preventDefault();
+		
+		var txtEmail = $('#tbxForgotEmail').val();
+		
+		$("#loadingModal").modal("show");
+	
+		$.ajax({
+            type: "GET",
+            url: "http://localhost:8080/stcp/GenNewPassword",
+            dataType: "json",
+            data: { UserName: txtEmail },
+            success: function (data) {
+            	$("#loadingModal").modal("hide");
+            	
+            	if(data != null){
+            		if(data.msg == "success"){
+            			window.location.href = "http://localhost:8080/stcp/ForgotPasswordComplete"
+            		}
+            		else{
+            			swal({
+                			title : "Student Course Planner",
+                			text : data.msg,
+                			type : "error",
+       					   	showCancelButton: false 
+                		});
+            		}
+            	}
+            	else{
+            		swal({
+            			title : "Student Course Planner",
+            			text : "System Error, Please contact system admin",
+            			type : "error",
+   					   	showCancelButton: false 
+            		});
+            	}
+        	},
+            error: function (xml, status, errMsg) {
+            	$("#loadingModal").modal("hide");
+            	
+            	swal({
+        			title : "Student Course Planner",
+        			text : errMsg,
+        			type : "error",
+					showCancelButton: false 
+        		});
+            }
+        });
+		
+	});
 });
+

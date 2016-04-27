@@ -59,9 +59,10 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle">
-                  <span class="hidden-xs"><i class="fa fa-fw fa-user"></i>
-<%--                   <security:authentication property="principal.username" />  --%>
-                  Sign out</span>
+                  <span class="hidden-xs">
+                  	<i class="fa fa-fw fa-user"></i>
+                  	<a href="${root}">Sign out</a>
+                  </span>
                 </a>
               </li>
             </ul>
