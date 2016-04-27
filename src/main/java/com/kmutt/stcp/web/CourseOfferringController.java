@@ -68,10 +68,18 @@ public class CourseOfferringController {
 	    		request.setAttribute("entity", "subject");
 		    	request.setAttribute("subjectSearchList", subjObj);
 	    	}else{
-	    		List<CurriculumSubject> curSubObj = subjectManager.searchProjectByCriteria(curiID, subjectType, status, subjectCode);
+	    		if(curiID.equals("")){
+	    			List<Subject> subjObj = subjectManager.getSubjectByCriteria(subjectType, status, subjectCode);
+	    			
+	    			request.setAttribute("entity", "subject");
+			    	request.setAttribute("subjectSearchList", subjObj);
+	    		}else{
+	    			List<CurriculumSubject> curSubObj = subjectManager.searchProjectByCriteria(curiID, subjectType, status, subjectCode);
+		    		
+		    		request.setAttribute("entity", "crriculumSubject");
+		    		request.setAttribute("subjectSearchList", curSubObj);
+	    		}
 	    		
-	    		request.setAttribute("entity", "crriculumSubject");
-	    		request.setAttribute("subjectSearchList", curSubObj);
 	    	}
 	    	
 	        return "courseOfferring/managesubject";

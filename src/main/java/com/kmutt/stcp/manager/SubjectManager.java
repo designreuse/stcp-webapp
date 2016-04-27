@@ -208,6 +208,30 @@ public class SubjectManager {
 		return subject;
 	}
 	
+	// Method//
+		public List<Subject> getSubjectByCriteria(String subjectType,String status,String subjectCode) {
+			
+			
+			
+			String hql = "from Subject where 1=1 ";
+			
+			if(!subjectType.equals("")){
+				hql += " and subjectType = "+subjectType;
+			}
+			
+			if(!status.equals("")){
+				hql += " and status = "+status;
+			}
+			
+			if(!subjectCode.equals("")){
+				hql += " and subjectCode = '"+subjectCode+"' ";
+			}
+			
+			List<Subject> subject = subjectRepository.queryHQL(hql);
+			
+			return subject;
+		}
+	
 	public Object getPrerequisiteById(int id){
 		
 		String hql = "from Prerequisite pre join pre.subjectBySubjectId as subs "
