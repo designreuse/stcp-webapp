@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prerequisite" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6702f896-d5ee-4cf6-af1b-bccc7a273b8d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prerequisite" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6702f896-d5ee-4cf6-af1b-bccc7a273b8d">
 	<property name="ireport.zoom" value="1.7715610000000013"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="57"/>
+	<parameter name="ID_CURRICULUM" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select @n := @n + 1 AS 'No',curriculum_id, a.subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, name_eng, subject_type, credit,presubject_id, presubject_code, prename_thai, prename_eng
+		<![CDATA[select @n := @n + 1 AS 'No',curriculum_id, a.subject_id, name as curriculum_name , b.started_year as curriculum_started_year, subject_code, name_thai, name_eng, subject_type, credit,presubject_id, presubject_code, prename_thai, prename_eng
 from curriculum_subject a, curriculum b, temp_prerequisite_2 c,
 (SELECT @n := 0) m
 where a.curriculum_id = b.id and
       a.subject_id = c.subject_id and
-      b.id = 4 /* Parameter = id ของ Table Curriculum*/
+      b.id = $P{ID_CURRICULUM}/* Parameter = id ของ Table Curriculum*/
 order by subject_code]]>
 	</queryString>
 	<field name="No" class="java.lang.Double"/>
@@ -169,35 +172,35 @@ No of Credit]]></text>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
-			<textField pattern="###0">
+			<textField pattern="###0" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="37" height="35" uuid="0f92daf9-7207-40d9-a6a2-7b7b0a5f277e"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{No}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="37" y="0" width="64" height="35" uuid="a3d807a5-87d2-4db4-b3aa-c0797412e9e6"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subject_code}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="101" y="0" width="206" height="35" uuid="371fac29-3cd4-472c-ae28-3eb0e47871a2"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name_thai} + "\n" + "(" + $F{name_eng} + ")"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="307" y="0" width="80" height="35" uuid="0eb9ef3c-19c9-4334-ac9c-ba6220f3c209"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subject_type}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="387" y="0" width="80" height="35" uuid="dd591325-4089-41b9-b9c8-928a6a53e31a"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="14"/>
