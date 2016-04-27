@@ -2,6 +2,7 @@ package com.kmutt.stcp.manager;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpSession;
 
 import com.kmutt.stcp.service.CoursePlannerService;
+
+import org.omg.CORBA._PolicyStub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ import com.kmutt.stcp.repository.UserRepository;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import org.apache.commons.lang.RandomStringUtils;
 
 import com.kmutt.stcp.manager.SentMailManager;
 
@@ -51,7 +56,7 @@ public class SecurityManager {
     public SecurityManager(){
     }
     
-    public String ValidateBeforeSentEmail(String Email){
+    public String ValidateEmail(String Email){
     	String result = "";
     	
     	try {
@@ -73,6 +78,10 @@ public class SecurityManager {
     	return result;
     }
     
+    public void SendMail(String Email){
+    	sentmailManager.SentMail(Email);
+    }
+    
     public String RegisterConfirm(String token){
     	String Email = "";
     	
@@ -81,44 +90,8 @@ public class SecurityManager {
     	
     	return "";
     }
-    
-    public List<User> TestSQL(String tt){
-    	/*AccountRepository testAccountRepo = new AccountRepository();
-    	
-    	
-    	return test;*/
-    	
-    	/*User user = new User();
-        user.setId(3);
-        user.setCitizenId("11");
-        user.setEmail("email");
-        user.setFaculty("faculty");
-        user.setFirstname("firstname");
-        user.setLastname("lastname");
-        user.setMajor("major");
-        user.setSemester(1);
-        userRepository.create(user);*/
 
-       /* RoleUser role = new RoleUser();
-        role.setId(3);
-        roleUserRepository.create(role);*/
-
-      /*  Account account = new Account();
-        account.setUsername("username");
-        account.setPassword("password");
-        account.setUser(userRepository.findAll().get(1));
-        account.setRoleUser(roleUserRepository.findAll().get(1));
-        accountRepository.create(account);*/
-        
-        List<User> list = userRepository.findAll();
-        return list;
-    }
-    
-    public void sendMail(String to){
-    	sentmailManager.SentMail(to);
-    }
-
-    public String ValidatePasswordBeforeCreateUser(String Password){
+    public String ValidatePassword(String Password){
     	String result = "";
     	
     	try {
@@ -172,25 +145,89 @@ public class SecurityManager {
     	String result = "";
 		
     	try {
-			// Get Account from table Account by UserName
-    		Account acc = findAccountByUserName(UserName);
-    		
-    		if(acc.equals(null)){
+    		if(UserName.isEmpty() || Password.isEmpty()){
     			result ="User or Password does not correct.";
     		}
     		else{
-    			String encryptPassword = passwordManager.encrypt(Password);
-    			String databasePassword = acc.getPassword();
-    			
-    			if(encryptPassword.equals(databasePassword) == false){
-    				result = "User or Password does not correct.";
-    			}
+    			// Get Account from table Account by UserName
+        		Account acc = findAccountByUserName(UserName);
+        		
+        		if(acc.equals(null)){
+        			result ="User or Password does not correct.";
+        		}
+        		else{
+        			String encryptPassword = passwordManager.encrypt(Password);
+        			String databasePassword = acc.getPassword();
+        			
+        			if(encryptPassword.equals(databasePassword) == false){
+        				result = "User or Password does not correct.";
+        			}
+        		}
     		}
 		} catch (Exception e) {
 			result = e.getMessage();
 		}
     	
     	return result;
+    }
+    
+    public Account GetLoginAccountProfile(String UserName){
+    	Account loginAcc = findAccountByUserName(UserName);
+    	
+    	return loginAcc;
+    }
+    
+    public String ForgotPassword(String UserName){
+    	String result = "";
+    	
+    	try {
+    		if(UserName.isEmpty()){
+    			result ="Sorry, " + UserName + " is not recognized as an e-mail address.";
+    		}else{
+    			if(isExistEmailInAccount(UserName) == false){
+    				result ="Sorry, " + UserName + " is not recognized as an e-mail address.";
+    			}
+    			else{
+    				SendNewPasswordAndUpdateTable(UserName);
+    			}
+    		}
+    	} catch (Exception e) {
+			result = e.getMessage();
+		}
+    	
+    	return result;
+    }
+    
+    private void SendNewPasswordAndUpdateTable(String UserName){
+    	String newPassword = GenerateNewPassword();
+    	
+    	Account thisAcc = findAccountByUserName(UserName);
+    	
+    	if(thisAcc.equals(null) == false){
+    		try {
+				String encryptPasword = passwordManager.encrypt(newPassword);
+				thisAcc.setPassword(encryptPasword);
+	    		accountRepository.update(thisAcc);
+	    		
+	    		sentmailManager.SentMail(UserName, newPassword);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (GeneralSecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    		
+    	}
+    }
+    
+    
+    
+    private String GenerateNewPassword(){
+    	String newpassword = RandomStringUtils.random(10, true, true);
+    	
+    	return newpassword;
     }
     
     private Boolean isValidEmail(String Email){

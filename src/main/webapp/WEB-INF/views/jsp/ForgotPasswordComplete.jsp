@@ -38,13 +38,13 @@
 		<div class="row">
 			<div class="col-xs-12 col-xs-offset-2 col-md-12 col-md-2-offset">
 				<div class="row">
-					<div class="col-xs-12 col-md-12">
-						<h2 class="form-register-heading">Registration Success</h2>
+					<div class="col-xs-10 col-md-10">
+						<h4>Check your email for a link to reset your password. If it doesn't appear within a few minutes, check your spam folder.</h4>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-10 col-md-10">
-						<h4>Thank you for register account. Click <a href="index">here</a> to login</h4>
+						<h6>return <a href="/index">Login</a></h6>
 					</div>
 				</div>
 			</div>

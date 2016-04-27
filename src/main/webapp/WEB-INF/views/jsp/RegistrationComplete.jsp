@@ -15,8 +15,9 @@
   	<link href="${bootstrapCss}" rel="stylesheet"/>
     
     <!-- SweetAlert (message alert -->
-	<script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
-	<link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
+	<script src="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.min.css">
     
     <!-- for include script -->
 	<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs"/>

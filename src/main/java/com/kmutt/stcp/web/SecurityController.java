@@ -53,17 +53,17 @@ public class SecurityController {
 		
 		try {
 			
-			String validateResult = securityManager.ValidateBeforeSentEmail(textEmail);
+			String validateResult = securityManager.ValidateEmail(textEmail);
 			
 			if(validateResult.isEmpty()){
-				securityManager.sendMail(textEmail);
+				securityManager.SendMail(textEmail);
 				msg = "success";
 			}
 			else{
 				msg = validateResult;
 			}
 		} catch (Exception e) {
-			logger.error("Method:SentMailConfirm|Err:" + e.getMessage());
+			logger.error("Method:RegisterUser|Err:" + e.getMessage());
 			msg = e.getMessage();
 		}
 
@@ -107,7 +107,7 @@ public class SecurityController {
 		
 		try {
 			// TODO ; Validate Password
-			String result = securityManager.ValidatePasswordBeforeCreateUser(textPassword);
+			String result = securityManager.ValidatePassword(textPassword);
 			
 			if(result.isEmpty()){
 				result = securityManager.CreateUser(textEmail, textPassword);
@@ -151,11 +151,13 @@ public class SecurityController {
 			
 			if(result.isEmpty()){
 				result = "success";
+				
+				setLoginAccount(session, textUserName);
 			}
 			
 			msg = result;
 		} catch (Exception e) {
-			logger.error("Method:CreateUser|Err:" + e.getMessage());
+			logger.error("Method:Login|Err:" + e.getMessage());
 			msg = e.getMessage();
 		}
 
@@ -165,7 +167,7 @@ public class SecurityController {
 	}
 	
 	// show screen (main page after login)
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	@RequestMapping(value = "/mains", method = RequestMethod.GET)
 	public String LoginSuccess(Map<String, Object> model) {
 		logger.debug("LoginSuccess() is executed!");
 
@@ -187,6 +189,46 @@ public class SecurityController {
 		return "ForgotPassword";
 	}
 	
+	// call function to validate email and sent mail
+	@RequestMapping(value = { "/GenNewPassword" }, method = RequestMethod.GET)
+	@ResponseBody 
+	public String GenNewPassword(HttpSession session, @RequestParam("UserName") String textUserName) {
+		String msg = "";
+		
+		try {
+			String result = securityManager.ForgotPassword(textUserName); 
+			
+			if(result.isEmpty()){
+				msg = "success";
+			}
+			else{
+				msg = result;
+			}
+		} catch (Exception e) {
+			logger.error("Method:GenNewPassword|Err:" + e.getMessage());
+			msg = e.getMessage();
+		}
+
+		String res = "{\"msg\":\"" + msg + "\"}";
+		
+		return res;
+	}
 	
+	// show screen registration complete
+	@RequestMapping(value = "/ForgotPasswordComplete", method = RequestMethod.GET)
+	public String ForgotPasswordComplete(Map<String, Object> model) {
+
+		logger.debug("ForgotPasswordComplete() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "ForgotPasswordComplete";
+	}
 	
+	private void setLoginAccount(HttpSession session,String UserName){
+		Account loginAcc = securityManager.GetLoginAccountProfile(UserName);
+		
+		session.setAttribute("loginAccount", loginAcc);
+	}
 }
