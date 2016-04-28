@@ -15,17 +15,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.CurriculumSubject;
 import com.kmutt.stcp.entity.Subject;
-import com.kmutt.stcp.manager.SubjectManager;
 import com.kmutt.stcp.repository.CurriculumRepository;
 import com.kmutt.stcp.repository.CurriculumSubjectRepository;
 import com.kmutt.stcp.repository.SubjectRepository;
+import com.kmutt.stcp.manager.SubjectManager;
 
 @Controller
 @RequestMapping("/courseofferring")
@@ -285,6 +287,74 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/managecurriculum", method = RequestMethod.GET)
 	    public String managecurriculum(Map<String, Object> model) {
+	        return "courseOfferring/managecurriculum";
+	    }
+	    
+	    
+	    @RequestMapping(value = "/searchcurriculum", method = RequestMethod.POST)
+	    public @ResponseBody String searchcurriculum(@RequestParam("searchYear") String searchYear , @RequestParam("searchAccId") String accId) {
+	    	if(searchYear.equalsIgnoreCase("none")){
+	    		searchYear = "%";
+	    	}
+	    	if(accId.equalsIgnoreCase("none")){
+	    		accId = "%";
+	    	}
+	    	String sql = "select * from curriculum where start_year like '%"+ searchYear +"%' and acc_id like '%"+ accId +"%'";
+	    	List<Curriculum> curList = curriculumRepository.querySQL(sql);
+	    	String result = "";
+	    	for(Curriculum curr : curList){
+	    		result += "<tr><td></td><td>"+ curr.getAccId() +"</td>"+
+	    				 "<td>"+ curr.getName() +"</td>"+
+	    				 "<td>"+ curr.getName() +"</td>"+
+	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
+	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
+	    				 "<td><a class='btn btn-success btn-sm' style='margin-right:5px' href='editCurriculum?curId="+ curr.getId() +"'><span class='fa fa-edit'>&nbsp;</span></a><a class='btn btn-danger btn-sm' id='delBtn' href='deleteCurriculum?curId="+ curr.getId() +"'><span class='fa fa-times'>&nbsp;</span></a></td>"+
+	    				 "</tr>";
+	    	}
+	    	if(result.equalsIgnoreCase("")){
+	    		result = "<td colspan='7' style='text-align:center'>No Result</td>";
+	    	}
+	        return result;
+	    }
+	    
+	    @RequestMapping(value = "/editCurriculum", method = RequestMethod.GET)
+	    public String preeditCurriculum(Model model,@RequestParam("curId") int curId) {
+	    	Curriculum curr = curriculumRepository.findOne(curId);
+	    	model.addAttribute("editcurriculumForm", curr);
+	        return "courseOfferring/editCurriculum";
+	    }
+	    
+	    @RequestMapping(value = "/editCurriculum", method = RequestMethod.POST)
+	    public String editCurriculum(Model model,@ModelAttribute("editcurriculumForm") Curriculum curriculum) {
+	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+	    		curriculumRepository.update(curriculum);
+	    		model.addAttribute("editSuccess", "Y");
+	    	}else{
+	    		model.addAttribute("editSuccess", "N");
+	    	}
+	        return "courseOfferring/managecurriculum";
+	    }
+	    
+	    @RequestMapping(value = "/addCurriculum", method = RequestMethod.GET)
+	    public String preaddCurriculum(Model model) {
+	    	model.addAttribute("curriculumForm", new Curriculum());
+	        return "courseOfferring/addCurriculum";
+	    }
+	    
+	    @RequestMapping(value = "/addCurriculum", method = RequestMethod.POST)
+	    public String addCurriculum(Model model,@ModelAttribute("curriculumForm") Curriculum curriculum) {
+	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+	    		curriculumRepository.create(curriculum);
+	    		model.addAttribute("addSuccess", "Y");
+	    	}else{
+	    		model.addAttribute("addSuccess", "N");
+	    	}
+	        return "courseOfferring/managecurriculum";
+	    }
+	    
+	    @RequestMapping(value = "/deleteCurriculum", method = RequestMethod.GET)
+	    public String deleteCurriculum(Model model,@RequestParam("curId") int curId) {
+	    	curriculumRepository.deleteById(curId);
 	        return "courseOfferring/managecurriculum";
 	    }
 	    
