@@ -7,7 +7,7 @@ var currentSemester = "";
 var touchtime = 0;
 
 $(document).ready(function() {
-
+	
 
 	$("#btnSave").click(function() {
 		swal({
@@ -24,13 +24,27 @@ $(document).ready(function() {
 		}, function(isConfirm) {
 			
 			if (isConfirm) {
-				document.getElementById("subjectForm").submit();
+				
+				var subjectCode = $("#subjectCode").val();
+				var subjectType = $("#subjectType").val();
+				var nameThai = $("#nameThai").val();
+				var nameEng = $("#nameEng").val();
+				var credit = $("#credit").val();
+				
+				if(subjectCode!="" && subjectType!="" 
+					&& nameThai!="" && nameEng!="" && credit!="0"){
+					document.getElementById("subjectForm").submit();
+				}else{
+					alertSubmitFail();
+				}
+				
+				
 			}
 		});
 	});
 
 	$("#btnReset").click(function() {
-		
+		$("#preSubjectId").select2();
 		swal({
 			title : "Add Subject",
 			text : "Are you want to reset this subject?",
@@ -59,4 +73,7 @@ $(document).ready(function() {
 
 });
 
-
+function alertSubmitFail(){
+	
+	swal("Please fill in all required information!", "", "error");
+}

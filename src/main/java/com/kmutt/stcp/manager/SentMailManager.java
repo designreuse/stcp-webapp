@@ -62,7 +62,7 @@ public class SentMailManager {
 	         message.setSubject("Student Course Planner Email Confirm");
 
 	         // Now set the actual message
-	         message.setContent(GenerateMessage(email), "text/html; charset=utf-8");
+	         message.setContent(GenerateEmailConfirmationMessage(email), "text/html; charset=utf-8");
 
 	         // Send message
 	         Transport.send(message);
@@ -73,7 +73,54 @@ public class SentMailManager {
 	     
 	 }
 
-	 private String GenerateMessage(String Email){
+	 public void SentMail(String email,String newpassword){
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", hostname);
+			props.put("mail.smtp.port", portnumber);
+		     
+		  // Get the Session object.
+		    Session session = Session.getInstance(props,
+		      new javax.mail.Authenticator() {
+		         protected PasswordAuthentication getPasswordAuthentication() {
+		            return new PasswordAuthentication(username, password);
+		         }
+		      });
+		    
+		    try {
+		         // Create a default MimeMessage object.
+		         Message message = new MimeMessage(session);
+
+		         // Set From: header field of the header.
+		         try {
+					message.setFrom(new InternetAddress(from,"Student Course Planner"));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+		         // Set To: header field of the header.
+		         message.setRecipients(Message.RecipientType.TO,
+		         InternetAddress.parse(email));
+
+		         // Set Subject: header field
+		         message.setSubject("Student Course Planner Email Confirm");
+
+		         // Now set the actual message
+		         message.setContent(GenerateEmailNewPasswordMessage(newpassword), "text/html; charset=utf-8");
+
+		         // Send message
+		         Transport.send(message);
+
+		      } catch (MessagingException e) {
+		            throw new RuntimeException(e);
+		      }
+		     
+		 }
+
+	 
+	 private String GenerateEmailConfirmationMessage(String Email){
 		 String message = "";
 		 
 		 message += "<h4>Hi</h4><p>";
@@ -111,5 +158,21 @@ public class SentMailManager {
 		 }
 		 
 		 return token;
+	 }
+
+	 private String GenerateEmailNewPasswordMessage(String Password){
+		 String message = "";
+		 
+		 message += "<h4>Hi</h4><p>";
+		 message += "<h4>Your new password to access Student Course Planner is:</h4><p><p>";
+		 message += "<h5>";
+		 message += Password;
+		 message += "</h5>";;
+		 message += "<p>";
+		 message += "<p>";
+		 message += "<h4>Thanks,<br>";
+		 message += "The Student Course Planner Team</h4>";
+		 
+		 return message;
 	 }
 }

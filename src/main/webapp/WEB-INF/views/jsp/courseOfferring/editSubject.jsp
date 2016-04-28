@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,17 +16,14 @@
 <meta charset="utf-8">
 <link href="http://fonts.googleapis.com/css?family=Montserrat"
 	rel="stylesheet">
+
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 <!-- SweetAlert -->
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
-<script type="text/javascript">
-$(document).ready(function() {
-	$('#preSubjectId').select2();
-});
-</script>
+	
 <title>Student Course Planner</title>
 </head>
 <style>
@@ -105,7 +103,7 @@ dropbtn {
 </style>
 <body>
 	<div class="box-header">
-		<h3 class="box-title">Add Subject</h3>
+		<h3 class="box-title">Edit Subject</h3>
 	</div>
 	<!-- /.box-header -->
 	<nav class="navbar navbar-default">
@@ -122,11 +120,13 @@ dropbtn {
 
 
 	<div class="container">
-		<form:form method="post" modelAttribute="subjectForm" onsubmit="verifyForm();return false;">
+		<form:form method="post" modelAttribute="subjectForm">
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสวิชา ::</div>
 				<div class="col-sm-2">
+					<form:hidden path="id"/>
+					<form:hidden path="status"/>
 					<form:input path="subjectCode" cssClass="form-control" />
 					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
 				</div>
@@ -137,7 +137,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ประเภทวิชา ::</div>
 				<div class="col-sm-2">
-					<form:select path="subjectType"  cssClass="form-control">
+					<form:select path="subjectType" cssClass="form-control">
 						<form:option value="" label="--- เลือกประเภทวิชา ---"/>
 						<form:options items="${subjectTypeList}" />
 					</form:select>
@@ -188,16 +188,44 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">วิชายังคับก่อน ::</div>
 				<div class="col-sm-2">
-					<input type="checkbox" id="chkPre" name="chkPre"> วิชาบังคับก่อน
-					&nbsp;
-					<span id="preSubSpan" style="display:none;">
-						<select id="preSubjectId" name="preSubjectId" style="width:250px;">
-							<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
-							<c:forEach items="${subjectList}" var="item">
-								<option value="${item.key}">${item.value}</option>
-							</c:forEach>
-						</select>
-					</span>
+
+					<c:if test="${prerequisite != null }">
+						<input type="hidden" name="preRequisiteId" id="preRequisiteId" value="${prerequisite[0].id}">
+						<input type="hidden"  id="preSubjectTmp" value="${prerequisite[0].subjectByPresubjectId.id}">
+						
+						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()" checked> วิชาบังคับก่อน
+						&nbsp;
+						<span id="preSubSpan">
+							<select id="preSubjectId" name="preSubjectId" style="width:250px;">
+								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
+								<c:forEach items="${subjectList}" var="item">
+									<c:if test="${item.key!=subjectForm.id }">
+										<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
+											<option value="${item.key}" selected>${item.value}</option>
+										</c:if>
+										<c:if test="${item.key != prerequisite[0].subjectByPresubjectId.id}">
+											<option value="${item.key}">${item.value}</option>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</select>
+						
+					</c:if> 
+					<c:if test="${prerequisite == null }">
+						<input type="hidden"  id="preRequisiteId" name="preRequisiteId" value="">
+						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()"> วิชาบังคับก่อน
+						&nbsp;
+						<span id="preSubSpan" style="display:none;">
+							<select id="preSubjectId" name="preSubjectId" style="width:250px;">
+								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
+								<c:forEach items="${subjectList}" var="item">
+									<c:if test="${item.key!=subjectForm.id }">
+										<option value="${item.key}">${item.value}</option>
+									</c:if>
+								</c:forEach>
+							</select>
+					</c:if> 
+
 					
 				</div>
 				<div class="col-sm-4"></div>
@@ -207,7 +235,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">หน่่วยกิต ::</div>
 				<div class="col-sm-2">
-					<form:select path="credit" cssClass="form-control">
+					<form:select path="credit"  cssClass="form-control">
 						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
 						<form:options items="${creditList}" />
 					</form:select>
@@ -237,6 +265,29 @@ dropbtn {
 		
 		
 	</div>
+	
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/addSubject.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#preSubjectId').select2();
+	});
+
+	function setDefaultPreSub(){
+		
+		if($("#chkPre").prop('checked') == false){
+			if($("#preRequisiteId").val()!=""){
+				$("#preSubjectId").val("0");
+			}
+			
+			$("#preSubSpan").hide();
+		}else{
+			if($("#preRequisiteId").val()!=""){
+				$("#preSubjectId").val($("#preSubjectTmp").val());
+			}
+			
+			$("#preSubSpan").show();
+		}
+	}
+</script>
 </body>
 </html>

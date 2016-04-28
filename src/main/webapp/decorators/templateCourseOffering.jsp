@@ -34,7 +34,15 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="${root}/resources/core/plugins/datepicker/datepicker3.css">
+    
 
+	<link rel="stylesheet" href="${root}/resources/core/plugins/datatables/jquery.dataTables.min.css">
+	 <script src="${root}/resources/core/plugins/jQuery/jquery-1.12.0.min.js"></script>
+     <script src="${root}/resources/core/plugins/datatables/jquery.dataTables.min.js"></script>
+     
+     <link rel="stylesheet" href="${root}/resources/core/plugins/select2/select2.min.css">
+	 <script src="${root}/resources/core/plugins/select2/select2.min.js"></script>
+	 
 <decorator:head></decorator:head>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
@@ -132,9 +140,7 @@
       </footer>
     </div><!-- ./wrapper -->
     
-    <!-- jQuery 2.1.4 -->
-    <script src="${root}/resources/core/plugins/jQuery/jQuery-2.1.4.min.js"></script>
-    <!-- Bootstrap 3.3.5 -->
+
     <script src="${root}/resources/core/js/bootstrap.min.js"></script>
     <!-- Slimscroll -->
     <script src="${root}/resources/core/plugins/slimScroll/jquery.slimscroll.min.js"></script>
@@ -144,5 +150,8 @@
     <script src="${root}/resources/core/js/app.min.js"></script>
     <!-- AdminLTE Datepicter -->
     <script src="${root}/resources/core/plugins/datepicker/bootstrap-datepicker.js"></script>
+    
+
+
 </body>
 </html>

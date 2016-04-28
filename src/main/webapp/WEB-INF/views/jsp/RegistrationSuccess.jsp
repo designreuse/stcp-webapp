@@ -36,47 +36,21 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-8 col-xs-offset-4 col-md-8 col-md-4-offset">
+			<div class="col-xs-12 col-xs-offset-2 col-md-12 col-md-2-offset">
 				<div class="row">
 					<div class="col-xs-12 col-md-12">
-						<h2 class="form-register-heading">Please input password</h2>
+						<h2 class="form-register-heading">Registration Success</h2>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-6 col-md-6">
-						<label for="inputEmail" class="sr-only">Email address</label>
-				        <input type="email" id="tbxEmail" class="form-control" placeholder="Email address" disabled="disabled" value="<c:out value="${emailtoken}"/>">
-				        <input type="password" id="tbxPassword" class="form-control" placeholder="Password" required>
-				        <div class="row">
-				        	<div class="col-xs-12 col-md-12">
-				        		<label></label>
-				        	</div>
-				        </div>
-				        <button class="btn btn-lg btn-primary btn-block" id="btnCreateUser">Register</button>
+					<div class="col-xs-10 col-md-10">
+						<h4>Thank you for register account. Click <a href="index">here</a> to login</h4>
 					</div>
 				</div>
 			</div>
 		</div>
+		
 	</div>
 	
-	<!-- Loading Modal -->
-	<div id="loadingModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="reportModalTitle">
-	    <div class="modal-dialog modal-sm">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-	                <h4 class="modal-title">Loading</h4>
-	            </div>
-	            <div class="modal-body">
-	                <div class="progress">
-	                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-	                        <span class="sr-only">45% Complete</span>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-	 
 </body>
 </html>

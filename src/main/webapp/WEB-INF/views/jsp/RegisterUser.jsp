@@ -10,18 +10,23 @@
 	<title>Student Course Planer</title>
 	
 	<!-- for include csss -->
-    <spring:url value="/resources/core/css/main.css" var="coreCss"/>
     <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss"/>
     
   	<link href="${bootstrapCss}" rel="stylesheet"/>
-    <link href="${coreCss}" rel="stylesheet"/>
+    
+    <!-- SweetAlert (message alert -->
+	<script src="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.min.css">
     
     <!-- for include script -->
 	<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs"/>
+	<spring:url value="/resources/core/js/security.js" var="securityJs"/>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="${bootstrapJs}"></script>
-	 
+	<script src="${securityJs}"></script>
+	
 </head>
 <body>
 	<div class="jumbotron" style="background-color:#dd4b39">
@@ -73,6 +78,6 @@
 	    </div>
 	</div>
 	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/security.js" defer></script>
+	
 </body>
 </html>

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.CurriculumSubject;
@@ -54,10 +55,31 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/managesubject", method = RequestMethod.POST)
-	    public String searchsubject(HttpServletRequest  request,HttpServletResponse response) {
-	    	List<Subject> subjObj = subjectManager.getAllSubject();
+	    public String searchsubject(HttpServletRequest  request,HttpServletResponse response,
+	    							@ModelAttribute("curiID") String curiID,
+	    							@ModelAttribute("subjectType") String subjectType,
+	    							@ModelAttribute("status") String status,
+	    							@ModelAttribute("subjectCode") String subjectCode) {
 	    	
-	    	request.setAttribute("subjectSearchList", subjObj);
+	    	if(curiID.equals("") && subjectType.equals("") && status.equals("") && subjectCode.equals("")){
+	    		List<Subject> subjObj = subjectManager.getAllSubject();
+		    	
+	    		request.setAttribute("entity", "subject");
+		    	request.setAttribute("subjectSearchList", subjObj);
+	    	}else{
+	    		if(curiID.equals("")){
+	    			List<Subject> subjObj = subjectManager.getSubjectByCriteria(subjectType, status, subjectCode);
+	    			
+	    			request.setAttribute("entity", "subject");
+			    	request.setAttribute("subjectSearchList", subjObj);
+	    		}else{
+	    			List<CurriculumSubject> curSubObj = subjectManager.searchProjectByCriteria(curiID, subjectType, status, subjectCode);
+		    		
+		    		request.setAttribute("entity", "crriculumSubject");
+		    		request.setAttribute("subjectSearchList", curSubObj);
+	    		}
+	    		
+	    	}
 	    	
 	        return "courseOfferring/managesubject";
 	    }
@@ -69,8 +91,18 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
-	    public String addSubject(@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
+	    public String addSubject(Model model,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
+	    	subject.setStatus(1);
 	    	subjectManager.addSubject(subject,preSubjectId);
+	    	
+	    	if(preSubjectId!=null){
+	    		if(!preSubjectId.equals("")){
+	    			subjectManager.addPrerequisite(subject, preSubjectId);
+		    	}
+	    	}
+	    	
+	    	model.addAttribute("addSuccess", "Y");
+	    	
 	        return "courseOfferring/managesubject";
 	    }
 	    
@@ -81,6 +113,47 @@ public class CourseOfferringController {
 	    	model.addAttribute("OatCurriculumSubjectList",curriculumSubjectRepository.findAll());
 	    	
 	        return "courseOfferring/addCourse";
+	    }
+	    
+	    @RequestMapping(value = "/editSubject", method = RequestMethod.GET)
+	    public String prepareEditSubject(Model model,@RequestParam("subjectId") String id) {
+	    	
+	    	if(id!=null && !id.equals("")){
+	    		Subject subject = new Subject();
+	    		subject = subjectManager.getSubjectById(Integer.parseInt(id));
+	    		
+
+	    		model.addAttribute("prerequisite",subjectManager.getPrerequisiteById(Integer.parseInt(id)));
+	    		
+		    	model.addAttribute("subjectForm", subject);
+		        return "courseOfferring/editSubject";
+	    	}else{
+	    		 return "courseOfferring/managesubject";
+	    	}
+	    	
+	    }
+	    
+	    @RequestMapping(value = "/editSubject", method = RequestMethod.POST)
+	    public String editSubject(Model model,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) {
+	    	
+	    	preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
+	    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
+	    	
+	    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
+	    	
+	    	model.addAttribute("editSuccess", "Y");
+	        return "courseOfferring/managesubject";
+	    }
+	    
+	    
+	    @RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
+	    public String deleteSubject(Model model,@RequestParam("subjectId") String id) {
+	    	
+	    	if(id!=null && !id.equals("")){
+	    		subjectManager.deleteSubject(Integer.parseInt(id));
+	    	}
+	    	
+	        return "redirect:managesubject";
 	    }
 	    
 	    @RequestMapping(value = "/addCourse", method = RequestMethod.POST)
