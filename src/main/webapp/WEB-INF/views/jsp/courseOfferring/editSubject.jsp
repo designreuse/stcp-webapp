@@ -197,15 +197,16 @@ dropbtn {
 						&nbsp;
 						<span id="preSubSpan">
 							<select id="preSubjectId" name="preSubjectId" style="width:250px;">
-								<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
+								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
 								<c:forEach items="${subjectList}" var="item">
-									<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
-										<option value="${item.key}" selected>${item.value}</option>
+									<c:if test="${item.key!=subjectForm.id }">
+										<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
+											<option value="${item.key}" selected>${item.value}</option>
+										</c:if>
+										<c:if test="${item.key != prerequisite[0].subjectByPresubjectId.id}">
+											<option value="${item.key}">${item.value}</option>
+										</c:if>
 									</c:if>
-									<c:if test="${item.key != prerequisite[0].subjectByPresubjectId.id}">
-										<option value="${item.key}">${item.value}</option>
-									</c:if>
-									
 								</c:forEach>
 							</select>
 						
@@ -216,9 +217,11 @@ dropbtn {
 						&nbsp;
 						<span id="preSubSpan" style="display:none;">
 							<select id="preSubjectId" name="preSubjectId" style="width:250px;">
-								<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
+								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
 								<c:forEach items="${subjectList}" var="item">
-									<option value="${item.key}">${item.value}</option>
+									<c:if test="${item.key!=subjectForm.id }">
+										<option value="${item.key}">${item.value}</option>
+									</c:if>
 								</c:forEach>
 							</select>
 					</c:if> 

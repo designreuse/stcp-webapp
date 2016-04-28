@@ -8,6 +8,7 @@ import com.kmutt.stcp.repository.CurriculumSubjectRepository;
 import com.kmutt.stcp.repository.PrerequisiteRepository;
 import com.kmutt.stcp.repository.SubjectRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -138,6 +139,31 @@ public class SubjectManager {
 	
 	// Method//
 	public void deleteSubject(int subjectId) {
+//		
+//		List<CurriculumSubject> curriculumSubject = new ArrayList<CurriculumSubject>();
+//		String hqlCurSub = "from CurriculumSubject where subject.id = "+subjectId+" ";
+//		curriculumSubject = curriculumSubjectRepository.queryHQL(hqlCurSub);
+//		
+//		List<Prerequisite> preSub = new ArrayList<Prerequisite>();
+//		String hqlPreSub = "from Prerequisite where subjectBySubjectId.id = "+subjectId+" ";
+//		preSub = prerequisiteRepository.queryHQL(hqlPreSub);
+//		
+//		List<Prerequisite> preRequi = new ArrayList<Prerequisite>();
+//		String hqlPreRequi = "from Prerequisite where subjectByPresubjectId.id = "+subjectId+" ";
+//		preRequi = prerequisiteRepository.queryHQL(hqlPreRequi);
+//		
+//		for(int i=0; i<curriculumSubject.size(); i++){
+//			curriculumSubjectRepository.delete(curriculumSubject.get(i));
+//		}
+//		
+//		for(int j=0; j<preSub.size(); j++){
+//			prerequisiteRepository.delete(preSub.get(j));
+//		}
+//		
+//		for(int j=0; j<preRequi.size(); j++){
+//			prerequisiteRepository.delete(preRequi.get(j));
+//		}
+		
 		Subject subject = new Subject();
 		
 		String hql = "from Subject where id = "+subjectId+" ";
