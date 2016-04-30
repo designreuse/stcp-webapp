@@ -28,7 +28,7 @@
 <body>
       <!-- Main content -->
       <div class="box-header">
-        <h3 class="box-title">Add Course</h3>
+        <h3 class="box-title">Edit Course</h3>
       </div><!-- /.box-header -->
      <nav class="navbar navbar-default">
 		<div class="container">
@@ -45,29 +45,25 @@
 
 
 	<div class="container">
-		<form id="form"  method="post" action="${root}/courseofferring/addCourse">
+		<form id="form"  method="post" action="${root}/courseofferring/editCourse">
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสหลักสูตร ::</div>
 				<div class="col-sm-2">
-					<select name="curriculum">
+					<select disabled="disabled">
 						<option value="0">--- เลือกหลักสูตร---</option>
 						<c:forEach items="${OatCurriculumList}" var="element"> 
-							<c:set var="check" value="0"></c:set>
-							<c:forEach items="${OatCurriculumSubjectList}" var="elementCurSub">
-								<c:if test="${elementCurSub.curriculum.id == element.id }">
-									<c:set var="check" value="1"></c:set>
-								</c:if>
-							</c:forEach>
-							
-							<c:if test="${check!= 1 }">
+							<c:if test="${curriculumSub.get(0)[0].curriculum.id == element.id }">
+								<option value="${element.id}" selected>${element.name} ${element.startYear} </option>
+							</c:if>
+							<c:if test="${curriculumSub.get(0)[0].curriculum.id != element.id }">
 								<option value="${element.id}">${element.name} ${element.startYear} </option>
 							</c:if>
-							
-							
 						</c:forEach>
 						
 					</select>
+					
+					<input type="hidden" name="curriculum" value="${curriculumSub.get(0)[0].curriculum.id}">
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -77,7 +73,18 @@
 				<div class="col-sm-2">รหัสวิชา ::</div>
 				<div class="col-sm-2">
 					<c:forEach items="${subjectList}" var="element">
-						<input type="checkbox" name="subject" value="${element.id}"> ${element.nameEng}<br>
+						<c:set var="chkSet" value="0"></c:set>
+						<c:forEach items="${curriculumSub}" var="elementSub">
+							<c:if test="${elementSub[0].subject.id == element.id }">
+								<c:set var="chkSet" value="1"></c:set>
+							</c:if>
+						</c:forEach>
+						<c:if test="${chkSet==1}">
+							<input type="checkbox" name="subject" value="${element.id}" checked="checked"> ${element.nameEng}<br>
+						</c:if>
+						<c:if test="${chkSet==0}">
+							<input type="checkbox" name="subject" value="${element.id}"> ${element.nameEng}<br>
+						</c:if>
 					</c:forEach>
 				</div>
 				<div class="col-sm-4"></div>
