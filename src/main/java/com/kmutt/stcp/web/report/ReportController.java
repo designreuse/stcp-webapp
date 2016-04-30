@@ -1,5 +1,6 @@
 package com.kmutt.stcp.web.report;
 
+import com.kmutt.stcp.entity.Account;
 import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.User;
 import com.kmutt.stcp.manager.CourseManager;
@@ -31,37 +32,35 @@ import java.util.WeakHashMap;
 public class ReportController {
     private final Logger logger = LoggerFactory.getLogger(ReportController.class);
 
+    private static final String SESSION_KEY_LOGIN_ACCOUNT = "loginAccount";
+    private static final String SESSION_KEY_LOGIN_USER = "loginUser";
+    private static final int ROLE_ID_STUDENT = 1;
+    private static final int ROLE_ID_TEACHER = 2;
+    private static final int ROLE_ID_ADMIN = 3;
 
     @Autowired
     private ReportManager reportManager;
 
-    private User authorizedUser;
-
-    private static HttpSession session() {
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return attr.getRequest().getSession(true); // true == allow create
-    }
-
     /**
-     * index of report center
+     * index of report center, display report list by user's role
      *
      * @param model view mapping
      * @return path to report center
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String displayReportList(Map<String, Object> model) {
-        logger.debug("index() is executed!");
-
-        Map<String, String> map = new WeakHashMap<>();
-        map.put("studentId", "Student ID");
-        map.put("staffId", "Staff ID");
-        model.put("idOption", map);
-
+    public String displayReportList(HttpSession session, Map<String, Object> model) {
         //displayReportList by role
-        model.put("reportList", ReportTemplate.values());
+        Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
+        if(ROLE_ID_STUDENT != loginAccount.getRoleUser().getId()) {
+            ReportTemplate[] reportList = Arrays.stream(ReportTemplate.values())
+                    .filter(elm -> !elm.equals(ReportTemplate.STUDENT_PLANNING))
+                    .toArray(ReportTemplate[]::new);
+            model.put("reportList", reportList);
+        } else {
+            model.put("reportList", ReportTemplate.values());
+        }
 
         return "report/report-controller";
-//        return new ResponseEntity<ReportMaster>(master, HttpStatus.OK);
     }
 
     /**
@@ -90,7 +89,7 @@ public class ReportController {
      */
     @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity reportCenterGenerator(@RequestBody ReportAjaxBean bean) {
+    public ResponseEntity reportCenterGenerator(HttpSession session, @RequestBody ReportAjaxBean bean) {
 
         //STUDENT_PLANNING needs userId, othewise curriculumId
 //
@@ -99,7 +98,10 @@ public class ReportController {
 //        reportManager.findCourseId(bean.get)
         if(ReportTemplate.STUDENT_PLANNING.ordinal() == bean.getReportId()) {
             //if studentId != null else...
-            bean.setErrorMsg("ไม่สามารถดูรายงานได้");
+            Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
+            if(ROLE_ID_STUDENT != loginAccount.getRoleUser().getId()) {
+                bean.setErrorMsg("ไม่สามารถดูรายงานได้");
+            }
         } else if(ReportTemplate.COURSE_OPENING.ordinal() == bean.getReportId()
                 || ReportTemplate.PREREQUISITE.ordinal() == bean.getReportId()
                 || ReportTemplate.SUBJECT_DETAIL.ordinal() == bean.getReportId()

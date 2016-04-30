@@ -48,13 +48,13 @@ pageEncoding="UTF-8"%>
                 <!--&lt;!&ndash; Button and dropdown menu &ndash;&gt;-->
                 <!--</div>-->
                 <input type="text" class="form-control" aria-label="..." placeholder="ปี">
-                <input type="text" class="form-control" aria-label="..." placeholder="ชื่อหลักสูตร" >
-                <!--<select class="form-control">-->
-                    <!--<option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>-->
-                    <!--<option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>-->
-                    <!--<option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>-->
-                    <!--<option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>-->
-                <!--</select>-->
+                <!--<input type="text" class="form-control" aria-label="..." placeholder="ชื่อหลักสูตร" >-->
+                <select class="form-control">
+                    <option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>
+                    <option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>
+                    <option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>
+                    <option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>
+                </select>
             </div>
 
             <!--<div class="input-group">-->
