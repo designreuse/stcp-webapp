@@ -182,6 +182,14 @@ public class SecurityManager {
     	return loginAcc;
     }
     
+    public RoleUser GetLoginRoleProfie(HttpSession session){
+    	User loginUsr = (User)session.getAttribute("loginUser");
+    	
+    	RoleUser loginRole = findRoleUserByUserID(loginUsr.getId());
+    	
+    	return loginRole;
+    }
+    
     public User GetLoginUserProfile(HttpSession session){
     	Account loginAcc = (Account) session.getAttribute("loginAccount");
     	

@@ -4,6 +4,7 @@ import com.kmutt.stcp.manager.PasswordManager;
 import com.kmutt.stcp.manager.SecurityManager;
 import com.kmutt.stcp.entity.Account;
 import com.kmutt.stcp.entity.Curriculum;
+import com.kmutt.stcp.entity.RoleUser;
 import com.kmutt.stcp.entity.User;
 
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class SecurityController {
 	@RequestMapping(value = { "/", "/index" } , method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 		session.removeAttribute("loginAccount");
+		session.removeAttribute("loginUser");
+		session.removeAttribute("loginRole");
 		
 		logger.debug("index() is executed!");
 
@@ -173,6 +176,11 @@ public class SecurityController {
 	@RequestMapping(value = "/mains", method = RequestMethod.GET)
 	public String LoginSuccess(HttpSession session, Map<String, Object> model) {
 		User usr = securityManager.GetLoginUserProfile(session);
+		session.setAttribute("loginUser", usr);
+		
+		RoleUser role = securityManager.GetLoginRoleProfie(session);
+		session.setAttribute("loginRole", role);
+		
 		Curriculum curr = securityManager.GetLoginCurriculum(usr);
 		
 		logger.debug("LoginSuccess() is executed!");
@@ -283,5 +291,7 @@ public class SecurityController {
 		Account loginAcc = securityManager.GetLoginAccountProfile(UserName);
 		
 		session.setAttribute("loginAccount", loginAcc);
+		
+		
 	}
 }
