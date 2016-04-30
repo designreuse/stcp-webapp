@@ -380,9 +380,13 @@ public class CourseOfferringController {
 		public Map<String,String> subjectTypeList() {
 			
 			Map<String,String> subjectTypeList = new LinkedHashMap<String,String>();
-			subjectTypeList.put("1", "วิชาเลือกทั่วไป");
-			subjectTypeList.put("2", "วิชาเฉพาะ");
-			subjectTypeList.put("3", "วิชาเลือกเสรี");
+			subjectTypeList.put("GF", "หมวดวิชาศึกษาทั่วไป - วิชาบังคับ");
+			subjectTypeList.put("GO", "หมวดวิชาศึกษาทั่วไป - วิชาบังคับเลือก");
+			subjectTypeList.put("SM", "หมวดวิชาเฉพาะด้าน - วิชาแกนทางคณิตศาสตร์");
+			subjectTypeList.put("SI", "หมวดวิชาเฉพาะด้าน - วิชาพื้นฐานวิชาชีพทางเทคโนโลยีสารสนเทศ");
+			subjectTypeList.put("SE", "หมวดวิชาเฉพาะด้าน - วิชาเลือก");
+			subjectTypeList.put("ST", "หมวดวิชาเฉพาะด้าน - วิชาภาษาอังกฤษสาหรับเทคโนโลยีสารสนเทศ");
+			subjectTypeList.put("EE", "หมวดวิชาเลือกเสรี");
 			
 			return subjectTypeList;
 		}
