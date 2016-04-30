@@ -77,7 +77,7 @@
 				<div class="col-sm-2">รหัสวิชา ::</div>
 				<div class="col-sm-4">
 					<c:forEach items="${subjectList}" var="element">
-						<input type="checkbox" name="subject" value="${element.id}"> ${element.nameEng}<br>
+						<input type="checkbox" name="subject" value="${element.id}"> ${element.subjectCode} ${element.nameEng}<br>
 					</c:forEach>
 				</div>
 				<div class="col-sm-4"></div>
