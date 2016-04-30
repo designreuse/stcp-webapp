@@ -1,10 +1,10 @@
 package com.kmutt.stcp.manager;
 
+import com.kmutt.stcp.entity.Account;
 import com.kmutt.stcp.entity.Curriculum;
+import com.kmutt.stcp.entity.RoleUser;
 import com.kmutt.stcp.repository.AccountRepository;
-import com.kmutt.stcp.repository.CourseRepository;
 import com.kmutt.stcp.repository.CurriculumRepository;
-import com.kmutt.stcp.repository.common.AbstractHibernateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +17,28 @@ import java.util.List;
 public class ReportManager {
     @Autowired
     private CurriculumRepository curriculumRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-    public Integer findCourseId(String name,String startedYear) {
+    public List<Curriculum> findCourses() {
+        String hql = "SELECT c FROM Curriculum c GROUP BY c.name";
+        List<Curriculum> curriculumResult = curriculumRepository.queryHQL(hql);
+        return (curriculumResult.size() == 0) ? null : curriculumResult;
+    }
+
+    public Integer findCourseId(String name,String startYear) {
         String hql = "SELECT c FROM Curriculum c"
-                        + " WHERE name LIKE '%" + name + "%'"
-                        + " AND startedYear = '" + startedYear +"'";
-        List<Curriculum> curriculumList = curriculumRepository.queryHQL(hql);
-        
-        return (curriculumList.size() == 0) ? null : curriculumList.get(0).getId();
+                + " WHERE name = '" + name + "'"
+                + " AND startYear = '" + startYear +"'";
+        List<Curriculum> curriculumResult = curriculumRepository.queryHQL(hql);
+        return (curriculumResult.size() == 0) ? null : curriculumResult.get(0).getId();
+    }
+
+    public RoleUser findRoleUser(Integer userId) {
+        String hql = "SELECT a FROM Account a"
+                + " LEFT JOIN FETCH a.roleUser"
+                + " WHERE a.user.id = " + userId;
+        List<Account> accountResults = accountRepository.queryHQL(hql);
+        return (accountResults.size() == 0) ? null : accountResults.get(0).getRoleUser();
     }
 }

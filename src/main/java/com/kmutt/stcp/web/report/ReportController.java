@@ -1,9 +1,7 @@
 package com.kmutt.stcp.web.report;
 
 import com.kmutt.stcp.entity.Account;
-import com.kmutt.stcp.entity.Curriculum;
 import com.kmutt.stcp.entity.User;
-import com.kmutt.stcp.manager.CourseManager;
 import com.kmutt.stcp.manager.ReportManager;
 import com.kmutt.stcp.web.report.bean.ReportAjaxBean;
 import org.slf4j.Logger;
@@ -15,14 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Created by Gift on 23-Feb-16.
@@ -41,6 +36,10 @@ public class ReportController {
     @Autowired
     private ReportManager reportManager;
 
+    @Autowired
+    private ReportGenerator reportGenerator;
+
+
     /**
      * index of report center, display report list by user's role
      *
@@ -49,15 +48,23 @@ public class ReportController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String displayReportList(HttpSession session, Map<String, Object> model) {
-        //displayReportList by role
         Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
-        if(ROLE_ID_STUDENT != loginAccount.getRoleUser().getId()) {
+
+        model.put("curriculumNameList", reportManager.findCourses());
+
+        /* displayReportList by role */
+        if(ROLE_ID_STUDENT == loginAccount.getRoleUser().getId()) {
+            /* student can't view summary planning report */
+            ReportTemplate[] reportList = Arrays.stream(ReportTemplate.values())
+                    .filter(elm -> !elm.equals(ReportTemplate.SUMMARY_PLANNING))
+                    .toArray(ReportTemplate[]::new);
+            model.put("reportList", reportList);
+        } else {
+            /* teacher & admin can't view student planning report */
             ReportTemplate[] reportList = Arrays.stream(ReportTemplate.values())
                     .filter(elm -> !elm.equals(ReportTemplate.STUDENT_PLANNING))
                     .toArray(ReportTemplate[]::new);
             model.put("reportList", reportList);
-        } else {
-            model.put("reportList", ReportTemplate.values());
         }
 
         return "report/report-controller";
@@ -71,11 +78,21 @@ public class ReportController {
      */
     @RequestMapping(value = "/searchReport", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity searchReport(@RequestParam String filterText) {
+    public ResponseEntity searchReport(HttpSession session, @RequestParam String filterText) {
+        Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
 
-        ReportTemplate[] searched = Arrays.stream(ReportTemplate.values())
-                .filter(elm -> elm.getReportName().contains(filterText))
-                .toArray(ReportTemplate[]::new);
+        ReportTemplate[] searched;
+        if(ROLE_ID_STUDENT == loginAccount.getRoleUser().getId()) {
+            /* student can't view summary planning report */
+            searched = Arrays.stream(ReportTemplate.values())
+                    .filter(elm -> !elm.equals(ReportTemplate.SUMMARY_PLANNING) && elm.getReportName().contains(filterText))
+                    .toArray(ReportTemplate[]::new);
+        } else {
+            /* teacher & admin can't view student planning report */
+            searched = Arrays.stream(ReportTemplate.values())
+                    .filter(elm -> !elm.equals(ReportTemplate.STUDENT_PLANNING) && elm.getReportName().contains(filterText))
+                    .toArray(ReportTemplate[]::new);
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -90,36 +107,25 @@ public class ReportController {
     @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity reportCenterGenerator(HttpSession session, @RequestBody ReportAjaxBean bean) {
+        Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
+        User loginUser = (User) session.getAttribute(SESSION_KEY_LOGIN_USER);
 
-        //STUDENT_PLANNING needs userId, othewise curriculumId
-//
-//      มันต้องเป็น curriculum year กับ curriculumn name
-//      เอา 2 ค่าจาก table curriculum ไป map เป็น curriculum id
-//        reportManager.findCourseId(bean.get)
-        if(ReportTemplate.STUDENT_PLANNING.ordinal() == bean.getReportId()) {
-            //if studentId != null else...
-            Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
-            if(ROLE_ID_STUDENT != loginAccount.getRoleUser().getId()) {
-                bean.setErrorMsg("ไม่สามารถดูรายงานได้");
+        if(ReportTemplate.STUDENT_PLANNING.ordinal() != bean.getReportId()) {
+            //all but STUDENT PLANNER required curriculumName & Year
+            if(bean.getCurriculumName() == null && bean.getCurriculumYear() == null) {
+                bean.setErrorMsg("กรุณาเลือกหลักสูตรและปีหลักสูตร");
             }
-        } else if(ReportTemplate.COURSE_OPENING.ordinal() == bean.getReportId()
-                || ReportTemplate.PREREQUISITE.ordinal() == bean.getReportId()
-                || ReportTemplate.SUBJECT_DETAIL.ordinal() == bean.getReportId()
-                || ReportTemplate.SUMMARY_PLANNING.ordinal() == bean.getReportId()
-                || ReportTemplate.TIME_TABLE.ordinal() == bean.getReportId()) {
-            if(bean.getCurriculumId() != null) {
-                bean.setErrorMsg("กรุณาเลือกหลักสูตร");
-            }
-        } else {
-            bean.setErrorMsg("ข้อมูลรายงานไม่ถูกต้อง");
+        }
+
+        if(!reportGenerator.isReportValid(loginUser.getId(),bean.getReportId())) {
+            bean.setErrorMsg("ไม่มีสิทธิ์ในการใช้งาน");
         }
 
 
-        //กรุณาเลือก courseId
-//        ReportGenerator gen = new ReportGenerator();
-//        if(!gen.isReportValid(authorizedUser.getId(),bean.getReportId())) {
-//            bean.setErrorMsg("ไม่มีสิทธิ์ในการใช้งาน");
-//        }
+        //prepare curriculumId
+        if(bean.getErrorMsg() == null) {
+            bean.setCurriculumId(reportManager.findCourseId(bean.getCurriculumName(), bean.getCurriculumYear()));
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

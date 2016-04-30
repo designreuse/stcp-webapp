@@ -15,14 +15,6 @@ pageEncoding="UTF-8"%>
 </head>`
 
 <body>
-<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
-<!--<div class="container">-->
-<!--<div class="navbar-header">-->
-<!--<a class="navbar-brand" href="#">Student Course Planer</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--</nav>-->
-<!--<hr>-->
 <div class="panel panel-default">
     <div class="panel-body">
 
@@ -32,28 +24,21 @@ pageEncoding="UTF-8"%>
                 เงื่อนไขรายงาน
             </div>
 
-            <!--<div class="input-group" style="width:100%">-->
-            <!--<span class="input-group-addon" style="width:110px;padding:0px;border:none;">-->
-            <!--<select class="form-control" disabled>-->
-            <!--<option>${idOption.studentId}</option>-->
-            <!--<option>${idOption.staffId}</option>-->
-            <!--</select>-->
-            <!--</span>-->
-            <!--<input type="text" class="form-control" placeholder="รหัสประจำตัว" disabled value="12345678"/>-->
-            <!--</div>-->
-
             <div class="input-group">
                 <span class="input-group-addon" id="curriculumLabeld">หลักสูตร</span>
                 <!--<div class="input-group-btn">-->
                 <!--&lt;!&ndash; Button and dropdown menu &ndash;&gt;-->
                 <!--</div>-->
-                <input type="text" class="form-control" aria-label="..." placeholder="ปี">
+                <input id="reportYear" type="text" class="form-control" aria-label="..." placeholder="ปี">
                 <!--<input type="text" class="form-control" aria-label="..." placeholder="ชื่อหลักสูตร" >-->
-                <select class="form-control">
-                    <option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>
-                    <option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>
-                    <option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>
-                    <option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>
+                <select id="reportNameOption" class="form-control">
+                    <c:forEach var="curriculumOption" varStatus="status" items="${curriculumNameList}">
+                        <option value="${curriculumOption.name}">${curriculumOption.name}</option>
+                    </c:forEach>
+                    <!--<option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>-->
+                    <!--<option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>-->
+                    <!--<option value="it">เทคโนโลยีสารสนเทศ (Information Technology)</option>-->
+                    <!--<option value="sw">วิศวกรรมซอฟต์แวร์ (Software Engineering)</option>-->
                 </select>
             </div>
 
