@@ -127,8 +127,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสวิชา ::</div>
 				<div class="col-sm-2">
-					<form:input path="subjectCode" cssClass="form-control" />
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
+					<form:input path="subjectCode" cssClass="form-control" cssStyle="width:300px;" />
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -137,11 +137,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ประเภทวิชา ::</div>
 				<div class="col-sm-2">
-					<form:select path="subjectType"  cssClass="form-control">
+					<form:select path="subjectType"  cssClass="form-control"  cssStyle="width:300px;">
 						<form:option value="" label="--- เลือกประเภทวิชา ---"/>
 						<form:options items="${subjectTypeList}" />
 					</form:select>
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -150,8 +150,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ชื่อวิชา(ไทย) ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameThai" cssClass="form-control" />
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
+					<form:input path="nameThai" cssClass="form-control"  cssStyle="width:300px;"/>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -160,8 +160,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ชื่อวิชา(อังกฤษ) ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameEng" cssClass="form-control" />
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
+					<form:input path="nameEng" cssClass="form-control"  cssStyle="width:300px;"/>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -170,7 +170,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รายละเอียด(ไทย) ::</div>
 				<div class="col-sm-2">
-					<form:input path="detailThai" cssClass="form-control" />
+					<form:textarea path="detailThai" cssClass="form-control"  cssStyle="width:300px;"/>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -179,7 +179,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รายละเอียด(อังกฤษ) ::</div>
 				<div class="col-sm-2">
-					<form:input path="detailEng" cssClass="form-control"/>
+					<form:textarea path="detailEng" cssClass="form-control"  cssStyle="width:300px;"/>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -191,7 +191,7 @@ dropbtn {
 					<input type="checkbox" id="chkPre" name="chkPre"> วิชาบังคับก่อน
 					&nbsp;
 					<span id="preSubSpan" style="display:none;">
-						<select id="preSubjectId" name="preSubjectId" style="width:250px;">
+						<select id="preSubjectId" name="preSubjectId" style="width:300px;">
 							<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
 							<c:forEach items="${subjectList}" var="item">
 								<option value="${item.key}">${item.value}</option>
@@ -207,11 +207,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">หน่่วยกิต ::</div>
 				<div class="col-sm-2">
-					<form:select path="credit" cssClass="form-control">
+					<form:select path="credit" cssClass="form-control" cssStyle="width:300px;">
 						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
 						<form:options items="${creditList}" />
 					</form:select>
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="padding-left: 20px;"></i>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
