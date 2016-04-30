@@ -1,5 +1,6 @@
 package com.kmutt.stcp.web;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -93,7 +94,10 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
-	    public String addSubject(Model model,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) {
+	    public String addSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) throws UnsupportedEncodingException {
+	    	request.setCharacterEncoding("UTF-8");
+	    	response.setContentType("text/html; charset=UTF-8");
+	    	
 	    	subject.setStatus(1);
 	    	subjectManager.addSubject(subject,preSubjectId);
 	    	
@@ -136,7 +140,10 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/editSubject", method = RequestMethod.POST)
-	    public String editSubject(Model model,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) {
+	    public String editSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) throws UnsupportedEncodingException {
+	    	request.setCharacterEncoding("UTF-8");
+	    	response.setContentType("text/html; charset=UTF-8");
+	    	
 	    	
 	    	preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
 	    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;

@@ -129,8 +129,11 @@ public class SubjectManager {
 			
 			String hql = "from Prerequisite where id = "+preRequisiteId+" ";
 			
-			prerequisite = (Prerequisite) prerequisiteRepository.queryHQL(hql).get(0);
+			List<Prerequisite> prerequisiteList = (List<Prerequisite>) prerequisiteRepository.queryHQL(hql);
 			
+			if(prerequisiteList.size()!=0){
+				prerequisite = prerequisiteList.get(0);
+			}
 			prerequisiteRepository.delete(prerequisite);
 		}
 		
@@ -211,7 +214,8 @@ public class SubjectManager {
 				}
 				
 				if(!subjectCode.equals("")){
-					hql += " and subjectCode = '"+subjectCode+"' ";
+					subjectCode = subjectCode.replace(" ", "");
+					hql += " and REPLACE(subject_code,' ','') like '%"+subjectCode+"%' ";
 				}
 			}
 			
@@ -250,7 +254,8 @@ public class SubjectManager {
 			}
 			
 			if(!subjectCode.equals("")){
-				hql += " and subjectCode = '"+subjectCode+"' ";
+				subjectCode = subjectCode.replace(" ", "");
+				hql += " and REPLACE(subject_code,' ','') like '%"+subjectCode+"%' ";
 			}
 			
 			List<Subject> subject = subjectRepository.queryHQL(hql);
