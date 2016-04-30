@@ -24,13 +24,10 @@
 					<ul class="nav nav-pills">
 				        <li><a href="${root}/courseofferring/managesubject">Manage Subject</a></li>
 				        <li><a href="${root}/courseofferring/managecurriculum">Manage Curriculum</a></li>
-<<<<<<< HEAD
+
 				        <li><a href="${root}/courseofferring/managecourse">Manage Course</a></li>
 				        <li><a href="${root}/courseofferring/DetailCurriculum">DetailCurriculum Test</a></li>
-=======
-				        <li><a href="${root}/courseofferring/addCourse">Manage Course</a></li>
-				        
->>>>>>> 54a7089a438660343bf30dbd50011d3e7afec160
+
 				    </ul>
 			    </div>
 			</div>
