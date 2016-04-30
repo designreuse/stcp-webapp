@@ -25,7 +25,7 @@
 				        <li><a href="${root}/courseofferring/managesubject">Manage Subject</a></li>
 				        <li><a href="${root}/courseofferring/managecurriculum">Manage Curriculum</a></li>
 				        <li><a href="${root}/courseofferring/addCourse">Manage Course</a></li>
-				        <li><a href="${root}/courseofferring/DetailCurriculum">DetailCurriculum Test</a></li>
+				        
 				    </ul>
 			    </div>
 			</div>
