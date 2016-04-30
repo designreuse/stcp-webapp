@@ -62,6 +62,7 @@ $(document).on("click","#reportCenterTable > tbody > tr",function(req){
                 });
 
             } else {
+                if(curriculumId == null) curriculumId = -1;
                 window.location="reportCenterGenerator/pdf?reportId="+reportId+"&curriculumId="+curriculumId;
             }
         }).fail(function(jqXHR, textStatus, errorThrown){

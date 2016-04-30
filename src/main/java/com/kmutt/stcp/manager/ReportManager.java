@@ -20,13 +20,13 @@ public class ReportManager {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Curriculum> findCourses() {
+    public List<Curriculum> findDistinceCurriculums() {
         String hql = "SELECT c FROM Curriculum c GROUP BY c.name";
         List<Curriculum> curriculumResult = curriculumRepository.queryHQL(hql);
         return (curriculumResult.size() == 0) ? null : curriculumResult;
     }
 
-    public Integer findCourseId(String name,String startYear) {
+    public Integer findCurriculumId(String name, String startYear) {
         String hql = "SELECT c FROM Curriculum c"
                 + " WHERE name = '" + name + "'"
                 + " AND startYear = '" + startYear +"'";

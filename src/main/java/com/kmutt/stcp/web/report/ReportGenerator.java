@@ -27,9 +27,9 @@ import java.util.stream.Stream;
 public class ReportGenerator {
     private final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
 
-    private static final int ROLE_ID_STUDENT = 1;
-    private static final int ROLE_ID_TEACHER = 2;
-    private static final int ROLE_ID_ADMIN = 3;
+    protected static final int ROLE_ID_STUDENT = 1;
+    protected static final int ROLE_ID_TEACHER = 2;
+    protected static final int ROLE_ID_ADMIN = 3;
 
     @Autowired
     ReportManager reportManager;

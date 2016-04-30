@@ -9,8 +9,8 @@ public class ReportAjaxBean implements Serializable {
     private Integer reportId;
     private String curriculumYear;
     private String curriculumName;
-    private Integer curriculumId;
 
+    private Integer curriculumId;
     private String errorMsg;
 
     public Integer getReportId() {

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Map;
-
+import static com.kmutt.stcp.web.report.ReportGenerator.ROLE_ID_STUDENT;
 /**
  * Created by Gift on 23-Feb-16.
  */
@@ -29,9 +29,6 @@ public class ReportController {
 
     private static final String SESSION_KEY_LOGIN_ACCOUNT = "loginAccount";
     private static final String SESSION_KEY_LOGIN_USER = "loginUser";
-    private static final int ROLE_ID_STUDENT = 1;
-    private static final int ROLE_ID_TEACHER = 2;
-    private static final int ROLE_ID_ADMIN = 3;
 
     @Autowired
     private ReportManager reportManager;
@@ -50,7 +47,7 @@ public class ReportController {
     public String displayReportList(HttpSession session, Map<String, Object> model) {
         Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
 
-        model.put("curriculumNameList", reportManager.findCourses());
+        model.put("curriculumNameList", reportManager.findDistinceCurriculums());
 
         /* displayReportList by role */
         if(ROLE_ID_STUDENT == loginAccount.getRoleUser().getId()) {
@@ -107,24 +104,28 @@ public class ReportController {
     @RequestMapping(value = "/reportCenterGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity reportCenterGenerator(HttpSession session, @RequestBody ReportAjaxBean bean) {
-        Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
+//        Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
         User loginUser = (User) session.getAttribute(SESSION_KEY_LOGIN_USER);
 
         if(ReportTemplate.STUDENT_PLANNING.ordinal() != bean.getReportId()) {
             //all but STUDENT PLANNER required curriculumName & Year
-            if(bean.getCurriculumName() == null && bean.getCurriculumYear() == null) {
+            if(bean.getCurriculumName() == null || bean.getCurriculumYear() == null) {
                 bean.setErrorMsg("กรุณาเลือกหลักสูตรและปีหลักสูตร");
             }
+            //only non-student use curriculumId
+            Integer curriculumId = reportManager.findCurriculumId(bean.getCurriculumName(), bean.getCurriculumYear());
+            if(curriculumId != null)
+                bean.setCurriculumId(curriculumId);
+            else
+                bean.setErrorMsg("ไม่พบข้อมูลสำหรับออกรายงาน");
         }
 
         if(!reportGenerator.isReportValid(loginUser.getId(),bean.getReportId())) {
             bean.setErrorMsg("ไม่มีสิทธิ์ในการใช้งาน");
         }
 
-
-        //prepare curriculumId
         if(bean.getErrorMsg() == null) {
-            bean.setCurriculumId(reportManager.findCourseId(bean.getCurriculumName(), bean.getCurriculumYear()));
+            session.setAttribute("reportCenterGenerator", true);
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -137,16 +138,16 @@ public class ReportController {
      * @param bean ajax request bean
      * @return ajax response
      */
-    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity reportModuleGenerator(@RequestBody ReportAjaxBean bean) {
-
-        //TODO reportCenterGenerator
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(bean, headers, HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/reportModuleGenerator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseBody
+//    public ResponseEntity reportModuleGenerator(@RequestBody ReportAjaxBean bean) {
+//
+//        //TODO reportCenterGenerator
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        return new ResponseEntity<>(bean, headers, HttpStatus.OK);
+//    }
 
     /**
      * on selected report from report center's table,
@@ -157,23 +158,27 @@ public class ReportController {
      */
     @RequestMapping(value = "/reportCenterGenerator/pdf", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
-    public ResponseEntity<byte[]> reportCenterGeneratorPDF(@RequestParam int reportId) {
+    public ResponseEntity<byte[]> reportCenterGeneratorPDF(HttpSession session, @RequestParam int reportId,@RequestParam int curriculumId) {
+        if((boolean) session.getAttribute("reportCenterGenerator")) {
+            User loginUser = (User) session.getAttribute(SESSION_KEY_LOGIN_USER);
 
-        ReportGenerator generator = new ReportGenerator();
+            Map.Entry<String, Object> pairParam;
+            if (ReportTemplate.STUDENT_PLANNING.ordinal() == reportId && curriculumId < 0) {
+                pairParam = new AbstractMap.SimpleEntry<>("ID_STUDENT", loginUser.getId());
+            } else {
+                pairParam = new AbstractMap.SimpleEntry<>("ID_CURRICULUM", curriculumId);
+            }
+            byte[] pdfContents = reportGenerator.generateReport(reportId, pairParam);
 
-        //TODO isReportValid
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            headers.add("content-disposition", "inline;filename=exported.pdf");
 
-        //FIXME edit parameters
-        Map.Entry<String, Object> e1 = new AbstractMap.SimpleEntry<>("k1", "v1");
-        Map.Entry<String, Object> e2 = new AbstractMap.SimpleEntry<>("k2", "v2");
-        byte[] pdfContents = generator.generateReport(reportId, e1, e2);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        headers.add("content-disposition", "inline;filename=exported.pdf");
-
-//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+            session.setAttribute("reportCenterGenerator", false);
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
  /*   *//**
