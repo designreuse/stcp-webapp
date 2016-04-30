@@ -12,18 +12,16 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpSession;
 
-import com.kmutt.stcp.service.CoursePlannerService;
+import com.kmutt.stcp.entity.Account;
+import com.kmutt.stcp.entity.Curriculum;
+import com.kmutt.stcp.entity.User;
+import com.kmutt.stcp.entity.RoleUser;
 
 import org.omg.CORBA._PolicyStub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.kmutt.stcp.entity.*;
-import com.kmutt.stcp.repository.AccountRepository;
-import com.kmutt.stcp.repository.CurriculumRepository;
-import com.kmutt.stcp.repository.RoleUserRepository;
-import com.kmutt.stcp.repository.UserRepository;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -31,6 +29,10 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.kmutt.stcp.manager.SentMailManager;
+import com.kmutt.stcp.repository.AccountRepository;
+import com.kmutt.stcp.repository.CurriculumRepository;
+import com.kmutt.stcp.repository.RoleUserRepository;
+import com.kmutt.stcp.repository.UserRepository;
 
 @Component("securityManager")
 public class SecurityManager {
@@ -220,6 +222,41 @@ public class SecurityManager {
     				SendNewPasswordAndUpdateTable(UserName);
     			}
     		}
+    	} catch (Exception e) {
+			result = e.getMessage();
+		}
+    	
+    	return result;
+    }
+    
+    public String ChangePassword(HttpSession session,String oldPassword,String newPassword){
+    	String result = "";
+    	
+    	Account loginAcc = (Account) session.getAttribute("loginAccount");
+    	
+    	try {
+    		
+    		result = ValidatePassword(oldPassword);
+    		
+    		if(result.isEmpty() == true){
+    			
+    			result = ValidatePassword(newPassword);
+    			
+    			if(result.isEmpty() == true){
+    				String currentPassword = loginAcc.getPassword();
+                	String oldPasswordencrypt = passwordManager.encrypt(oldPassword);
+            		
+                	if(currentPassword.equals(oldPasswordencrypt) == false){
+                		result = "Your old password was incorrect.";
+                	}else{
+                		String newPaswordencrypt = passwordManager.encrypt(newPassword);
+        				loginAcc.setPassword(newPaswordencrypt);
+        	    		accountRepository.update(loginAcc);
+                	}
+    			}
+    		}
+    		
+        	
     	} catch (Exception e) {
 			result = e.getMessage();
 		}

@@ -234,7 +234,50 @@ public class SecurityController {
 		return "ForgotPasswordComplete";
 	}
 	
+	@RequestMapping(value = "/ChangePassword" , method = RequestMethod.GET)
+	public String ChangePassword(HttpSession session, Map<String, Object> model) {
+		logger.debug("ChangePassword() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "ChangePassword";
+	}
 	
+	// call function to validate email and sent mail
+	@RequestMapping(value = { "/ChangePasswordProcess" }, method = RequestMethod.GET)
+	@ResponseBody 
+	public String ChangePasswordProcess(HttpSession session, @RequestParam("OldPassword") String textOldPassword, @RequestParam("NewPassword") String textNewPassword) {
+		String msg = "";
+		
+		try {
+			String result = securityManager.ChangePassword(session, textOldPassword, textNewPassword); 
+			
+			if(result.isEmpty()){
+				msg = "success";
+			}
+			else{
+				msg = result;
+			}
+		} catch (Exception e) {
+			logger.error("Method:ChangePasswordProcess|Err:" + e.getMessage());
+			msg = e.getMessage();
+		}
+
+		String res = "{\"msg\":\"" + msg + "\"}";
+		
+		return res;
+	}
+	
+	@RequestMapping(value = "/ChangePasswordSuccess" , method = RequestMethod.GET)
+	public String ChangePasswordSuccess(HttpSession session, Map<String, Object> model) {
+		logger.debug("ChangePasswordSuccess() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "ChangePasswordComplete";
+	}
 	
 	private void setLoginAccount(HttpSession session,String UserName){
 		Account loginAcc = securityManager.GetLoginAccountProfile(UserName);
