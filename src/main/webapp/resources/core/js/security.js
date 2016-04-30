@@ -204,5 +204,51 @@ $(document).ready(function() {
         });
 		
 	});
+	
+	// for change password
+	$("#btnChangePassword").on('click', function(e){
+		e.preventDefault();
+		
+		var txtoldPassword = $('#tbxOldPassword').val();
+		var txtnewPassword = $('#tbxNewPassword').val();
+		
+		$.ajax({
+            type: "GET",
+            url: "http://localhost:8080/stcp/ChangePasswordProcess",
+            dataType: "json",
+            data: { OldPassword: txtoldPassword, NewPassword: txtnewPassword },
+            success: function (data) {
+            	if(data != null){
+            		if(data.msg == "success"){
+            			window.location.href = "http://localhost:8080/stcp/ChangePasswordSuccess"
+            		}
+            		else{
+            			swal({
+                			title : "Student Course Planner",
+                			text : data.msg,
+                			type : "error",
+       					   	showCancelButton: false 
+                		});
+            		}
+            	}
+            	else{
+            		swal({
+            			title : "Student Course Planner",
+            			text : "System Error, Please contact system admin",
+            			type : "error",
+   					   	showCancelButton: false 
+            		});
+            	}
+            },
+            error: function (xml, status, errMsg) {
+            	swal({
+        			title : "Student Course Planner",
+        			text : "System Error, Please contact system admin",
+        			type : "error",
+					   	showCancelButton: false 
+        		});
+            }
+        });
+	});
 });
 

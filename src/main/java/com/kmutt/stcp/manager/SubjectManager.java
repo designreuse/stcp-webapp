@@ -8,6 +8,7 @@ import com.kmutt.stcp.repository.CurriculumSubjectRepository;
 import com.kmutt.stcp.repository.PrerequisiteRepository;
 import com.kmutt.stcp.repository.SubjectRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -128,8 +129,11 @@ public class SubjectManager {
 			
 			String hql = "from Prerequisite where id = "+preRequisiteId+" ";
 			
-			prerequisite = (Prerequisite) prerequisiteRepository.queryHQL(hql).get(0);
+			List<Prerequisite> prerequisiteList = (List<Prerequisite>) prerequisiteRepository.queryHQL(hql);
 			
+			if(prerequisiteList.size()!=0){
+				prerequisite = prerequisiteList.get(0);
+			}
 			prerequisiteRepository.delete(prerequisite);
 		}
 		
@@ -138,6 +142,31 @@ public class SubjectManager {
 	
 	// Method//
 	public void deleteSubject(int subjectId) {
+//		
+//		List<CurriculumSubject> curriculumSubject = new ArrayList<CurriculumSubject>();
+//		String hqlCurSub = "from CurriculumSubject where subject.id = "+subjectId+" ";
+//		curriculumSubject = curriculumSubjectRepository.queryHQL(hqlCurSub);
+//		
+//		List<Prerequisite> preSub = new ArrayList<Prerequisite>();
+//		String hqlPreSub = "from Prerequisite where subjectBySubjectId.id = "+subjectId+" ";
+//		preSub = prerequisiteRepository.queryHQL(hqlPreSub);
+//		
+//		List<Prerequisite> preRequi = new ArrayList<Prerequisite>();
+//		String hqlPreRequi = "from Prerequisite where subjectByPresubjectId.id = "+subjectId+" ";
+//		preRequi = prerequisiteRepository.queryHQL(hqlPreRequi);
+//		
+//		for(int i=0; i<curriculumSubject.size(); i++){
+//			curriculumSubjectRepository.delete(curriculumSubject.get(i));
+//		}
+//		
+//		for(int j=0; j<preSub.size(); j++){
+//			prerequisiteRepository.delete(preSub.get(j));
+//		}
+//		
+//		for(int j=0; j<preRequi.size(); j++){
+//			prerequisiteRepository.delete(preRequi.get(j));
+//		}
+		
 		Subject subject = new Subject();
 		
 		String hql = "from Subject where id = "+subjectId+" ";
@@ -185,7 +214,8 @@ public class SubjectManager {
 				}
 				
 				if(!subjectCode.equals("")){
-					hql += " and subjectCode = '"+subjectCode+"' ";
+					subjectCode = subjectCode.replace(" ", "");
+					hql += " and REPLACE(subject_code,' ','') like '%"+subjectCode+"%' ";
 				}
 			}
 			
@@ -207,6 +237,31 @@ public class SubjectManager {
 		
 		return subject;
 	}
+	
+	// Method//
+		public List<Subject> getSubjectByCriteria(String subjectType,String status,String subjectCode) {
+			
+			
+			
+			String hql = "from Subject where 1=1 ";
+			
+			if(!subjectType.equals("")){
+				hql += " and subjectType = "+subjectType;
+			}
+			
+			if(!status.equals("")){
+				hql += " and status = "+status;
+			}
+			
+			if(!subjectCode.equals("")){
+				subjectCode = subjectCode.replace(" ", "");
+				hql += " and REPLACE(subject_code,' ','') like '%"+subjectCode+"%' ";
+			}
+			
+			List<Subject> subject = subjectRepository.queryHQL(hql);
+			
+			return subject;
+		}
 	
 	public Object getPrerequisiteById(int id){
 		

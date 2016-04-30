@@ -16,8 +16,7 @@
 <meta charset="utf-8">
 <link href="http://fonts.googleapis.com/css?family=Montserrat"
 	rel="stylesheet">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
@@ -128,7 +127,8 @@ dropbtn {
 				<div class="col-sm-2">
 					<form:hidden path="id"/>
 					<form:hidden path="status"/>
-					<form:input path="subjectCode" />
+					<form:input path="subjectCode" cssClass="form-control"  cssStyle="width:300px;"/>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -137,10 +137,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ประเภทวิชา ::</div>
 				<div class="col-sm-2">
-					<form:select path="subjectType">
+					<form:select path="subjectType" cssClass="form-control" cssStyle="width:300px;">
 						<form:option value="" label="--- เลือกประเภทวิชา ---"/>
 						<form:options items="${subjectTypeList}" />
 					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -149,7 +150,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ชื่อวิชา(ไทย) ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameThai" />
+					<form:input path="nameThai" cssClass="form-control"  cssStyle="width:300px;"/>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -158,7 +160,8 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">ชื่อวิชา(อังกฤษ) ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameEng" />
+					<form:input path="nameEng" cssClass="form-control"  cssStyle="width:300px;"/>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -167,7 +170,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รายละเอียด(ไทย) ::</div>
 				<div class="col-sm-2">
-					<form:input path="detailThai" />
+					<form:input path="detailThai" cssClass="form-control" cssStyle="width:300px;" />
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -176,7 +179,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รายละเอียด(อังกฤษ) ::</div>
 				<div class="col-sm-2">
-					<form:input path="detailEng"/>
+					<form:input path="detailEng" cssClass="form-control" cssStyle="width:300px;"/>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -193,16 +196,17 @@ dropbtn {
 						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()" checked> วิชาบังคับก่อน
 						&nbsp;
 						<span id="preSubSpan">
-							<select id="preSubjectId" name="preSubjectId">
-								<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
+							<select id="preSubjectId" name="preSubjectId" style="width:300px;">
+								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
 								<c:forEach items="${subjectList}" var="item">
-									<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
-										<option value="${item.key}" selected>${item.value}</option>
+									<c:if test="${item.key!=subjectForm.id }">
+										<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
+											<option value="${item.key}" selected>${item.value}</option>
+										</c:if>
+										<c:if test="${item.key != prerequisite[0].subjectByPresubjectId.id}">
+											<option value="${item.key}">${item.value}</option>
+										</c:if>
 									</c:if>
-									<c:if test="${item.key != prerequisite[0].subjectByPresubjectId.id}">
-										<option value="${item.key}">${item.value}</option>
-									</c:if>
-									
 								</c:forEach>
 							</select>
 						
@@ -212,10 +216,12 @@ dropbtn {
 						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()"> วิชาบังคับก่อน
 						&nbsp;
 						<span id="preSubSpan" style="display:none;">
-							<select id="preSubjectId" name="preSubjectId">
-								<option value="0">--- เลือกรายวิชาบังคับก่อน---</option>
+							<select id="preSubjectId" name="preSubjectId" style="width:300px;">
+								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
 								<c:forEach items="${subjectList}" var="item">
-									<option value="${item.key}">${item.value}</option>
+									<c:if test="${item.key!=subjectForm.id }">
+										<option value="${item.key}">${item.value}</option>
+									</c:if>
 								</c:forEach>
 							</select>
 					</c:if> 
@@ -229,10 +235,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">หน่่วยกิต ::</div>
 				<div class="col-sm-2">
-					<form:select path="credit">
+					<form:select path="credit"  cssClass="form-control" cssStyle="width:300px;">
 						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
 						<form:options items="${creditList}" />
 					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -261,6 +268,10 @@ dropbtn {
 	
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/addSubject.js"></script>
 <script type="text/javascript">
+	$(document).ready(function() {
+		$('#preSubjectId').select2();
+	});
+
 	function setDefaultPreSub(){
 		
 		if($("#chkPre").prop('checked') == false){

@@ -16,7 +16,8 @@ $(document).ready(function() {
 });
 
 function searchSubject(){
-	swal({
+	document.getElementById("searchSubject").submit();
+	/*swal({
 		title : "Search Subject",
 		text : "Are you want to search this subject?",
 		type : "warning",
@@ -32,7 +33,7 @@ function searchSubject(){
 		if (isConfirm) {
 			document.getElementById("searchSubject").submit();
 		}
-	});
+	});*/
 }
 
 

@@ -24,7 +24,21 @@ $(document).ready(function() {
 		}, function(isConfirm) {
 			
 			if (isConfirm) {
-				document.getElementById("subjectForm").submit();
+				
+				var subjectCode = $("#subjectCode").val();
+				var subjectType = $("#subjectType").val();
+				var nameThai = $("#nameThai").val();
+				var nameEng = $("#nameEng").val();
+				var credit = $("#credit").val();
+				
+				if(subjectCode!="" && subjectType!="" 
+					&& nameThai!="" && nameEng!="" && credit!="0"){
+					document.getElementById("subjectForm").submit();
+				}else{
+					alertSubmitFail();
+				}
+				
+				
 			}
 		});
 	});
@@ -59,4 +73,7 @@ $(document).ready(function() {
 
 });
 
-
+function alertSubmitFail(){
+	
+	swal("Please fill in all required information!", "", "error");
+}
