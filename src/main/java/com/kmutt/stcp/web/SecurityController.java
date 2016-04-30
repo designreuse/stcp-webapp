@@ -4,6 +4,7 @@ import com.kmutt.stcp.manager.PasswordManager;
 import com.kmutt.stcp.manager.SecurityManager;
 import com.kmutt.stcp.entity.Account;
 import com.kmutt.stcp.entity.Curriculum;
+import com.kmutt.stcp.entity.RoleUser;
 import com.kmutt.stcp.entity.User;
 
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class SecurityController {
 	@RequestMapping(value = { "/", "/index" } , method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 		session.removeAttribute("loginAccount");
+		session.removeAttribute("loginUser");
+		session.removeAttribute("loginRole");
 		
 		logger.debug("index() is executed!");
 
@@ -173,6 +176,11 @@ public class SecurityController {
 	@RequestMapping(value = "/mains", method = RequestMethod.GET)
 	public String LoginSuccess(HttpSession session, Map<String, Object> model) {
 		User usr = securityManager.GetLoginUserProfile(session);
+		session.setAttribute("loginUser", usr);
+		
+		RoleUser role = securityManager.GetLoginRoleProfie(session);
+		session.setAttribute("loginRole", role);
+		
 		Curriculum curr = securityManager.GetLoginCurriculum(usr);
 		
 		logger.debug("LoginSuccess() is executed!");
@@ -234,11 +242,56 @@ public class SecurityController {
 		return "ForgotPasswordComplete";
 	}
 	
+	@RequestMapping(value = "/ChangePassword" , method = RequestMethod.GET)
+	public String ChangePassword(HttpSession session, Map<String, Object> model) {
+		logger.debug("ChangePassword() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "ChangePassword";
+	}
 	
+	// call function to validate email and sent mail
+	@RequestMapping(value = { "/ChangePasswordProcess" }, method = RequestMethod.GET)
+	@ResponseBody 
+	public String ChangePasswordProcess(HttpSession session, @RequestParam("OldPassword") String textOldPassword, @RequestParam("NewPassword") String textNewPassword) {
+		String msg = "";
+		
+		try {
+			String result = securityManager.ChangePassword(session, textOldPassword, textNewPassword); 
+			
+			if(result.isEmpty()){
+				msg = "success";
+			}
+			else{
+				msg = result;
+			}
+		} catch (Exception e) {
+			logger.error("Method:ChangePasswordProcess|Err:" + e.getMessage());
+			msg = e.getMessage();
+		}
+
+		String res = "{\"msg\":\"" + msg + "\"}";
+		
+		return res;
+	}
+	
+	@RequestMapping(value = "/ChangePasswordSuccess" , method = RequestMethod.GET)
+	public String ChangePasswordSuccess(HttpSession session, Map<String, Object> model) {
+		logger.debug("ChangePasswordSuccess() is executed!");
+
+		model.put("title", "title");
+		model.put("msg", "message");
+		
+		return "ChangePasswordComplete";
+	}
 	
 	private void setLoginAccount(HttpSession session,String UserName){
 		Account loginAcc = securityManager.GetLoginAccountProfile(UserName);
 		
 		session.setAttribute("loginAccount", loginAcc);
+		
+		
 	}
 }

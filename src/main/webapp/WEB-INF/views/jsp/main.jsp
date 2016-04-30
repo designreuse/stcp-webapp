@@ -84,6 +84,16 @@
 											<th style="width:10%">Semester :</th>
 											<td style="width:90%"><c:out value="${loginusr.semester}"/></td>
 										</tr>
+										<tr>
+											<td colspan="2">
+												<table style="width:100%">
+													<tr>
+														<td style="width:80%"></td>
+														<td style="width:20%"><a href="ChangePassword">Change Password</a></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
 									</tbody>
 								</table>
 							</div>

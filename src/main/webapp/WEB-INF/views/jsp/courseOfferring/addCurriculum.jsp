@@ -16,16 +16,14 @@
 <link href="http://fonts.googleapis.com/css?family=Montserrat"
 	rel="stylesheet">
 <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 <!-- SweetAlert -->
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
-<script type="text/javascript">
-$(document).ready(function() {
-	$('#preSubjectId').select2();
-});
-</script>
+	
 <title>Student Course Planner</title>
 </head>
 <style>
@@ -105,7 +103,7 @@ dropbtn {
 </style>
 <body>
 	<div class="box-header">
-		<h3 class="box-title">Add Subject</h3>
+		<h3 class="box-title">Manage Curriculum</h3>
 	</div>
 	<!-- /.box-header -->
 	<nav class="navbar navbar-default">
@@ -116,102 +114,67 @@ dropbtn {
 				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			
+			<ul class="nav nav-pills">
+		        <li><a href="${root}/stcp/courseofferring/managecurriculum">Search Curriculum</a></li>
+		        <li><a href="${root}/stcp/courseofferring/addCurriculum">Add Curriculum</a></li>
+		        <li><a href="${root}/stcp/courseofferring/courseofferring">Back</a></li>
+		    </ul>
 		</div>
 	</nav>
 
 
 	<div class="container">
-		<form:form method="post" modelAttribute="subjectForm" onsubmit="verifyForm();return false;">
+		<form:form method="post" modelAttribute="curriculumForm" >
+			<%-- <div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">ปีการศึกษา<span style="color:red">*</span> ::</div>
+				<div class="col-sm-2">
+					<form:input path="startedYear" cssClass="form-control" />
+				</div>
+				<div class="col-sm-4"></div>
+			</div> --%>
+			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
-				<div class="col-sm-2">รหัสวิชา ::</div>
+				<div class="col-sm-2">รหัสหลักสูตร<span style="color:red">*</span> ::</div>
 				<div class="col-sm-2">
-					<form:input path="subjectCode" cssClass="form-control" cssStyle="width:300px;" />
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;left:300px;padding-left: 20px;"></i>
+					<form:input path="accId" cssClass="form-control"/>					
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
 			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
-				<div class="col-sm-2">ประเภทวิชา ::</div>
+				<div class="col-sm-2">ชื่อหลักสูตร<span style="color:red">*</span> ::</div>
 				<div class="col-sm-2">
-					<form:select path="subjectType"  cssClass="form-control"  cssStyle="width:300px;">
-						<form:option value="" label="--- เลือกประเภทวิชา ---"/>
-						<form:options items="${subjectTypeList}" />
-					</form:select>
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
+					<form:input path="name" cssClass="form-control"/>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
+			<!-- <div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">หน่วยกิตทั้งหมด ::</div>
+				<div class="col-sm-2">
+					<input type="text" name="all_credit" />
+				</div>
+				<div class="col-sm-4"></div>
+			</div> -->
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">เริ่มใช้ในปีการศึกษา ::</div>
+				<div class="col-sm-2">
+					<form:input path="startYear" cssClass="form-control" />
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
 			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
-				<div class="col-sm-2">ชื่อวิชา(ไทย) ::</div>
+				<div class="col-sm-2">หมดอายุในปีการศึกษา ::</div>
 				<div class="col-sm-2">
-					<form:input path="nameThai" cssClass="form-control"  cssStyle="width:300px;"/>
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
-				</div>
-				<div class="col-sm-4"></div>
-			</div>
-			
-			<div class="row" style="margin-bottom: 10px;">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">ชื่อวิชา(อังกฤษ) ::</div>
-				<div class="col-sm-2">
-					<form:input path="nameEng" cssClass="form-control"  cssStyle="width:300px;"/>
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
-				</div>
-				<div class="col-sm-4"></div>
-			</div>
-			
-			<div class="row" style="margin-bottom: 10px;">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">รายละเอียด(ไทย) ::</div>
-				<div class="col-sm-2">
-					<form:textarea path="detailThai" cssClass="form-control"  cssStyle="width:300px;"/>
-				</div>
-				<div class="col-sm-4"></div>
-			</div>
-			
-			<div class="row" style="margin-bottom: 10px;">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">รายละเอียด(อังกฤษ) ::</div>
-				<div class="col-sm-2">
-					<form:textarea path="detailEng" cssClass="form-control"  cssStyle="width:300px;"/>
-				</div>
-				<div class="col-sm-4"></div>
-			</div>
-			
-			<div class="row" style="margin-bottom: 10px;">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">วิชายังคับก่อน ::</div>
-				<div class="col-sm-2">
-					<input type="checkbox" id="chkPre" name="chkPre"> วิชาบังคับก่อน
-					&nbsp;
-					<span id="preSubSpan" style="display:none;">
-						<select id="preSubjectId" name="preSubjectId" style="width:300px;">
-							<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
-							<c:forEach items="${subjectList}" var="item">
-								<option value="${item.key}">${item.value}</option>
-							</c:forEach>
-						</select>
-					</span>
-					
-				</div>
-				<div class="col-sm-4"></div>
-			</div>
-			
-			<div class="row" style="margin-bottom: 10px;">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">หน่่วยกิต ::</div>
-				<div class="col-sm-2">
-					<form:select path="credit" cssClass="form-control" cssStyle="width:300px;">
-						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
-						<form:options items="${creditList}" />
-					</form:select>
-					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
+					<form:input path="startedYear" cssClass="form-control" />
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -220,7 +183,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2"></div>
 				<div class="col-sm-2">
-					<button id="btnReset" type="button" class="btn btn-warning btn-sm">
+					<button type="reset" class="btn btn-warning btn-sm">
 						&nbsp;<i class="fa fa-undo fa-lg"></i>&nbsp;Reset&nbsp;
 					</button>
 					<button id="btnSave" type="button" class="btn btn-primary btn-sm">
@@ -229,7 +192,6 @@ dropbtn {
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
-		
 		</form:form>
 
 
@@ -237,6 +199,19 @@ dropbtn {
 		
 		
 	</div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/addSubject.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$("#btnSave").click(function() {
+		if(confirm("Are you sure to add Curriculum ?")){
+			if($("#accId").val()!="" && $("#name").val()!=""){
+				document.getElementById("curriculumForm").submit();
+			}else{
+				alert("กรุณาใส่หัวข้อที่มี * ให้ครบ");
+			}
+		}
+	})
+});
+</script>
 </body>
 </html>

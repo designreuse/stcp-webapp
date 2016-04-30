@@ -44,10 +44,26 @@ th {
 }
  </style>
 <body>
-
+<script>
+$(document).ready(function() {
+	
+	if("${addSuccess}"=="Y"){
+		alert("Add Curriculum success.!");
+	}else if("${addSuccess}"=="N"){
+		alert("Add Curriculum is failed.!");		
+	}
+	
+	if("${editSuccess}"=="Y"){
+		alert("Edit Curriculum success.!");
+	}else if("${editSuccess}"=="N"){
+		alert("Edit Curriculum failed.!");
+	}
+	
+});
+</script>
       <!-- Main content -->
       <div class="box-header">
-      Manage Curriculum
+      <h3 class="box-title">Manage Curriculum</h3>
       </div><!-- /.box-header -->
      
 
@@ -56,10 +72,10 @@ th {
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
-		        <li><a href="#">Search</a></li>
-		        <li><a href="${root}/courseofferring/DetailCurriculum">New</a></li>
-		        <li><a href="#">Cancel</a></li>
-		        <li><a href="#">Close</a></li>
+		        <li><a href="#">Search Curriculum</a></li>
+		        <li><a href="${root}/courseofferring/addCurriculum">Add Curriculum</a></li>
+		        <li><a href="${root}/courseofferring/courseofferring">Back</a></li>
+		       
 		    </ul>
 	    </div>
 	  </div>
@@ -68,12 +84,12 @@ th {
 	<div class="container-fluid">
 		<div class="row" style="margin-bottom:10px; text-align;left;">			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">ปีการศึกษา  ::</div>
-			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtYear"  size="20"></div>
+			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="searchYear"  size="20"></div>
 			<div class="col-xs-12 col-md-8"></div>
 		</div>
 		<div class="row" >			
 			<div class="col-xs-12 col-md-2" style="padding-left: 50px;">รหัสหลักสูตร  ::</div>
-			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="txtCuriID" width="20"></div>
+			<div class="col-xs-12 col-md-2"><input type="text" class="form-control" id="accId" width="20"></div>
 			<div class="col-xs-12 col-md-8"></div>
 		</div>
 		<div style="margin-bottom:20px;"></div>	<!-- empty -->
@@ -83,23 +99,128 @@ th {
      			<table class="table table-condensed">
  		 			<tr>
  		 				<th></th>
-						<th>Curriculum ID nnn</th>
+						<th>Curriculum ID</th>
 						<th>Curriculum Name.</th>
 						<th>Curriculum Name(Eng).</th>
 						<th>Total credit.</th>
 						<th>Teacher course.</th>
+						<th>Manage</th>
   					</tr>
+  					<tbody id="searchResult">
  		 			<tr>
- 		 				<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-  					</tr> 					
+ 		 				<!-- <td colspan="6" style="text-align:center;padding-top:10px">No Result</td> -->
+ 		 				<td colspan="7" style="text-align:center">No Result</td>
+						
+  					</tr>
+  					</tbody>
+  							
   				</table>
     		</div>
   		</div>	
+  		<script>
+  					$(document).ready(function() {
+  						
+  						/* $("#delBtn").onclick(function(){
+  							if(confirm("Are you sure to delete this ?")){
+  								href = document.getElementById("delBtn").href;
+  								window.location = href;
+  							}else{
+  								return false;
+  							}
+  						}) */
+  						
+  						$("#searchYear").keyup(function(){
+  							var searchYear = $("#searchYear").val() == "" ? "none":$("#searchYear").val();
+  							var accId = $("#accId").val() == "" ? "none":$("#accId").val();
+  							var dataString = "searchYear="+searchYear+"&searchAccId="+accId;
+  							
+  							$.ajax({
+  				                type: "POST",
+  				                url: "searchcurriculum",
+  				                data: dataString,
+  				                dataType: "json",
+  				               
+  				                //if received a response from the server
+  				                success: function( data, textStatus, jqXHR) {
+  				                    //our country code was correct so we have some information to display
+  				                     if(data.success){
+  				                    	 $("#searchResult").html(data);
+  				                     } 
+  				                     //display error message
+  				                     else {
+  				                         $("#searchResult").html("<td>No Result</td>");
+  				                     }
+  				                },
+  				               
+  				                //If there was no resonse from the server
+  				                error: function(jqXHR, textStatus, errorThrown){
+  				                     console.log("Something really bad happened " + textStatus);
+  				                      $("#searchResult").html(jqXHR.responseText);
+  				                }
+  				               
+  				                /* //capture the request before it was sent to server
+  				                beforeSend: function(jqXHR, settings){
+  				                    //adding some Dummy data to the request
+  				                    settings.data += "&dummyData=whatever";
+  				                    //disable the button until we get the response
+  				                    $('#myButton').attr("disabled", true);
+  				                },
+  				               
+  				                //this is called after the response or error functions are finsihed
+  				                //so that we can take some action
+  				                complete: function(jqXHR, textStatus){
+  				                    //enable the button 
+  				                    $('#myButton').attr("disabled", false);
+  				                } */
+  						})
+  						})
+  						
+  						$("#accId").keyup(function(){
+  							var searchYear = $("#searchYear").val() == "" ? "none":$("#searchYear").val();
+  							var accId = $("#accId").val() == "" ? "none":$("#accId").val();
+  							var dataString = "searchYear="+searchYear+"&searchAccId="+accId;
+  							$.ajax({
+  				                type: "POST",
+  				                url: "searchcurriculum",
+  				                data: dataString,
+  				                dataType: "json",
+  				               
+  				                //if received a response from the server
+  				                success: function( data, textStatus, jqXHR) {
+  				                    //our country code was correct so we have some information to display
+  				                     if(data.success){
+  				                    	 $("#searchResult").html(data);
+  				                     } 
+  				                     //display error message
+  				                     else {
+  				                         $("#searchResult").html("<td colspan='6' style='text-align:center'>No Result</td>");
+  				                     }
+  				                },
+  				               
+  				                //If there was no resonse from the server
+  				                error: function(jqXHR, textStatus, errorThrown){
+  				                     console.log("Something really bad happened " + textStatus);
+  				                      $("#searchResult").html(jqXHR.responseText);
+  				                }
+  				               
+  				                /* //capture the request before it was sent to server
+  				                beforeSend: function(jqXHR, settings){
+  				                    //adding some Dummy data to the request
+  				                    settings.data += "&dummyData=whatever";
+  				                    //disable the button until we get the response
+  				                    $('#myButton').attr("disabled", true);
+  				                },
+  				               
+  				                //this is called after the response or error functions are finsihed
+  				                //so that we can take some action
+  				                complete: function(jqXHR, textStatus){
+  				                    //enable the button 
+  				                    $('#myButton').attr("disabled", false);
+  				                } */
+  						})
+  						})
+  					});
+  		</script>
 	</div>
     
 </body>
