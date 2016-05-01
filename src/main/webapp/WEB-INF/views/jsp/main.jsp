@@ -45,10 +45,6 @@
 											<td style="width:90%"><c:out value="${loginusr.lastname}"/></td>
 										</tr>
 										<tr>
-											<th style="width:10%">Citizen id :</th>
-											<td style="width:90%"> </td><%-- <c:out value="${loginusr.citizen_id}"/></td> --%> 
-										</tr>
-										<tr>
 											<th style="width:10%">Birth day :</th>
 											<td style="width:90%"><c:out value="${loginusr.birthday}"/></td>
 										</tr>
@@ -75,6 +71,10 @@
 										<tr>
 											<th style="width:10%">Major :</th>
 											<td style="width:90%"><c:out value="${loginusr.major}"/></td>
+										</tr>
+										<tr>
+											<th style="width:10%">Role :</th>
+											<td style="width:90%"><c:out value="${loginRole.role}"/></td>
 										</tr>
 										<tr>
 											<th style="width:10%">Curriculum :</th>
