@@ -357,7 +357,7 @@ public class CourseOfferringController {
 		    		model.addAttribute("editSuccess", "N");
 		    	}
 	    	}
-	    	}
+	    	
 	        return "courseOfferring/managecurriculum";
 	    }
 	    
@@ -447,14 +447,14 @@ public class CourseOfferringController {
 			return subjectList;
 		}
 	    
-//	    @ModelAttribute("teacherList")
-//		public Map<String,String> teacherList() {
-//			
-//			Map<String,String> creditList = new LinkedHashMap<String,String>();
-//			
-//			
-//			return creditList;
-//		}
+	    @ModelAttribute("teacherList")
+		public Map<String,String> teacherList() {
+			
+			Map<String,String> teacherList = new LinkedHashMap<String,String>();
+			teacherList.put("1", "ผศ.ดร. พรชัย มงคลนาม");
+			teacherList.put("2", "ผศ.ดร. ชลเมธ อาปณิกานนท์");			
+			return teacherList;
+		}
 	    
 	    
 }

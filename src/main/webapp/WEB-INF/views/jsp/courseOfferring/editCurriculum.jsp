@@ -165,11 +165,11 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">อาจารย์ที่ดูแลหลักสูตร ::</div>
 				<div class="col-sm-2">
-					<form:input path="accId" cssClass="form-control" />
-					<%-- <form:select path="credit" cssClass="form-control" cssStyle="width:300px;">
+					<%-- <form:input path="accId" cssClass="form-control" /> --%>
+					<form:select path="accId" cssClass="form-control" cssStyle="width:200px;">
 						<form:option value="0" label="--- รายชื่ออาจารย์---"/>
 						<form:options items="${teacherList}" />
-					</form:select> --%>
+					</form:select>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
