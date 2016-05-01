@@ -72,9 +72,9 @@ $(document).ready(function() {
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
-		        <li><a href="#">Search Curriculum</a></li>
-		        <li><a href="${root}/courseofferring/addCurriculum">Add Curriculum</a></li>
-		        <li><a href="${root}/courseofferring/courseofferring">Back</a></li>
+		        <li><a href="#">Search</a></li>
+		        <li><a href="${root}/courseofferring/addCurriculum">Add</a></li>
+		        <li><a href="${root}/courseofferring/courseofferring">Close</a></li>
 		       
 		    </ul>
 	    </div>

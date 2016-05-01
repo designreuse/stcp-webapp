@@ -23,6 +23,8 @@
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 <script type="text/javascript" src="${root}/resources/core/js/addCourse.js"></script>
+<script type="text/javascript" src="${root}/resources/core/js/jquery.isloading.min.js"></script>
+
 <title>Student Course Planner</title>
 </head>
 <body>
@@ -49,7 +51,7 @@
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสหลักสูตร ::</div>
-				<div class="col-sm-2">
+				<div class="col-sm-6">
 					<select name="curriculum">
 						<option value="0">--- เลือกหลักสูตร---</option>
 						<c:forEach items="${OatCurriculumList}" var="element"> 
@@ -75,12 +77,12 @@
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสวิชา ::</div>
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					<c:forEach items="${subjectList}" var="element">
 						<input type="checkbox" name="subject" value="${element.id}"> ${element.subjectCode} ${element.nameEng}<br>
 					</c:forEach>
 				</div>
-				<div class="col-sm-4"></div>
+<!-- 				<div class="col-sm-4"></div> -->
 			</div>
 			
 
@@ -95,6 +97,7 @@
 					<button id="btnSave" type="button" class="btn btn-primary btn-sm">
 						&nbsp;<i class="fa fa-floppy-o fa-lg"></i>&nbsp;Save&nbsp;
 					</button>
+				
 				</div>
 				<div class="col-sm-4"></div>
 			</div>

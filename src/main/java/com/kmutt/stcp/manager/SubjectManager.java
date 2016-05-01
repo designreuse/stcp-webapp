@@ -192,7 +192,7 @@ public class SubjectManager {
 						+ " where cur.id="+curiID;
 				
 				if(!subjectType.equals("")){
-					hql += " and sub.subjectType = "+subjectType;
+					hql += " and sub.subjectType = '"+subjectType+"'";
 				}
 				
 				if(!status.equals("")){
@@ -206,7 +206,7 @@ public class SubjectManager {
 				hql = "from Subject where 1=1 ";
 				
 				if(!subjectType.equals("")){
-					hql += " and subjectType = "+subjectType;
+					hql += " and sub.subjectType = '"+subjectType+"'";
 				}
 				
 				if(!status.equals("")){
@@ -243,14 +243,14 @@ public class SubjectManager {
 			
 			
 			
-			String hql = "from Subject where 1=1 ";
+			String hql = "from Subject s where 1=1 ";
 			
 			if(!subjectType.equals("")){
-				hql += " and subjectType = "+subjectType;
+				hql += " and s.subjectType = '"+subjectType+"'";
 			}
 			
 			if(!status.equals("")){
-				hql += " and status = "+status;
+				hql += " and s.status = "+status;
 			}
 			
 			if(!subjectCode.equals("")){

@@ -333,6 +333,7 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/editCurriculum", method = RequestMethod.POST)
 	    public String editCurriculum(Model model,@ModelAttribute("editcurriculumForm") Curriculum curriculum) {
+	    	System.out.println("editcurriculumForm" +curriculum);
 	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
 	    		curriculumRepository.update(curriculum);
 	    		model.addAttribute("editSuccess", "Y");

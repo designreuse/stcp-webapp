@@ -178,6 +178,22 @@ dropbtn {
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
+			<%-- <div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">หน่วยกิตขั้นตำ ::</div>
+				<div class="col-sm-2">
+					<form:input path="totalCredit" cssClass="form-control" />
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">ขื่อหลักสูตร(Eng) ::</div>
+				<div class="col-sm-2">
+					<form:input path="nameEng" cssClass="form-control" />
+				</div>
+				<div class="col-sm-4"></div>
+			</div> --%>
 			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>

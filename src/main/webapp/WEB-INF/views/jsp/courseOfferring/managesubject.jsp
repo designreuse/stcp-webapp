@@ -21,6 +21,7 @@
 	
 	<!-- SweetAlert -->
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
+
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 <script type="text/javascript">
 $(document).ready(function() {
@@ -130,9 +131,9 @@ dropbtn {
 	    <div class="navbar-header">
 			<ul class="nav nav-pills">
 		        <li><a href="javascript:searchSubject();">Search</a></li>
-		        <li><a href="${root}/courseofferring/addSubject">New</a></li>
-		        <li><a href="#">Cancel</a></li>
-		        <li><a href="#">Close</a></li>
+		        <li><a href="${root}/courseofferring/addSubject">Add</a></li>
+		       
+		        <li><a href="${root}/courseofferring/courseofferring">Close</a></li>
 		    </ul>
 	    </div>
 	  </div>
@@ -245,7 +246,7 @@ dropbtn {
 										<!-- <a class="btn btn-danger btn-sm" href="${root}/courseofferring/deleteSubject"><span class="fa fa-times">&nbsp;</span></a> -->
 										
 	
-										<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item.id}');"><span class="fa fa-times">&nbsp;</span></a>
+										<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item.id}','${item.subjectCode}','${item.nameEng}');"><span class="fa fa-times">&nbsp;</span></a>
 										
 										<form id="delSubjForm${item.id}" method="post" action="${root}/courseofferring/deleteSubject">
 											<input type="hidden" name="subjectId" value="${item.id}">
@@ -275,7 +276,7 @@ dropbtn {
 										<!-- <a class="btn btn-danger btn-sm" href="${root}/courseofferring/deleteSubject"><span class="fa fa-times">&nbsp;</span></a> -->
 										
 	
-										<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item[0].id}');"><span class="fa fa-times">&nbsp;</span></a>
+										<a class="btn btn-danger btn-sm" href="javascript:delSubject('${item[0].id}','${item[0].subject.subjectCode}','${item[0].subject.nameThai}');"><span class="fa fa-times">&nbsp;</span></a>
 										
 										<form id="delSubjForm${item[0].id}" method="post" action="${root}/courseofferring/deleteSubject">
 											<input type="hidden" name="subjectId" value="${item[0].id}">

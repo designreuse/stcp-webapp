@@ -10,15 +10,20 @@ $(document).ready(function() {
 			confirmButtonClass : 'btn btn-info',
 			confirmButtonText : "Yes",
 			cancelButtonText : "No",
-			closeOnConfirm : false,
+			closeOnConfirm : true,
 			showLoaderOnConfirm : true
 			
 		}, function(isConfirm) {
 			
 			if (isConfirm) {
+				
 				document.getElementById("form").submit();
+				$.isLoading({ text: "Loading" });
+		        
+		      
 			}
 		});
+		
 	});
 
 	$("#btnReset").click(function() {

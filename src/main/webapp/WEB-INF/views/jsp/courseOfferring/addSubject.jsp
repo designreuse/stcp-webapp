@@ -226,6 +226,7 @@ dropbtn {
 					<button id="btnSave" type="button" class="btn btn-primary btn-sm">
 						&nbsp;<i class="fa fa-floppy-o fa-lg"></i>&nbsp;Save&nbsp;
 					</button>
+					
 				</div>
 				<div class="col-sm-4"></div>
 			</div>

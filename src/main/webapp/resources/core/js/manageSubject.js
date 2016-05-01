@@ -37,10 +37,10 @@ function searchSubject(){
 }
 
 
-function delSubject(id){
+function delSubject(id,code,name){
 	swal({
 		title : "Delete Subject",
-		text : "Are you want to delete this subjectId : "+id+" ?",
+		text : "Are you want to delete this "+code+" - "+name+"?",
 		type : "warning",
 		showCancelButton : true,
 		confirmButtonClass : 'btn btn-info',
