@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Subject_Detail" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6702f896-d5ee-4cf6-af1b-bccc7a273b8d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Subject_Detail" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6702f896-d5ee-4cf6-af1b-bccc7a273b8d">
 	<property name="ireport.zoom" value="1.7715610000000013"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="ID_CURRICULUM" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select @n := @n + 1 AS 'No',curriculum_id, subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, name_eng, subject_type, credit, status, detail_thai, detail_eng
 from curriculum_subject a, curriculum b, subject c, (SELECT @n := 0) m
 where a.curriculum_id = b.id and
       a.subject_id = c.id and
-      b.id = 4 /* Parameter = id ของ Table Curriculum*/
+      b.id = $P{ID_CURRICULUM} /* Parameter = id ของ Table Curriculum*/
 Order by subject_code]]>
 	</queryString>
 	<field name="No" class="java.lang.Double"/>
@@ -109,7 +110,7 @@ Subject Detail Sheet]]></text>
 	</columnHeader>
 	<detail>
 		<band height="185" splitType="Prevent">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="555" height="32" uuid="f9627adc-024c-48a9-8eb9-e6d7c722b5ea"/>
 				<textElement>
 					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
@@ -117,7 +118,7 @@ Subject Detail Sheet]]></text>
 				<textFieldExpression><![CDATA[$F{subject_code} +"     	"+$F{name_thai}+ " ("+$F{name_eng}+")" +"\n"+
 " 		จำนวน " + $F{credit} + " หน่วยกิต"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement positionType="FixRelativeToBottom" x="0" y="32" width="555" height="150" uuid="00211c62-d45d-420e-b8b7-acf061613f1c"/>
 				<textElement>
 					<font fontName="TH SarabunPSK" size="14"/>

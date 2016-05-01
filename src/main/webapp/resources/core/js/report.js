@@ -6,7 +6,7 @@
 $("#searchReportBtn").click(searchReport);
 
 $("#reportFilterText").keyup(function(e) {
-    if($(this).val().length >= 2 || e.which == 13) {
+    if($(this).val().length >= 2 || e.which == 13 || $(this).val().length==0) {
         searchReport();
     }
 });
@@ -38,6 +38,8 @@ function searchReport() {
 //$(this).children("td:first-child").html()
 $(document).on("click","#reportCenterTable > tbody > tr",function(req){
     var reportId = $(this).find("[type='hidden']").val();
+    var reportYear = $("#reportYear").val() == "" ? null : $("#reportYear").val();
+    var reportNameOption = $("#reportNameOption").val();
 
     $("#loadingModal").modal("show");
     setTimeout(function(){
@@ -46,16 +48,22 @@ $(document).on("click","#reportCenterTable > tbody > tr",function(req){
             method:"POST",
             dataType: "json",
             contentType: "application/json; charset=UTF-8",
-            data:JSON.stringify({"reportId":reportId})
+            data:JSON.stringify({"reportId":reportId,"curriculumYear":reportYear,"curriculumName":reportNameOption})
         }).done(function(data){
+            var curriculumId = data.curriculumId;
             $("#loadingModal").modal("hide");
     //        console.log(data);
             if(data.errorMsg) {
-                $("#reportModalTitle").text("ข้อความแจ้งเตือน");
-                $("#reportModalBody").text(data.errorMsg);
-                $("#msgModal").modal('show');
+                swal({
+                    title : "ข้อความแจ้งเตือน",
+                    text : data.errorMsg,
+                    type : "error",
+                    showCancelButton: false
+                });
+
             } else {
-                window.location="reportCenterGenerator/pdf?reportId="+reportId;
+                if(curriculumId == null) curriculumId = -1;
+                window.location="reportCenterGenerator/pdf?reportId="+reportId+"&curriculumId="+curriculumId;
             }
         }).fail(function(jqXHR, textStatus, errorThrown){
             $("#loadingModal").modal("hide");

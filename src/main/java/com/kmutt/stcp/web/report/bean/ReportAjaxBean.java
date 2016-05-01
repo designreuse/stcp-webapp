@@ -7,8 +7,10 @@ import java.io.Serializable;
  */
 public class ReportAjaxBean implements Serializable {
     private Integer reportId;
-    private Integer courseId;
+    private String curriculumYear;
+    private String curriculumName;
 
+    private Integer curriculumId;
     private String errorMsg;
 
     public Integer getReportId() {
@@ -19,12 +21,28 @@ public class ReportAjaxBean implements Serializable {
         this.reportId = reportId;
     }
 
-    public Integer getCourseId() {
-        return courseId;
+    public String getCurriculumYear() {
+        return curriculumYear;
     }
 
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setCurriculumYear(String curriculumYear) {
+        this.curriculumYear = curriculumYear;
+    }
+
+    public String getCurriculumName() {
+        return curriculumName;
+    }
+
+    public void setCurriculumName(String curriculumName) {
+        this.curriculumName = curriculumName;
+    }
+
+    public Integer getCurriculumId() {
+        return curriculumId;
+    }
+
+    public void setCurriculumId(Integer curriculumId) {
+        this.curriculumId = curriculumId;
     }
 
     public String getErrorMsg() {
