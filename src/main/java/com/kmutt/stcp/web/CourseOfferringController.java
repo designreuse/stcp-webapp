@@ -93,18 +93,27 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
-	    public String addSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) throws UnsupportedEncodingException {
+	    public String addSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject) throws UnsupportedEncodingException {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setContentType("text/html; charset=UTF-8");
 	    	
 	    	try {
+	    		String[] preSubjectId;
+	    		
 	    		subject.setStatus(1);
-		    	subjectManager.addSubject(subject,preSubjectId);
+		    	subjectManager.addSubject(subject,null);
 		    	
-		    	if(preSubjectId!=null){
-		    		if(!preSubjectId.equals("")){
-		    			subjectManager.addPrerequisite(subject, preSubjectId);
-			    	}
+		    	
+		    	
+		    	if(request.getParameterValues("preSubjectId")!=null && request.getParameter("chkPre") !=null){
+		    		
+		    		preSubjectId = request.getParameterValues("preSubjectId");
+		    		
+		    		for(int i=0; i<preSubjectId.length; i++){
+		    			if(!preSubjectId[i].equals("")){
+		    				subjectManager.addPrerequisite(subject, preSubjectId[i]);
+		    			}
+		    		}
 		    	}
 		    	
 		    	model.addAttribute("addSuccess", "Y");
@@ -146,15 +155,29 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/editSubject", method = RequestMethod.POST)
-	    public String editSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) throws UnsupportedEncodingException {
+	    public String editSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject) throws UnsupportedEncodingException {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setContentType("text/html; charset=UTF-8");
 	    	
 	    	try {
-	    		preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
-		    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
+	    		//preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
+		    	//preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
+	    		
+	    		String[] preSubjectId;
+
+		    	subjectManager.updateSubject(subject);
 		    	
-		    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
+		    	if(request.getParameterValues("preSubjectId")!=null && request.getParameter("chkPre") !=null){
+		    		
+		    		preSubjectId = request.getParameterValues("preSubjectId");
+		    		
+		    		for(int i=0; i<preSubjectId.length; i++){
+		    			if(!preSubjectId[i].equals("")){
+		    				subjectManager.addPrerequisite(subject, preSubjectId[i]);
+		    			}
+		    		}
+		    	}
+		    	
 		    	model.addAttribute("editSuccess", "Y");
 			} catch (Exception e) {
 				model.addAttribute("editSuccess", "N");
