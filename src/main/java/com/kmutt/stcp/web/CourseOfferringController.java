@@ -1,5 +1,4 @@
 package com.kmutt.stcp.web;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -306,11 +305,11 @@ public class CourseOfferringController {
 	    	if(accId.equalsIgnoreCase("none")){
 	    		accId = "%";
 	    	}
-	    	String sql = "select * from curriculum where start_year like '%"+ searchYear +"%' and acc_id like '%"+ accId +"%'";
+	    	String sql = "select * from curriculum where start_year like '%"+ searchYear +"%' and code like '%"+ accId +"%'";
 	    	List<Curriculum> curList = curriculumRepository.querySQL(sql);
 	    	String result = "";
 	    	for(Curriculum curr : curList){
-	    		result += "<tr><td></td><td>"+ curr.getAccId() +"</td>"+
+	    		result += "<tr><td></td><td>"+ curr.getCode() +"</td>"+
 	    				 "<td>"+ curr.getName() +"</td>"+
 	    				 "<td>"+ curr.getName() +"</td>"+
 	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
@@ -333,7 +332,7 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/editCurriculum", method = RequestMethod.POST)
 	    public String editCurriculum(Model model,@ModelAttribute("editcurriculumForm") Curriculum curriculum) {
-	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+	    	if(curriculum.getCode()!=null && !curriculum.getCode().equals("")){
 	    		curriculumRepository.update(curriculum);
 	    		model.addAttribute("editSuccess", "Y");
 	    	}else{
@@ -350,7 +349,7 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/addCurriculum", method = RequestMethod.POST)
 	    public String addCurriculum(Model model,@ModelAttribute("curriculumForm") Curriculum curriculum) {
-	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+	    	if(curriculum.getCode()!=null && !curriculum.getCode().equals("")){
 	    		curriculumRepository.create(curriculum);
 	    		model.addAttribute("addSuccess", "Y");
 	    	}else{

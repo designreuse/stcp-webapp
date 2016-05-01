@@ -138,7 +138,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสหลักสูตร<span style="color:red">*</span> ::</div>
 				<div class="col-sm-2">
-					<form:input path="accId" cssClass="form-control"/>					
+					<form:input path="code" cssClass="form-control"/>					
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -152,14 +152,14 @@ dropbtn {
 				<div class="col-sm-4"></div>
 			</div>
 			
-			<!-- <div class="row" style="margin-bottom: 10px;">
+			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
-				<div class="col-sm-2">หน่วยกิตทั้งหมด ::</div>
+				<div class="col-sm-2">อาจารย์ที่ดูแลหลักสูตร ::</div>
 				<div class="col-sm-2">
-					<input type="text" name="all_credit" />
+					<form:input path="accId" cssClass="form-control" />
 				</div>
 				<div class="col-sm-4"></div>
-			</div> -->
+			</div>
 			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
@@ -204,7 +204,7 @@ dropbtn {
 $(document).ready(function() {
 	$("#btnSave").click(function() {
 		if(confirm("Are you sure to add Curriculum ?")){
-			if($("#accId").val()!="" && $("#name").val()!=""){
+			if($("#code").val()!="" && $("#name").val()!=""){
 				document.getElementById("curriculumForm").submit();
 			}else{
 				alert("กรุณาใส่หัวข้อที่มี * ให้ครบ");

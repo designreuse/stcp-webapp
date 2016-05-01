@@ -138,7 +138,7 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสหลักสูตร<span style="color:red">*</span> ::</div>
 				<div class="col-sm-2">
-					<form:input path="accId" cssClass="form-control"/>					
+					<form:input path="code" cssClass="form-control"/>					
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -204,7 +204,7 @@ dropbtn {
 $(document).ready(function() {
 	$("#btnSave").click(function() {
 		if(confirm("Are you sure to edit curriculum ?")){
-			if($("#accId").val()!="" && $("#name").val()!=""){
+			if($("#code").val()!="" && $("#name").val()!=""){
 				document.getElementById("editcurriculumForm").submit();
 			}else{
 				alert("กรุณาใส่หัวข้อที่มี * ให้ครบ");
