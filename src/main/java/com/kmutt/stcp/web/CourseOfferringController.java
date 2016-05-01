@@ -177,7 +177,7 @@ public class CourseOfferringController {
 				model.addAttribute("deleteSuccess", "N");
 			}
 	    	
-	        return "redirect:managesubject";
+	        return "courseOfferring/managesubject";
 	    }
 	    
 	    @RequestMapping(value = "/addCourse", method = RequestMethod.POST)
