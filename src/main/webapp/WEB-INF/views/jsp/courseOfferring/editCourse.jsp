@@ -23,6 +23,7 @@
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 <script type="text/javascript" src="${root}/resources/core/js/addCourse.js"></script>
+<script type="text/javascript" src="${root}/resources/core/js/jquery.isloading.min.js"></script>
 <title>Student Course Planner</title>
 </head>
 <body>
@@ -71,7 +72,7 @@
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสวิชา ::</div>
-				<div class="col-sm-2">
+				<div class="col-sm-6">
 					<c:forEach items="${subjectList}" var="element">
 						<c:set var="chkSet" value="0"></c:set>
 						<c:forEach items="${curriculumSub}" var="elementSub">
@@ -80,14 +81,14 @@
 							</c:if>
 						</c:forEach>
 						<c:if test="${chkSet==1}">
-							<input type="checkbox" name="subject" value="${element.id}" checked="checked"> ${element.nameEng}<br>
+							<input type="checkbox" name="subject" value="${element.id}" checked="checked"> ${element.subjectCode} ${element.nameEng}<br>
 						</c:if>
 						<c:if test="${chkSet==0}">
-							<input type="checkbox" name="subject" value="${element.id}"> ${element.nameEng}<br>
+							<input type="checkbox" name="subject" value="${element.id}">  ${element.subjectCode} ${element.nameEng}<br>
 						</c:if>
 					</c:forEach>
 				</div>
-				<div class="col-sm-4"></div>
+<!-- 				<div class="col-sm-4"></div> -->
 			</div>
 			
 

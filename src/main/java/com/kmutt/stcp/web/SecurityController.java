@@ -188,6 +188,7 @@ public class SecurityController {
 		model.put("title", "title");
 		model.put("msg", "message");
 		model.put("loginusr",usr);
+		model.put("loginRole",role);
 		model.put("curricul", curr);
 		
 		return "main";
