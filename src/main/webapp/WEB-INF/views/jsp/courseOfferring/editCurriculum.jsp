@@ -145,9 +145,31 @@ dropbtn {
 			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
-				<div class="col-sm-2">ชื่อหลักสูตร<span style="color:red">*</span> ::</div>
+				<div class="col-sm-2">ชื่อหลักสูตร (ไทย)<span style="color:red">*</span> ::</div>
 				<div class="col-sm-2">
 					<form:input path="name" cssClass="form-control"/>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">ชื่อหลักสูตร (อังกฤษ)<span style="color:red">*</span> ::</div>
+				<div class="col-sm-2">
+					<form:input path="nameEng" cssClass="form-control"/>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">อาจารย์ที่ดูแลหลักสูตร ::</div>
+				<div class="col-sm-2">
+					<form:input path="accId" cssClass="form-control" />
+					<%-- <form:select path="credit" cssClass="form-control" cssStyle="width:300px;">
+						<form:option value="0" label="--- รายชื่ออาจารย์---"/>
+						<form:options items="${teacherList}" />
+					</form:select> --%>
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -175,6 +197,15 @@ dropbtn {
 				<div class="col-sm-2">หมดอายุในปีการศึกษา ::</div>
 				<div class="col-sm-2">
 					<form:input path="startedYear" cssClass="form-control" />
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">หน่วยกิตทั้งหมด ::</div>
+				<div class="col-sm-2">
+					<form:input path="totalCredit" cssClass="form-control" />
 				</div>
 				<div class="col-sm-4"></div>
 			</div>

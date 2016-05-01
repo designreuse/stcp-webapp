@@ -311,9 +311,9 @@ public class CourseOfferringController {
 	    	for(Curriculum curr : curList){
 	    		result += "<tr><td></td><td>"+ curr.getCode() +"</td>"+
 	    				 "<td>"+ curr.getName() +"</td>"+
-	    				 "<td>"+ curr.getName() +"</td>"+
-	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
-	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
+	    				 "<td>"+ curr.getNameEng() +"</td>"+
+	    				 "<td>"+ curr.getTotalCredit() +"</td>"+
+	    				 "<td> ผศ.ดร. พรชัย มงคลนาม </td>"+
 	    				 "<td><a class='btn btn-success btn-sm' style='margin-right:5px' href='editCurriculum?curId="+ curr.getId() +"'><span class='fa fa-edit'>&nbsp;</span></a><a class='btn btn-danger btn-sm' id='delBtn' href='deleteCurriculum?curId="+ curr.getId() +"'><span class='fa fa-times'>&nbsp;</span></a></td>"+
 	    				 "</tr>";
 	    	}
@@ -334,11 +334,12 @@ public class CourseOfferringController {
 	    public String editCurriculum(Model model,@ModelAttribute("editcurriculumForm") Curriculum curriculum) {
 	    	if(curriculum.getCode()!=null && !curriculum.getCode().equals("")){
 	    		System.out.println("editcurriculumForm" +curriculum);
-	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
-	    		curriculumRepository.update(curriculum);
-	    		model.addAttribute("editSuccess", "Y");
-	    	}else{
-	    		model.addAttribute("editSuccess", "N");
+		    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+		    		curriculumRepository.update(curriculum);
+		    		model.addAttribute("editSuccess", "Y");
+		    	}else{
+		    		model.addAttribute("editSuccess", "N");
+		    	}
 	    	}
 	        return "courseOfferring/managecurriculum";
 	    }
@@ -362,7 +363,7 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/deleteCurriculum", method = RequestMethod.GET)
 	    public String deleteCurriculum(Model model,@RequestParam("curId") int curId) {
-	    	curriculumRepository.deleteById(curId);
+	    	curriculumRepository.deleteById(curId);;
 	        return "courseOfferring/managecurriculum";
 	    }
 	    
@@ -428,6 +429,15 @@ public class CourseOfferringController {
 			
 			return subjectList;
 		}
+	    
+//	    @ModelAttribute("teacherList")
+//		public Map<String,String> teacherList() {
+//			
+//			Map<String,String> creditList = new LinkedHashMap<String,String>();
+//			
+//			
+//			return creditList;
+//		}
 	    
 	    
 }
