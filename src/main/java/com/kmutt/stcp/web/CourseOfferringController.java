@@ -97,16 +97,23 @@ public class CourseOfferringController {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setContentType("text/html; charset=UTF-8");
 	    	
-	    	subject.setStatus(1);
-	    	subjectManager.addSubject(subject,preSubjectId);
-	    	
-	    	if(preSubjectId!=null){
-	    		if(!preSubjectId.equals("")){
-	    			subjectManager.addPrerequisite(subject, preSubjectId);
+	    	try {
+	    		subject.setStatus(1);
+		    	subjectManager.addSubject(subject,preSubjectId);
+		    	
+		    	if(preSubjectId!=null){
+		    		if(!preSubjectId.equals("")){
+		    			subjectManager.addPrerequisite(subject, preSubjectId);
+			    	}
 		    	}
-	    	}
+		    	
+		    	model.addAttribute("addSuccess", "Y");
+			} catch (Exception e) {
+				model.addAttribute("addSuccess", "N");
+				e.printStackTrace();
+			}
 	    	
-	    	model.addAttribute("addSuccess", "Y");
+	    	
 	    	
 	        return "courseOfferring/managesubject";
 	    }
@@ -143,13 +150,17 @@ public class CourseOfferringController {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setContentType("text/html; charset=UTF-8");
 	    	
+	    	try {
+	    		preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
+		    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
+		    	
+		    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
+		    	model.addAttribute("editSuccess", "Y");
+			} catch (Exception e) {
+				model.addAttribute("editSuccess", "N");
+				e.printStackTrace();
+			}
 	    	
-	    	preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
-	    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
-	    	
-	    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
-	    	
-	    	model.addAttribute("editSuccess", "Y");
 	        return "courseOfferring/managesubject";
 	    }
 	    
@@ -157,9 +168,14 @@ public class CourseOfferringController {
 	    @RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
 	    public String deleteSubject(Model model,@RequestParam("subjectId") String id) {
 	    	
-	    	if(id!=null && !id.equals("")){
-	    		subjectManager.deleteSubject(Integer.parseInt(id));
-	    	}
+	    	try {
+	    		if(id!=null && !id.equals("")){
+		    		subjectManager.deleteSubject(Integer.parseInt(id));
+		    	}
+	    		model.addAttribute("deleteSuccess", "Y");
+			} catch (Exception e) {
+				model.addAttribute("deleteSuccess", "N");
+			}
 	    	
 	        return "redirect:managesubject";
 	    }
