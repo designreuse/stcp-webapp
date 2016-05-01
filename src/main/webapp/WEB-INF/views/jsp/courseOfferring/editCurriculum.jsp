@@ -133,7 +133,7 @@ dropbtn {
 				</div>
 				<div class="col-sm-4"></div>
 			</div> --%>
-			
+				<form:input path="id" type="hidden" cssClass="form-control"/>
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">รหัสหลักสูตร<span style="color:red">*</span> ::</div>
