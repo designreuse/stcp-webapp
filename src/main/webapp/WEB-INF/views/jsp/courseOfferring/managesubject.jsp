@@ -32,11 +32,33 @@ $(document).ready(function() {
 			swal("Add Subject is success.!", "", "success");
 		
 		}, 100);
+	}else if("${addSuccess}"="N"){
+		setTimeout(function(){ 
+			swal("Add Subject is fail.!", "", "error");
+		
+		}, 100);
 	}
 	
 	if("${editSuccess}"=="Y"){
 		setTimeout(function(){ 
 			swal("Edit Subject is success.!", "", "success");
+		
+		}, 100);
+	}else if("${editSuccess}"="N"){
+		setTimeout(function(){ 
+			swal("Edit Subject is fail.!", "", "error");
+		
+		}, 100);
+	}
+	
+	if("${deleteSuccess}"=="Y"){
+		setTimeout(function(){ 
+			swal("Delete Subject is success.!", "", "success");
+		
+		}, 100);
+	}else if("${deleteSuccess}"="N"){
+		setTimeout(function(){ 
+			swal("Delete Subject is fail.!", "", "error");
 		
 		}, 100);
 	}
