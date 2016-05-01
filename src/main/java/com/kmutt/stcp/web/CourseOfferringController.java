@@ -100,7 +100,7 @@ public class CourseOfferringController {
 	    	try {
 	    		String[] preSubjectId;
 	    		
-	    		subject.setStatus(1);
+	    		//subject.setStatus(1);
 		    	subjectManager.addSubject(subject,null);
 		    	
 		    	
@@ -451,6 +451,17 @@ public class CourseOfferringController {
 			creditList.put("1", "1");
 			creditList.put("2", "2");
 			creditList.put("3", "3");
+			
+			return creditList;
+		}
+	    
+	    
+	    @ModelAttribute("statusList")
+		public Map<String,String> statusList() {
+			
+			Map<String,String> creditList = new LinkedHashMap<String,String>();
+			creditList.put("0", "ไม่เปิดใช้งาน");
+			creditList.put("1", "เปิดใช้งาน");
 			
 			return creditList;
 		}

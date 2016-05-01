@@ -277,6 +277,19 @@ dropbtn {
 				<div class="col-sm-4"></div>
 			</div>
 			
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">สถานะ ::</div>
+				<div class="col-sm-2">
+					<form:select path="status" cssClass="form-control" cssStyle="width:300px;">
+						<form:options items="${statusList}" />
+					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
 			<div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2"></div>
