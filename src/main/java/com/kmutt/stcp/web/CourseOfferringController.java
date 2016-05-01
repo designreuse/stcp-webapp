@@ -356,6 +356,7 @@ public class CourseOfferringController {
 	    	}else{
 	    		model.addAttribute("editSuccess", "N");
 	    	}
+	    	}
 	        return "courseOfferring/managecurriculum";
 	    }
 	    
