@@ -42,7 +42,7 @@ public class TestResourseTest {
                 .build();
     }
 
-    @Test
+/*    @Test
     public void testCallRestService() throws Exception {
         mockMvc.perform(get("/test/rest/list")
                         .contentType(TestUtils.APPLICATION_JSON_UTF8)
@@ -64,7 +64,7 @@ public class TestResourseTest {
         ).andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
         ;
-    }
+    }*/
 
 
 }

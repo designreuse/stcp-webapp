@@ -1,116 +1,259 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="75f89c25-761c-48e2-a570-23361eb36aa0">
-	<property name="ireport.zoom" value="1.610510000000001"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Student_Planning" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55de5cd7-dbe7-45b4-85e1-685c501adef1">
+	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<style name="table">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<subDataset name="Table Dataset 1" uuid="f33fc193-6628-4e29-a4cf-30710a5aaf4c"/>
-	<subDataset name="Table Dataset 2" uuid="adb43a28-87df-4d44-8cb8-9b74c7a26917"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="ID_STUDENT" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT @n := @n + 1 AS 'No',a.id as user_id, a.firstname, a.lastname, a.faculty,a.major, c.semester_year, c.semester_term, d.subject_code, d.name_thai, d.name_eng, d.subject_type, d.credit, e.name, e.start_year, e.started_year, f.sum_credit
+FROM  user a, account b, course_plan c, subject d, curriculum e, (SELECT @n := 0) m
+CROSS JOIN (SELECT SUM(credit) as sum_credit FROM subject AS sum_credit) f
+WHERE a.id = b.user_id and
+      b.id = c.account_id and
+      c.subject_id = d.id and
+      b.id = e.acc_id and
+      a.id = $P{ID_STUDENT} /* Parameter = id ของ Table User*/
+ORDER BY c.semester_year, c.semester_term, d.subject_code]]>
+	</queryString>
+	<field name="No" class="java.lang.Double"/>
+	<field name="user_id" class="java.lang.Integer"/>
+	<field name="firstname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lastname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="faculty" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="major" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semester_year" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semester_term" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subject_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name_thai" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name_eng" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subject_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="credit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="start_year" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="started_year" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sum_credit" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="555" height="79" uuid="5f269684-76d8-446f-a4f6-94ad7f48f321"/>
+				<reportElement x="430" y="0" width="125" height="36" uuid="fafaa067-780f-479e-8b28-665632070a97"/>
+				<textElement>
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<text><![CDATA[วันที่ Date :
+หน้าที่ Page No :
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="50" uuid="a1422e0c-5256-49e7-8241-24f5aad5ac98"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ใบแสดงรายวิชาที่วางแผน
-Planning Sheet
-ภาค/ปการศึกษา Semester/Academic Year : ..................................]]></text>
+				<text><![CDATA[ใบแสดงรายวิชาที่วางแผนการเรียนของนักศึกษา
+Planning Sheet]]></text>
 			</staticText>
-			<elementGroup>
-				<textField pattern="MM/dd/yyyy">
-					<reportElement x="478" y="-2" width="86" height="20" uuid="ce5a804c-a1c6-4c78-b35c-ac423956b84c"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="430" y="0" width="125" height="36" uuid="55e75bda-7eb4-430e-b5d1-9efeb85aaa70"/>
-					<textElement>
-						<font fontName="TH SarabunPSK" size="14"/>
-					</textElement>
-					<text><![CDATA[วันท่ี Date :
-หนาท่ี Page No :
-]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="502" y="17" width="62" height="20" uuid="b9c732fa-b217-4a67-86e1-2f6aea90fc8a"/>
-					<textElement>
-						<font fontName="TH SarabunPSK" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-				</textField>
-			</elementGroup>
+			<textField>
+				<reportElement x="486" y="16" width="29" height="20" uuid="13566197-0ecd-407d-b935-72675bec12c2"/>
+				<textElement textAlignment="Right">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="16" width="40" height="20" uuid="e99112b8-837f-4f3e-ae5d-87f6caa3b1cc"/>
+				<textElement>
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="479" y="-2" width="76" height="20" uuid="d8fa747c-a61a-4af3-97ea-c3693742969d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="59" splitType="Stretch">
+		<band height="80" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="555" height="59" uuid="f1ff1119-c27d-4aa1-aeb1-62a40fdea621"/>
-				<textElement textAlignment="Center">
-					<font fontName="TH SarabunPSK" size="16"/>
+				<reportElement x="0" y="0" width="555" height="80" uuid="5e5650c8-2651-4eb5-8431-552d6e515666"/>
+				<textElement>
+					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
-				<text><![CDATA[รหัสนักศึกษา Student Code : .................		ชื่อ-สกุล Name - Surname : .................................................
-คณะ Faculty : ......................................		ภาควิชา Department : ........................................................
-โครงการหลักสูตร Program Project :  ..........................................................................................................................................]]></text>
+				<text><![CDATA[
+
+]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="18" width="554" height="18" uuid="43d7b7b5-cbb3-4a31-865b-1204aafa961e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["คณะ Faculty : "+$F{faculty}+"    	สาขาวิชา Department : "+$F{major}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="79" width="555" height="1" uuid="2474a4ca-aa65-4d82-ae38-2afc81db1ad3"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="554" height="18" uuid="e659c35d-b9c3-4d60-b1cd-561a8d9a3c00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["รหัสนักศึกษา Student Code : "+$F{user_id}+"    	ชื่อ-สกุล Name - Surname : "+$F{firstname}+"  "+$F{lastname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="36" width="554" height="18" uuid="36b7b163-a0fd-4a16-9e57-85765320abae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["หลักสูตร Curriculum : "+$F{name}+"   	ปีพุทธศักราช Year : "+$F{started_year}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="39" uuid="f7524675-2ec4-4611-b701-244f179e4c09"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ลำดับ
+Seq. No
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="100" height="39" uuid="9ef017c0-edf1-4261-9a33-85b0f1595a4b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ภาค/ปีการศึกษา Semester/Academic Year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="62" height="39" uuid="702b8f2f-7af2-4388-ac39-93a1af3ad1ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[รหัสวิชา
+Course Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="0" width="217" height="39" uuid="63ed4811-03c9-4750-a730-49934c785089"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ชื่อวิชา
+Course Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="486" y="0" width="69" height="39" uuid="bf4a2ae5-0d08-43a8-a96b-e7b379249360"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[จำนวนหน่วยกิต
+No of Credit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="0" width="69" height="39" uuid="8519f22d-0cf5-4446-8033-16562b13831a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[กลุ่มวิชา
+Subject Type]]></text>
+			</staticText>
 			<line>
-				<reportElement x="0" y="0" width="555" height="1" forecolor="#000000" uuid="f88da531-28dc-46c5-abab-c469d0f51140"/>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="39" width="555" height="1" uuid="cad00034-72ad-4377-83c1-0a1fd86818de"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="35" splitType="Prevent">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="34" width="555" height="1" uuid="a6bae236-d78e-4966-9000-757f5c34ed37"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="100" height="35" forecolor="#000000" uuid="aec15f99-649e-4927-a8c3-ffec0363bf81"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{semester_term}+" / "+$F{semester_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="0" width="62" height="35" uuid="560bba05-d4f8-49f7-8c1f-2145c5ce614d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subject_code}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="202" y="0" width="217" height="35" uuid="5cd0ed78-0139-42d2-a64a-95a9cb5c6629"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14"/>
+					<paragraph leftIndent="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name_thai} + "\n" + "(" + $F{name_eng} + ")"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="486" y="0" width="69" height="35" uuid="e15363f9-9222-4b1f-9760-e422ed1b6cdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{credit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="40" height="35" uuid="a55e9bfe-1b4c-46e6-8a90-bcbedd946213"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="419" y="0" width="69" height="35" uuid="79a4e68f-e48d-41b3-b6e6-b4a38ebf075c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subject_type}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="20" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
