@@ -167,7 +167,10 @@ $(document).ready(function() {
                         swal({ title : "Course Planner",
 	      					   text : msg,
 	      					   type : msgType,
-	      					   showCancelButton: false });
+	      					   showCancelButton: false },
+							function () {
+								window.location.reload(true);
+							});
                         
                     	
                     },

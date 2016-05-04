@@ -7,9 +7,11 @@ import com.kmutt.stcp.entity.CoursePlan;
 import com.kmutt.stcp.entity.Subject;
 import com.kmutt.stcp.dto.MessageResult;
 import com.kmutt.stcp.dto.PlanMessageRequest;
+import com.kmutt.stcp.repository.AccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.bind.annotation.RestController;
@@ -29,43 +31,31 @@ public class CoursePlannerController {
 	// Field//
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
 
-    @Autowired
-    private CourseManager courseManager;
+	@Autowired
+	ApplicationContext appContext;
 
-    @Autowired
-    private CoursePlannerManager coursePlannerManager;
+	@Autowired
+    AccountRepository accountRepository;
 
-//    @Autowired
-//	private HttpServletRequest request;
+	// @Autowired
+	// private HttpServletRequest request;
 
 	// Action//
-	@RequestMapping(value = { "/test", "/index" }, method = RequestMethod.GET)
-	public String test(HttpSession session, Map<String, Object> model) {
-
-
-        List<Subject> list = courseManager.testCourseManager();
-
-
-		return "coursePlanner/mainPage";
-
-	}
-
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String index(HttpSession session, Map<String, Object> model) {
 
-		//TODO: Dummy Student Account
-		Account student = new Account();
-		student.setId(1);
+		// TODO: When deploy should remove Dummy Student Account
+		Account student = accountRepository.findOne(1);
 		session.setAttribute("account", student);
-		
+
 		CourseManager courseMng = this.getCurrentCourseManager(session);
 		CoursePlannerManager planMng = this.getCurrentPlanManger(session);
 
-		List<Integer> semesterYearList = planMng.getSemesterYearList();
-		model.put("semesterYearList", semesterYearList);
-
 		List<CoursePlan> semesterPlan = planMng.getCoursePlanList();
 		model.put("semesterList", semesterPlan);
+		
+		List<Integer> semesterYearList = planMng.getSemesterYearList();
+		model.put("semesterYearList", semesterYearList);
 
 		List<Subject> subjectAll = courseMng.getSubjectList();
 		subjectAll = bindSubjectIsSelected(subjectAll, planMng.getSubjectSelectedList());
@@ -77,7 +67,8 @@ public class CoursePlannerController {
 
 	@RequestMapping(value = { "/courseplan/{semesteryear}" }, method = RequestMethod.GET)
 	@ResponseBody
-	public List<CoursePlan> getCoursePlanBySemester(HttpSession session, @PathVariable("semesteryear") String semesterYear) {
+	public List<CoursePlan> getCoursePlanBySemester(HttpSession session,
+			@PathVariable("semesteryear") String semesterYear) {
 
 		try {
 
@@ -142,18 +133,18 @@ public class CoursePlannerController {
 
 				if (plnManger.setCoursePlanForSave(messageRequest)) {
 
-					if(plnManger.savePlan()) {
+					if (plnManger.savePlan()) {
 
 						result.StatusCode = "000";
 						result.IsError = false;
 						result.ErrorDescription = "";
-						
+
 					} else {
-						
+
 						result.StatusCode = "103";
 						result.IsError = true;
 						result.ErrorDescription = "can't save plan in database.";
-						
+
 					}
 
 				} else {
@@ -163,13 +154,13 @@ public class CoursePlannerController {
 					result.ErrorDescription = "message can't be parsed.";
 
 				}
-				
+
 			} else {
 
 				result.StatusCode = "101";
 				result.IsError = true;
 				result.ErrorDescription = "message are empty";
-				
+
 			}
 
 		} catch (Exception e) {
@@ -187,7 +178,6 @@ public class CoursePlannerController {
 	}
 
 	// Method//
-	@SuppressWarnings("finally")
 	private CourseManager getCurrentCourseManager(HttpSession session) {
 
 		CourseManager _courseManage = null;
@@ -197,26 +187,23 @@ public class CoursePlannerController {
 			_courseManage = (CourseManager) session.getAttribute("courseMng");
 
 			if (_courseManage == null) {
-				//TODO: change session name to get account
-				_courseManage = new CourseManager((Account) session.getAttribute("account"));
+				// TODO: change session name to get account
+				_courseManage = appContext.getBean(CourseManager.class);
+				_courseManage.setStudent((Account) session.getAttribute("account"));
+				session.setAttribute("courseMng", _courseManage);
 			}
+
+			return _courseManage;
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
 
-			_courseManage = new CourseManager(null);
-
-		} finally {
-
-			session.setAttribute("courseMng", _courseManage);
-			return _courseManage;
+			return appContext.getBean(CourseManager.class);
 
 		}
-
 	}
 
-	@SuppressWarnings("finally")
 	private CoursePlannerManager getCurrentPlanManger(HttpSession session) {
 
 		CoursePlannerManager _coursePlanManage = null;
@@ -226,23 +213,19 @@ public class CoursePlannerController {
 			_coursePlanManage = (CoursePlannerManager) session.getAttribute("planMng");
 
 			if (_coursePlanManage == null) {
-				//TODO: change session name to get account
-				_coursePlanManage = new CoursePlannerManager((Account) session.getAttribute("account"));
+				// TODO: change session name to get account
+				_coursePlanManage = appContext.getBean(CoursePlannerManager.class);
+				_coursePlanManage.setStudent((Account) session.getAttribute("account"));
+				session.setAttribute("planMng", _coursePlanManage);
 			}
+
+			return _coursePlanManage;
 
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
-
-			_coursePlanManage = new CoursePlannerManager(null);
-
-		} finally {
-
-			session.setAttribute("planMng", _coursePlanManage);
-			return _coursePlanManage;
-
+			return new CoursePlannerManager(null);
 		}
-
 	}
 
 	private List<Subject> bindSubjectIsSelected(List<Subject> subjectAll, List<Subject> subjectSelectedList) {
@@ -253,7 +236,7 @@ public class CoursePlannerController {
 
 				if (subject.getSubjectCode().toLowerCase().equals(subjectSelected.getSubjectCode().toLowerCase())
 						|| subject.getId() == subjectSelected.getId()) {
-					subject.setStatus(1);
+					subject.setStatus(2);
 				}
 			}
 		}
