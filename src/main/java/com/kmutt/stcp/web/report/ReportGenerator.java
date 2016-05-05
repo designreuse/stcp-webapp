@@ -1,28 +1,31 @@
 package com.kmutt.stcp.web.report;
 
+import com.kmutt.stcp.config.PersistenceConfig;
 import com.kmutt.stcp.entity.RoleUser;
 import com.kmutt.stcp.entity.User;
 import com.kmutt.stcp.manager.ReportManager;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.sql.*;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
  * Created by Gift on 20-Mar-16.
  */
+@PropertySource({"classpath:application.properties"})
 @Service
 public class ReportGenerator {
     private final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
@@ -33,6 +36,9 @@ public class ReportGenerator {
 
     @Autowired
     ReportManager reportManager;
+
+    @Autowired
+    PersistenceConfig persistenceConfig;
     /**
      * Check authorize & existing report
      * @param userId
@@ -72,20 +78,15 @@ public class ReportGenerator {
                 Arrays.stream(paramValues).forEach(entry -> reportParams.put(entry.getKey(), entry.getValue()));
             }
 
-//            reportParams.putAll(paramValues);
-            // DataSource
-            // This is simple example, no database.
-            // then using empty datasource.
-            JRDataSource dataSource = new JREmptyDataSource();
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, reportParams, dataSource);
-
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, reportParams,  persistenceConfig.dataSource().getConnection());
 
             log.debug("report generated");
 
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {
             log.error("generate report error", e);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return null;

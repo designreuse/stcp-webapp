@@ -47,7 +47,8 @@ public class ReportController {
     public String displayReportList(HttpSession session, Map<String, Object> model) {
         Account loginAccount = (Account) session.getAttribute(SESSION_KEY_LOGIN_ACCOUNT);
 
-        model.put("curriculumNameList", reportManager.findDistinceCurriculums());
+        model.put("curriculumNameList", reportManager.findCurriculumNames());
+        model.put("curriculumYearList", reportManager.findCurriculumYears());
 
         /* displayReportList by role */
         if(ROLE_ID_STUDENT == loginAccount.getRoleUser().getId()) {

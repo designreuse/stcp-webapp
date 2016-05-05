@@ -34,11 +34,9 @@ function searchReport() {
     });
 }
 
-
-//$(this).children("td:first-child").html()
 $(document).on("click","#reportCenterTable > tbody > tr",function(req){
     var reportId = $(this).find("[type='hidden']").val();
-    var reportYear = $("#reportYear").val() == "" ? null : $("#reportYear").val();
+    var reportYear = $("#reportYearOption").val();
     var reportNameOption = $("#reportNameOption").val();
 
     $("#loadingModal").modal("show");
@@ -52,7 +50,6 @@ $(document).on("click","#reportCenterTable > tbody > tr",function(req){
         }).done(function(data){
             var curriculumId = data.curriculumId;
             $("#loadingModal").modal("hide");
-    //        console.log(data);
             if(data.errorMsg) {
                 swal({
                     title : "ข้อความแจ้งเตือน",
