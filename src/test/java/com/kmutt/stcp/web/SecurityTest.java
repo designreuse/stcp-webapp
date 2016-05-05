@@ -27,15 +27,21 @@ public class SecurityTest {
     @Autowired
     UserRepository userRepository;
 
-
     @Test
     public void testValidateEmail() {
         String mailNull = securityManager.ValidateEmail("");
+        String mailwithCharacter = securityManager.ValidateEmail("student_123@mail.kmutt.ac.th");
+        String mailIncomplete = securityManager.ValidateEmail("student_123@mail.ac.th");
         String mailKMUTT = securityManager.ValidateEmail("student@mail.kmutt.ac.th");
 
+
         assertEquals("Email Invalid format",mailNull);
-        assertEquals(null,mailKMUTT);
+        assertEquals(null,mailwithCharacter);
+        assertEquals("Email Invalid format",mailIncomplete);
+        assertEquals(null, mailKMUTT);
     }
+
+
 
     @Test
     public void testSendMail() {
