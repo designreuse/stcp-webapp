@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Summary_Planning" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2489a7b1-23be-4aa6-b917-f9f3c683a8b4">
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-05-05T17:47:16 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Summary_Planning" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2489a7b1-23be-4aa6-b917-f9f3c683a8b4">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -7,7 +9,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select curriculum_id, a.subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, name_eng, subject_type, credit, d.semester_term, d.semester_year, count(distinct d.account_id) as count_student
+		<![CDATA[select curriculum_id, a.subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, c.name_eng, subject_type, credit, d.semester_term, d.semester_year, count(distinct d.account_id) as count_student
 from curriculum_subject a, curriculum b, subject c, course_plan d
 where a.curriculum_id = b.id and
       a.subject_id = c.id and

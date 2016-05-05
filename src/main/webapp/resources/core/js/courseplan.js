@@ -167,7 +167,10 @@ $(document).ready(function() {
                         swal({ title : "Course Planner",
 	      					   text : msg,
 	      					   type : msgType,
-	      					   showCancelButton: false });
+	      					   showCancelButton: false },
+							function () {
+								window.location.reload(true);
+							});
                         
                     	
                     },
@@ -200,7 +203,8 @@ $(document).ready(function() {
 			closeOnConfirm : false
 		}, function(isConfirm) {
 			if (isConfirm) {
-				window.location.href = window.location.href;
+				//window.location.href = window.location.;
+				window.location.reload(true);
 			}
 		});
 	});

@@ -76,7 +76,6 @@ public class SubjectManager {
 					+ "									and nameEng = '"+subject.getNameEng()+"' "
 					+ "									and subjectType = '"+subject.getSubjectType()+"' "
 					+ "									and credit = '"+subject.getCredit()+"' "
-					+ "									and status = 1 "
 					+ "									and detailThai = '"+subject.getDetailThai()+"' "
 					+ "									and detailEng = '"+subject.getDetailEng()+"' ";
 			
@@ -98,45 +97,18 @@ public class SubjectManager {
 	
 		
 	// Method//
-	public void updateSubject(Subject subject,int preRequisiteId,int newPreSubject) {
+	public void updateSubject(Subject subject) {
 		subjectRepository.update(subject);
 		
-		Prerequisite prerequisite = new Prerequisite();
-		
-		if(newPreSubject!=0){
-			Subject foreignSubject = new Subject();
+		String hql = "from Prerequisite where subjectBySubjectId.id = "+subject.getId()+" ";
 			
-			String hqlForeignSubject = "from Subject where id = "+newPreSubject+" ";
+		List<Prerequisite> prerequisiteList = (List<Prerequisite>) prerequisiteRepository.queryHQL(hql);
 			
-			foreignSubject = (Subject) subjectRepository.queryHQL(hqlForeignSubject).get(0);
-			
-			
-			if(preRequisiteId==0){
-				
-				prerequisite.setSubjectByPresubjectId(foreignSubject);
-				prerequisite.setSubjectBySubjectId(subject);
-				
-				prerequisiteRepository.create(prerequisite);
-			}else{
-				prerequisite.setId(preRequisiteId);
-				prerequisite.setSubjectBySubjectId(subject);
-				prerequisite.setSubjectByPresubjectId(foreignSubject);
-					
-				prerequisiteRepository.update(prerequisite);
+		if(prerequisiteList.size()!=0){
+			for(int i=0; i<prerequisiteList.size(); i++){
+				prerequisiteRepository.delete(prerequisiteList.get(i));
 			}
-			
-		}else{
-			
-			String hql = "from Prerequisite where id = "+preRequisiteId+" ";
-			
-			List<Prerequisite> prerequisiteList = (List<Prerequisite>) prerequisiteRepository.queryHQL(hql);
-			
-			if(prerequisiteList.size()!=0){
-				prerequisite = prerequisiteList.get(0);
-			}
-			prerequisiteRepository.delete(prerequisite);
 		}
-		
 		
 	}
 	
@@ -272,7 +244,7 @@ public class SubjectManager {
 		List<Prerequisite> prerequisiteList = prerequisiteRepository.queryHQL(hql);
 		
 		if(prerequisiteList.size()!=0){
-			return prerequisiteList.get(0);
+			return prerequisiteList;
 		}else{
 			return null;
 		}

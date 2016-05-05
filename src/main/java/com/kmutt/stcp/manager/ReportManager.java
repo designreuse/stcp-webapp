@@ -20,8 +20,14 @@ public class ReportManager {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Curriculum> findDistinceCurriculums() {
-        String hql = "SELECT c FROM Curriculum c GROUP BY c.name";
+    public List<Curriculum> findCurriculumNames() {
+        String hql = "SELECT c FROM Curriculum c GROUP BY c.name ORDER BY c.id";
+        List<Curriculum> curriculumResult = curriculumRepository.queryHQL(hql);
+        return (curriculumResult.size() == 0) ? null : curriculumResult;
+    }
+
+    public List<Curriculum> findCurriculumYears() {
+        String hql = "SELECT c FROM Curriculum c GROUP BY c.startYear ORDER BY c.id";
         List<Curriculum> curriculumResult = curriculumRepository.queryHQL(hql);
         return (curriculumResult.size() == 0) ? null : curriculumResult;
     }

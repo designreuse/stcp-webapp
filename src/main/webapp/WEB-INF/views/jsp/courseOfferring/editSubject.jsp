@@ -25,6 +25,16 @@
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 	
 <title>Student Course Planner</title>
+<script type="text/javascript">
+var num = 0;
+
+$(document).ready(function() {
+	$("select[name='preSubjectId']").select2();
+	num = $("#num").val();
+});
+
+
+</script>
 </head>
 <style>
 h1 {
@@ -190,40 +200,63 @@ dropbtn {
 				<div class="col-sm-2">
 
 					<c:if test="${prerequisite != null }">
-						<input type="hidden" name="preRequisiteId" id="preRequisiteId" value="${prerequisite[0].id}">
-						<input type="hidden"  id="preSubjectTmp" value="${prerequisite[0].subjectByPresubjectId.id}">
 						
-						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()" checked> วิชาบังคับก่อน
+						<input type="checkbox" id="chkPre" name="chkPre" value="1" checked> วิชาบังคับก่อน
 						&nbsp;
 						<span id="preSubSpan">
-							<select id="preSubjectId" name="preSubjectId" style="width:300px;">
-								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
-								<c:forEach items="${subjectList}" var="item">
-									<c:if test="${item.key!=subjectForm.id }">
-										<c:if test="${item.key == prerequisite[0].subjectByPresubjectId.id}">
-											<option value="${item.key}" selected>${item.value}</option>
+							<c:set  var="num" value=""></c:set>
+							<c:forEach items="${prerequisite}" var="itemPre" varStatus="loop">
+								<div id="preSubSpan${loop.index}" class="row" style="width:400px;padding-left:20px;">
+										<select id="preSubjectId${loop.index}" name="preSubjectId" style="width:300px;">
+											<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
+											<c:forEach items="${subjectList}" var="item">
+												<c:if test="${item.key!=subjectForm.id }">
+													<c:if test="${item.key == itemPre[0].subjectByPresubjectId.id}">
+														<option value="${item.key}" selected>${item.value}</option>
+													</c:if>
+													<c:if test="${item.key != itemPre[0].subjectByPresubjectId.id}">
+														<option value="${item.key}">${item.value}</option>
+													</c:if>
+												</c:if>
+											</c:forEach>
+										</select>
+										<c:if test="${loop.index == 0}">
+											<button id="btnAddPre" type="button" class="btn btn-success btn-sm">
+												&nbsp;<i class="fa fa-plus fa-lg"></i>
+											</button>
 										</c:if>
-										<c:if test="${item.key != prerequisite[0].subjectByPresubjectId.id}">
-											<option value="${item.key}">${item.value}</option>
+										<c:if test="${loop.index != 0}">
+											<button id="btnDeletePre${loop.index}" onclick="removeSpan('preSubSpan${loop.index}')" type="button" class="btn btn-default btn-sm">
+												&nbsp;<i class="fa fa-minus fa-lg"></i>
+											</button>
 										</c:if>
-									</c:if>
-								</c:forEach>
-							</select>
-						
+									</div>
+									
+									<c:set  var="num" value="${loop.index}"></c:set>
+							</c:forEach>
+							<input type=hidden id="num" value="${num}">
+						</span>
 					</c:if> 
 					<c:if test="${prerequisite == null }">
 						<input type="hidden"  id="preRequisiteId" name="preRequisiteId" value="">
-						<input type="checkbox" id="chkPre" name="chkPre" onclick="setDefaultPreSub()"> วิชาบังคับก่อน
+						<input type="checkbox" id="chkPre" name="chkPre" value="1"> วิชาบังคับก่อน
 						&nbsp;
 						<span id="preSubSpan" style="display:none;">
-							<select id="preSubjectId" name="preSubjectId" style="width:300px;">
-								<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
-								<c:forEach items="${subjectList}" var="item">
-									<c:if test="${item.key!=subjectForm.id }">
-										<option value="${item.key}">${item.value}</option>
-									</c:if>
-								</c:forEach>
-							</select>
+							<div id="preSubSpan0" class="row" style="width:400px;padding-left:20px;">
+								<select id="preSubjectId0" name="preSubjectId" style="width:300px;">
+									<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
+									<c:forEach items="${subjectList}" var="item">
+										<c:if test="${item.key!=subjectForm.id }">
+											<option value="${item.key}">${item.value}</option>
+										</c:if>
+									</c:forEach>
+								</select>
+								<button id="btnAddPre" type="button" class="btn btn-success btn-sm">
+										&nbsp;<i class="fa fa-plus fa-lg"></i>
+								</button>
+							</div>
+							<input type=hidden id="num" value="0">
+						</span>
 					</c:if> 
 
 					
@@ -238,6 +271,19 @@ dropbtn {
 					<form:select path="credit"  cssClass="form-control" cssStyle="width:300px;">
 						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
 						<form:options items="${creditList}" />
+					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">สถานะ ::</div>
+				<div class="col-sm-2">
+					<form:select path="status" cssClass="form-control" cssStyle="width:300px;">
+						<form:options items="${statusList}" />
 					</form:select>
 					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>
@@ -267,27 +313,5 @@ dropbtn {
 	</div>
 	
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/addSubject.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#preSubjectId').select2();
-	});
-
-	function setDefaultPreSub(){
-		
-		if($("#chkPre").prop('checked') == false){
-			if($("#preRequisiteId").val()!=""){
-				$("#preSubjectId").val("0");
-			}
-			
-			$("#preSubSpan").hide();
-		}else{
-			if($("#preRequisiteId").val()!=""){
-				$("#preSubjectId").val($("#preSubjectTmp").val());
-			}
-			
-			$("#preSubSpan").show();
-		}
-	}
-</script>
 </body>
 </html>

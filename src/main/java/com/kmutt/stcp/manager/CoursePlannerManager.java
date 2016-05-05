@@ -3,401 +3,406 @@ package com.kmutt.stcp.manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.kmutt.stcp.entity.*;
+import com.kmutt.stcp.repository.CoursePlanRepository;
 import com.kmutt.stcp.dto.PlanMessageRequest;
-import com.kmutt.stcp.repository.*;
+import com.kmutt.stcp.service.CoursePlannerService;
+
 import org.springframework.stereotype.Component;
 
 @Component("coursePlanManager")
+@Scope("prototype")
 public class CoursePlannerManager {
 
-    // Field//
+	// Field//
 	private final Logger logger = LoggerFactory.getLogger(CoursePlannerManager.class);
 
-    @Autowired
-    private CoursePlanRepository coursePlanRespository;
+	@Autowired
+	ApplicationContext appContext;
 
-    private Account student;
-    private List<CoursePlan> semesterPlanList;
-    private List<CoursePlan> semesterPlanNew;
-    private List<CoursePlan> semesterPlanDeleted;
+	@Autowired
+	private CoursePlannerService coursePlanService;
 
-    // Constructor//
-    public CoursePlannerManager() {}
-    public CoursePlannerManager(Account acount) {
+	@Autowired
+	private CoursePlanRepository coursePlanRespository;
+
+	private Account student;
+	private List<CoursePlan> semesterPlanList;
+	private List<CoursePlan> semesterPlanNew;
+	private List<CoursePlan> semesterPlanDeleted;
+
+	// Constructor//
+	public CoursePlannerManager() {
+	}
+
+	public CoursePlannerManager(Account acount) {
 		this.student = acount;
 	}
 
-    // Method//
-    public List<CoursePlan> getCoursePlanList() {
+	// Properties //
+	public Account getStudent() {
+		return student;
+	}
 
-        if (this.semesterPlanList == null) {
-            // TODO: get plans from common entity module
-            //this.semesterPlanList = (ArrayList<CoursePlan>) this.coursePlanRespository.querySQL("select * from course_plan where account_id = " + this.student.getId().toString());
-             this.semesterPlanList = getSemesterPlanListDummy();
-        }
+	public void setStudent(Account value) {
+		this.student = value;
+	}
 
-        return this.semesterPlanList;
+	// Method//
+	public List<CoursePlan> getCoursePlanList() {
 
-    }
+		this.semesterPlanList = this.coursePlanService.getCoursePlan(this.student);
+		return this.semesterPlanList;
 
-    public List<CoursePlan> getCoursePlanList(int semesterYear) {
+	}
 
-        ArrayList<CoursePlan> coursePlanFilter = new ArrayList<>();
+	public List<CoursePlan> getCoursePlanList(int semesterYear) {
 
-        // TODO: get plans from common entity module
-        //List<CoursePlan> semesterList = (ArrayList<CoursePlan>) this.coursePlanRespository.querySQL("select * from course_plan where account_id = " + this.student.getId().toString());
-        List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
+		List<CoursePlan> coursePlanFilter = this.coursePlanService.getCoursePlan(this.student, semesterYear);
+		return coursePlanFilter;
 
-        if (semesterList != null && !semesterList.isEmpty()) {
+	}
 
-            for (CoursePlan semester : semesterList) {
+	public List<Subject> getSubjectSelectedList() {
 
-                if (semester.getSemesterYear() == semesterYear)
-                    coursePlanFilter.add(semester);
-            }
-        }
+		ArrayList<Subject> subjectSelectedList = new ArrayList<>();
 
-        return coursePlanFilter;
+		// TODO: get plans from common entity module.
+//		List<CoursePlan> semesterList = this.coursePlanRespository.querySQL("select * from course_plan where account_id = " + this.student.getId().toString());
+//		 List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
+		List<CoursePlan> semesterList = this.getCoursePlanList();
 
-    }
+		if (semesterList != null && !semesterList.isEmpty()) {
 
-    public List<Subject> getSubjectSelectedList() {
+			for (CoursePlan semester : semesterList) {
+				subjectSelectedList.add(semester.getSubject());
+			}
+		}
 
-        ArrayList<Subject> subjectSelectedList = new ArrayList<>();
+		return subjectSelectedList;
 
-        // TODO: get plans from common entity module.
-        //List<CoursePlan> semesterList = (ArrayList<CoursePlan>) this.coursePlanRespository.querySQL("select * from course_plan where account_id = " + this.student.getId().toString());
-        List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
+	}
 
-        if (semesterList != null && !semesterList.isEmpty()) {
+	public List<Integer> getSemesterYearList() {
 
-            for (CoursePlan semester : semesterList) {
+		ArrayList<Integer> semesterYearList = new ArrayList<>();
 
-                subjectSelectedList.add(semester.getSubject());
-            }
-        }
+//		List<CoursePlan> semesterList = (ArrayList<CoursePlan>) this.coursePlanRespository.querySQL("select * from course_plan where account_id = " + this.student.getId().toString());
+		List<CoursePlan> semesterList = this.getCoursePlanList();
 
-        return subjectSelectedList;
+		for (CoursePlan coursePlan : semesterList) {
 
-    }
+			Boolean isFound = false;
 
-    public List<Integer> getSemesterYearList() {
+			for (Integer year : semesterYearList) {
 
-        ArrayList<Integer> semesterYearList = new ArrayList<>();
+				if (coursePlan.getSemesterYear().equals(year)) {
+					isFound = true;
+					break;
+				}
+			}
 
-        // TODO: get plans from common entity module
-        //List<CoursePlan> semesterList = (ArrayList<CoursePlan>) this.coursePlanRespository.querySQL("select * from course_plan where account_id = " + this.student.getId().toString());
-        List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
+			if (!isFound)
+				semesterYearList.add(coursePlan.getSemesterYear());
 
-        for (CoursePlan coursePlan : semesterList) {
+		}
 
-            Boolean isFound = false;
+		return semesterYearList;
 
-            for (Integer year : semesterYearList) {
+	}
 
-                if (coursePlan.getSemesterYear().equals(year)) {
-                    isFound = true;
-                    break;
-                }
-            }
+	public Boolean setCoursePlanForSave(List<PlanMessageRequest> semesterObj) {
 
-            if (!isFound)
-                semesterYearList.add(coursePlan.getSemesterYear());
+		try {
 
-        }
+			if (semesterObj != null) {
 
-        return semesterYearList;
+				CourseManager courseMng = appContext.getBean(CourseManager.class);
+				courseMng.setStudent(this.student);
 
-    }
+				semesterPlanNew = new ArrayList<>();
 
-    public Boolean setCoursePlanForSave(List<PlanMessageRequest> semesterObj) {
+				for (PlanMessageRequest obj : semesterObj) {
 
-        try {
+					if (obj.getSemesterId() == 0) {
 
-            if (semesterObj != null) {
+						CoursePlan newCoursePlan = new CoursePlan();
+						newCoursePlan.setAccount(this.student);
+						newCoursePlan.setSemesterYear(obj.getSemesterYear());
+						newCoursePlan.setSemesterTerm(obj.getSemesterTerm());
+						newCoursePlan.setSubject(courseMng.getSubjectByID(obj.getSubjectId()));
 
-                CourseManager courseMng = new CourseManager(this.student);
+						semesterPlanNew.add(newCoursePlan);
 
-                semesterPlanNew = new ArrayList<>();
+					}
+				}
 
-                for (PlanMessageRequest obj : semesterObj) {
+				semesterPlanDeleted = new ArrayList<>();
 
-                    if (obj.getSemesterId() == 0) {
+				for (CoursePlan coursePlan : this.getCoursePlanList()) {
 
-                        CoursePlan newCoursePlan = new CoursePlan();
-                        newCoursePlan.setAccount(this.student);
-                        newCoursePlan.setSemesterYear(obj.getSemesterYear());
-                        newCoursePlan.setSemesterTerm(obj.getSemesterTerm());
-                        newCoursePlan.setSubject(courseMng.getSubjectByID(obj.getSubjectId()));
+					Boolean isDeleted = true;
 
-                        semesterPlanNew.add(newCoursePlan);
+					for (PlanMessageRequest planMessageRequest : semesterObj) {
 
-                    }
-                }
+						if (coursePlan.getId().equals(planMessageRequest.getSemesterId())) {
 
-                semesterPlanDeleted = new ArrayList<>();
+							isDeleted = false;
+							break;
 
-                for (CoursePlan coursePlan : semesterPlanList) {
+						}
+					}
 
-                    Boolean isDeleted = true;
+					if (isDeleted) {
+						semesterPlanDeleted.add(coursePlan);
+					}
 
-                    for (PlanMessageRequest planMessageRequest : semesterObj) {
+				}
 
-                        if (coursePlan.getId().equals(planMessageRequest.getSemesterId())) {
-
-                            isDeleted = false;
-                            break;
-
-                        }
-                    }
-
-                    if (isDeleted) {
-                        semesterPlanDeleted.add(coursePlan);
-                    }
-
-                }
-
-            }
-
-            return true;
-
-        } catch (Exception e) {
-
-            logger.error("Method:setCoursePlanForSave|Err:" + e.getMessage());
-
-            semesterPlanNew = new ArrayList<>();
-            semesterPlanDeleted = new ArrayList<>();
-
-            return false;
-
-        }
-    }
-
-    public Boolean savePlan() {
-
-        try {
-
-            // Delete semesters before insert new subject
-            for (CoursePlan semesterDeleted : semesterPlanDeleted) {
-
-                coursePlanRespository.delete(semesterDeleted);
-
-            }
-
-            // Insert new subject.
-            for (CoursePlan coursePlan : semesterPlanNew) {
-
-                coursePlanRespository.create(coursePlan);
-
-            }
-
-            return true;
-
-        } catch (Exception e) {
-
-            logger.error("Method:savePlan|Err:" + e.getMessage());
-
-            return false;
-
-        } finally {
-
-            semesterPlanNew = new ArrayList<>();
-            semesterPlanDeleted = new ArrayList<>();
-
-        }
-    }
-
-    // public Boolean addSubject(int semesterYear, int semesterTerm, int
-    // subjectId) {
-    //
-    // try {
-    //
-    // Subject subjectSelected = (new
-    // CourseManager(this.student)).getSubjectByID(subjectId);
-    // return addSubject(semesterYear, semesterTerm, subjectSelected);
-    //
-    // } catch (Exception e) {
-    //
-    // logger.error("Method:addSubject(by Subject ID)|Err:" + e.getMessage());
-    //
-    // return false;
-    //
-    // }
-    // }
-    //
-    // public Boolean addSubject(int semesterYear, int semesterTerm, Subject
-    // subjectSelected) {
-    //
-    // try {
-    //
-    // // should get semesterList from Common Entity module.
-    // List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
-    //
-    // CoursePlan newCoursePlan = new CoursePlan();
-    //
-    // newCoursePlan.setAccount(this.student);
-    // newCoursePlan.setSemesterYear(semesterYear);
-    // newCoursePlan.setSemesterTerm(semesterTerm);
-    // newCoursePlan.setSubject(subjectSelected);
-    //
-    // semesterList.add(newCoursePlan);
-    //
-    // return true;
-    //
-    // } catch (Exception e) {
-    //
-    // logger.error("Method:addSubject(by Subject)|Err:" + e.getMessage());
-    //
-    // return false;
-    // }
-    // }
-    //
-    // public Boolean removeSubject(int subjectId) {
-    //
-    // List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
-    //
-    // if (this.semesterPlanDeleted == null)
-    // this.semesterPlanDeleted = new ArrayList<>();
-    //
-    // try {
-    //
-    // if (semesterList != null && !semesterList.isEmpty()) {
-    //
-    // for (CoursePlan semester : semesterList) {
-    //
-    // Subject subject = semester.getSubject();
-    //
-    // if (subject.getId() == subjectId) {
-    // semesterList.remove(semester);
-    // semesterPlanDeleted.add(semester);
-    // break;
-    // }
-    // }
-    // }
-    //
-    // return true;
-    //
-    // } catch (Exception e) {
-    //
-    // logger.error("Method:removeSubject|Err:" + e.getMessage());
-    //
-    // return false;
-    // }
-    // }
-
-    // dummy//
-    public List<CoursePlan> getSemesterPlanListDummy() {
-
-        CourseManager courseMng = new CourseManager(null);
-
-        List<CoursePlan> semesterList = new ArrayList<>();
+			}
+
+			return true;
+
+		} catch (Exception e) {
+
+			logger.error("Method:setCoursePlanForSave|Err:" + e.getMessage());
+
+			semesterPlanNew = new ArrayList<>();
+			semesterPlanDeleted = new ArrayList<>();
+
+			return false;
+
+		}
+	}
+
+	public Boolean savePlan() {
+
+		try {
+
+			// Delete semesters before insert new subject
+			for (CoursePlan semesterDeleted : semesterPlanDeleted) {
+
+				// coursePlanService.delete(semesterDeleted);
+				this.coursePlanRespository.delete(semesterDeleted);
+
+			}
+
+			// Insert new subject.
+			for (CoursePlan coursePlan : semesterPlanNew) {
+
+				// coursePlanService.create(coursePlan);
+				this.coursePlanRespository.create(coursePlan);
+
+			}
+
+			return true;
+
+		} catch (Exception e) {
+
+			logger.error("Method:savePlan|Err:" + e.getMessage());
+
+			return false;
+
+		} finally {
+
+			semesterPlanNew = new ArrayList<>();
+			semesterPlanDeleted = new ArrayList<>();
+
+		}
+	}
+
+	// public Boolean addSubject(int semesterYear, int semesterTerm, int
+	// subjectId) {
+	//
+	// try {
+	//
+	// Subject subjectSelected = (new
+	// CourseManager(this.student)).getSubjectByID(subjectId);
+	// return addSubject(semesterYear, semesterTerm, subjectSelected);
+	//
+	// } catch (Exception e) {
+	//
+	// logger.error("Method:addSubject(by Subject ID)|Err:" + e.getMessage());
+	//
+	// return false;
+	//
+	// }
+	// }
+	//
+	// public Boolean addSubject(int semesterYear, int semesterTerm, Subject
+	// subjectSelected) {
+	//
+	// try {
+	//
+	// // should get semesterList from Common Entity module.
+	// List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
+	//
+	// CoursePlan newCoursePlan = new CoursePlan();
+	//
+	// newCoursePlan.setAccount(this.student);
+	// newCoursePlan.setSemesterYear(semesterYear);
+	// newCoursePlan.setSemesterTerm(semesterTerm);
+	// newCoursePlan.setSubject(subjectSelected);
+	//
+	// semesterList.add(newCoursePlan);
+	//
+	// return true;
+	//
+	// } catch (Exception e) {
+	//
+	// logger.error("Method:addSubject(by Subject)|Err:" + e.getMessage());
+	//
+	// return false;
+	// }
+	// }
+	//
+	// public Boolean removeSubject(int subjectId) {
+	//
+	// List<CoursePlan> semesterList = this.getSemesterPlanListDummy();
+	//
+	// if (this.semesterPlanDeleted == null)
+	// this.semesterPlanDeleted = new ArrayList<>();
+	//
+	// try {
+	//
+	// if (semesterList != null && !semesterList.isEmpty()) {
+	//
+	// for (CoursePlan semester : semesterList) {
+	//
+	// Subject subject = semester.getSubject();
+	//
+	// if (subject.getId() == subjectId) {
+	// semesterList.remove(semester);
+	// semesterPlanDeleted.add(semester);
+	// break;
+	// }
+	// }
+	// }
+	//
+	// return true;
+	//
+	// } catch (Exception e) {
+	//
+	// logger.error("Method:removeSubject|Err:" + e.getMessage());
+	//
+	// return false;
+	// }
+	// }
+
+	// dummy//
+	public List<CoursePlan> getSemesterPlanListDummy() {
+
+		CourseManager courseMng = appContext.getBean(CourseManager.class);
+
+		List<CoursePlan> semesterList = new ArrayList<>();
 
 		/* Semester#01/2015 */
-        CoursePlan plan1 = new CoursePlan();
-        plan1.setAccount(this.student);
-        plan1.setId(1);
-        plan1.setSemesterYear(2015);
-        plan1.setSemesterTerm(1);
-        plan1.setSubject(courseMng.getSubjectByCode("SWE 601"));
-        semesterList.add(plan1);
+		CoursePlan plan1 = new CoursePlan();
+		plan1.setAccount(this.student);
+		plan1.setId(1);
+		plan1.setSemesterYear(2015);
+		plan1.setSemesterTerm(1);
+		plan1.setSubject(courseMng.getSubjectByCode("SWE 601"));
+		semesterList.add(plan1);
 
-        CoursePlan plan2 = new CoursePlan();
-        plan2.setAccount(this.student);
-        plan2.setId(2);
-        plan2.setSemesterYear(2015);
-        plan2.setSemesterTerm(1);
-        plan2.setSubject(courseMng.getSubjectByCode("SWE 602"));
-        semesterList.add(plan2);
+		CoursePlan plan2 = new CoursePlan();
+		plan2.setAccount(this.student);
+		plan2.setId(2);
+		plan2.setSemesterYear(2015);
+		plan2.setSemesterTerm(1);
+		plan2.setSubject(courseMng.getSubjectByCode("SWE 602"));
+		semesterList.add(plan2);
 
-        CoursePlan plan3 = new CoursePlan();
-        plan3.setAccount(this.student);
-        plan3.setId(3);
-        plan3.setSemesterYear(2015);
-        plan3.setSemesterTerm(1);
-        plan3.setSubject(courseMng.getSubjectByCode("SWE 603"));
-        semesterList.add(plan3);
+		CoursePlan plan3 = new CoursePlan();
+		plan3.setAccount(this.student);
+		plan3.setId(3);
+		plan3.setSemesterYear(2015);
+		plan3.setSemesterTerm(1);
+		plan3.setSubject(courseMng.getSubjectByCode("SWE 603"));
+		semesterList.add(plan3);
 
 		/* Semester#02/2015 */
-        CoursePlan plan4 = new CoursePlan();
-        plan4.setAccount(this.student);
-        plan4.setId(4);
-        plan4.setSemesterYear(2015);
-        plan4.setSemesterTerm(2);
-        plan4.setSubject(courseMng.getSubjectByCode("SWE 604"));
-        semesterList.add(plan4);
+		CoursePlan plan4 = new CoursePlan();
+		plan4.setAccount(this.student);
+		plan4.setId(4);
+		plan4.setSemesterYear(2015);
+		plan4.setSemesterTerm(2);
+		plan4.setSubject(courseMng.getSubjectByCode("SWE 604"));
+		semesterList.add(plan4);
 
-        CoursePlan plan5 = new CoursePlan();
-        plan5.setAccount(this.student);
-        plan5.setId(5);
-        plan5.setSemesterYear(2015);
-        plan5.setSemesterTerm(2);
-        plan5.setSubject(courseMng.getSubjectByCode("SWE 605"));
-        semesterList.add(plan5);
+		CoursePlan plan5 = new CoursePlan();
+		plan5.setAccount(this.student);
+		plan5.setId(5);
+		plan5.setSemesterYear(2015);
+		plan5.setSemesterTerm(2);
+		plan5.setSubject(courseMng.getSubjectByCode("SWE 605"));
+		semesterList.add(plan5);
 
-        CoursePlan plan6 = new CoursePlan();
-        plan6.setAccount(this.student);
-        plan6.setId(6);
-        plan6.setSemesterYear(2015);
-        plan6.setSemesterTerm(2);
-        plan6.setSubject(courseMng.getSubjectByCode("SWE 630"));
-        semesterList.add(plan6);
+		CoursePlan plan6 = new CoursePlan();
+		plan6.setAccount(this.student);
+		plan6.setId(6);
+		plan6.setSemesterYear(2015);
+		plan6.setSemesterTerm(2);
+		plan6.setSubject(courseMng.getSubjectByCode("SWE 630"));
+		semesterList.add(plan6);
 
 		/* Semester#01/2016 */
-        CoursePlan plan7 = new CoursePlan();
-        plan7.setAccount(this.student);
-        plan7.setId(7);
-        plan7.setSemesterYear(2016);
-        plan7.setSemesterTerm(1);
-        plan7.setSubject(courseMng.getSubjectByCode("SWE 612"));
-        semesterList.add(plan7);
+		CoursePlan plan7 = new CoursePlan();
+		plan7.setAccount(this.student);
+		plan7.setId(7);
+		plan7.setSemesterYear(2016);
+		plan7.setSemesterTerm(1);
+		plan7.setSubject(courseMng.getSubjectByCode("SWE 612"));
+		semesterList.add(plan7);
 
-        CoursePlan plan8 = new CoursePlan();
-        plan8.setAccount(this.student);
-        plan8.setId(8);
-        plan8.setSemesterYear(2016);
-        plan8.setSemesterTerm(1);
-        plan8.setSubject(courseMng.getSubjectByCode("SWE 650"));
-        semesterList.add(plan8);
+		CoursePlan plan8 = new CoursePlan();
+		plan8.setAccount(this.student);
+		plan8.setId(8);
+		plan8.setSemesterYear(2016);
+		plan8.setSemesterTerm(1);
+		plan8.setSubject(courseMng.getSubjectByCode("SWE 650"));
+		semesterList.add(plan8);
 
-        CoursePlan plan9 = new CoursePlan();
-        plan9.setAccount(this.student);
-        plan9.setId(9);
-        plan9.setSemesterYear(2016);
-        plan9.setSemesterTerm(1);
-        plan9.setSubject(courseMng.getSubjectByCode("INT 678"));
-        semesterList.add(plan9);
+		CoursePlan plan9 = new CoursePlan();
+		plan9.setAccount(this.student);
+		plan9.setId(9);
+		plan9.setSemesterYear(2016);
+		plan9.setSemesterTerm(1);
+		plan9.setSubject(courseMng.getSubjectByCode("INT 678"));
+		semesterList.add(plan9);
 
 		/* Semester#02/2016 */
-        CoursePlan plan10 = new CoursePlan();
-        plan10.setAccount(this.student);
-        plan10.setId(10);
-        plan10.setSemesterYear(2016);
-        plan10.setSemesterTerm(2);
-        plan10.setSubject(courseMng.getSubjectByCode("SWE 610"));
-        semesterList.add(plan10);
+		CoursePlan plan10 = new CoursePlan();
+		plan10.setAccount(this.student);
+		plan10.setId(10);
+		plan10.setSemesterYear(2016);
+		plan10.setSemesterTerm(2);
+		plan10.setSubject(courseMng.getSubjectByCode("SWE 610"));
+		semesterList.add(plan10);
 
-        CoursePlan plan11 = new CoursePlan();
-        plan11.setAccount(this.student);
-        plan11.setId(11);
-        plan11.setSemesterYear(2016);
-        plan11.setSemesterTerm(2);
-        plan11.setSubject(courseMng.getSubjectByCode("SWE 651"));
-        semesterList.add(plan11);
+		CoursePlan plan11 = new CoursePlan();
+		plan11.setAccount(this.student);
+		plan11.setId(11);
+		plan11.setSemesterYear(2016);
+		plan11.setSemesterTerm(2);
+		plan11.setSubject(courseMng.getSubjectByCode("SWE 651"));
+		semesterList.add(plan11);
 
-        CoursePlan plan12 = new CoursePlan();
-        plan12.setAccount(this.student);
-        plan12.setId(12);
-        plan12.setSemesterYear(2016);
-        plan12.setSemesterTerm(2);
-        plan12.setSubject(courseMng.getSubjectByCode("INT 675"));
-        semesterList.add(plan12);
+		CoursePlan plan12 = new CoursePlan();
+		plan12.setAccount(this.student);
+		plan12.setId(12);
+		plan12.setSemesterYear(2016);
+		plan12.setSemesterTerm(2);
+		plan12.setSubject(courseMng.getSubjectByCode("INT 675"));
+		semesterList.add(plan12);
 
-        return semesterList;
+		return semesterList;
 
-    }
+	}
 }

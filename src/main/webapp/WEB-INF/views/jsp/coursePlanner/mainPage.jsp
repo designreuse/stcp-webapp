@@ -35,10 +35,10 @@
 			</div>
 			<select id="subjectListID" name="sometext" size="10" class="form-control" style="height: 350px">
 				<c:forEach var="subject" items="${subjectlist}">
-					<option id="${subject.id}" value="${subject.id}" class="hasPop${subject.status == 1? ' optionDisabled': ''}"
+					<option id="${subject.id}" value="${subject.id}" class="hasPop${subject.status == 2 ? ' optionDisabled': ''}"
 						data-subjectcode="${subject.nameThai}" data-credit="${subject.credit}"
 						title="${subject.subjectCode} ${subject.nameThai}" data-content="${subject.detailThai}"
-						${subject.status == 1? ' isdisabled="true"': ''}>${subject.subjectCode}&nbsp;${subject.nameThai}</option>
+						${subject.status == 2 ? ' isdisabled="true"': ''}>${subject.subjectCode}&nbsp;${subject.nameThai}</option>
 				</c:forEach>
 			</select>
 		</div>
@@ -64,8 +64,8 @@
 				<div class="col-xs-12">
 					<!-- Tab Control[new] -->
 					<ul id="tabSemester" class="nav nav-tabs" role="tablist">
-						<c:forEach var="year" items="${semesterYearList}">
-							<li class="text-center active" tag="${year}">
+						<c:forEach var="year" items="${semesterYearList}" varStatus="pos">
+							<li class="text-center${pos.first? ' active' : ''}" tag="${year}">
 								<a href="#${year}1" role="tab" tag="${year}1"><strong>&nbsp;ภาคการเรียนที่ 1&nbsp;</strong></a>
 							</li>
 							<li class="text-center" tag="${year}">

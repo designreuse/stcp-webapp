@@ -19,9 +19,8 @@
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
-<!-- SweetAlert -->
-<script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
-<link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
+
+
 <script type="text/javascript" src="${root}/resources/core/js/addCourse.js"></script>
 <script type="text/javascript" src="${root}/resources/core/js/jquery.isloading.min.js"></script>
 
@@ -91,10 +90,10 @@
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2"></div>
 				<div class="col-sm-2">
-					<button id="btnReset" type="button" class="btn btn-warning btn-sm">
+					<button  onclick="resetFunction()" id="btnReset" type="button" class="btn btn-warning btn-sm">
 						&nbsp;<i class="fa fa-undo fa-lg"></i>&nbsp;Reset&nbsp;
 					</button>
-					<button id="btnSave" type="button" class="btn btn-primary btn-sm">
+					<button onclick="saveFunction()" id="btnSave" type="button" class="btn btn-primary btn-sm">
 						&nbsp;<i class="fa fa-floppy-o fa-lg"></i>&nbsp;Save&nbsp;
 					</button>
 				

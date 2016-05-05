@@ -22,9 +22,14 @@
 <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
 <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 <script type="text/javascript">
+
+var num = 0;
 $(document).ready(function() {
-	$('#preSubjectId').select2();
+	$("select[name='preSubjectId']").select2();
+	
 });
+
+
 </script>
 <title>Student Course Planner</title>
 </head>
@@ -188,15 +193,25 @@ dropbtn {
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">วิชายังคับก่อน ::</div>
 				<div class="col-sm-2">
-					<input type="checkbox" id="chkPre" name="chkPre"> วิชาบังคับก่อน
+					<input type="checkbox" id="chkPre" name="chkPre" value="1"> วิชาบังคับก่อน
 					&nbsp;
 					<span id="preSubSpan" style="display:none;">
-						<select id="preSubjectId" name="preSubjectId" style="width:300px;">
-							<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
-							<c:forEach items="${subjectList}" var="item">
-								<option value="${item.key}">${item.value}</option>
-							</c:forEach>
-						</select>
+						<div id="preSubSpan0" class="row" style="width:400px;padding-left:20px;">
+
+								<select id="preSubjectId0" name="preSubjectId" style="width:300px;">
+									<option value="">--- เลือกรายวิชาบังคับก่อน---</option>
+									<c:forEach items="${subjectList}" var="item">
+										<option value="${item.key}">${item.value}</option>
+									</c:forEach>
+								</select>
+
+								<button id="btnAddPre" type="button" class="btn btn-success btn-sm">
+									&nbsp;<i class="fa fa-plus fa-lg"></i>
+								</button>
+								
+						</div>
+						
+						
 					</span>
 					
 				</div>
@@ -210,6 +225,18 @@ dropbtn {
 					<form:select path="credit" cssClass="form-control" cssStyle="width:300px;">
 						<form:option value="0" label="--- เลือกหน่วยกิต---"/>
 						<form:options items="${creditList}" />
+					</form:select>
+					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+			
+			<div class="row" style="margin-bottom: 10px;">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-2">สถานะ ::</div>
+				<div class="col-sm-2">
+					<form:select path="status" cssClass="form-control" cssStyle="width:300px;">
+						<form:options items="${statusList}" />
 					</form:select>
 					<i class="form-control-feedback fa fa-asterisk" data-fv-icon-for="name" style="left:300px;padding-left: 20px;"></i>
 				</div>

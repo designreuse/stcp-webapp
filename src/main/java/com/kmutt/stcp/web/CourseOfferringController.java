@@ -1,5 +1,4 @@
 package com.kmutt.stcp.web;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,20 +93,36 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/addSubject", method = RequestMethod.POST)
-	    public String addSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId) throws UnsupportedEncodingException {
+	    public String addSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject) throws UnsupportedEncodingException {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setContentType("text/html; charset=UTF-8");
 	    	
-	    	subject.setStatus(1);
-	    	subjectManager.addSubject(subject,preSubjectId);
-	    	
-	    	if(preSubjectId!=null){
-	    		if(!preSubjectId.equals("")){
-	    			subjectManager.addPrerequisite(subject, preSubjectId);
+	    	try {
+	    		String[] preSubjectId;
+	    		
+	    		//subject.setStatus(1);
+		    	subjectManager.addSubject(subject,null);
+		    	
+		    	
+		    	
+		    	if(request.getParameterValues("preSubjectId")!=null && request.getParameter("chkPre") !=null){
+		    		
+		    		preSubjectId = request.getParameterValues("preSubjectId");
+		    		
+		    		for(int i=0; i<preSubjectId.length; i++){
+		    			if(!preSubjectId[i].equals("")){
+		    				subjectManager.addPrerequisite(subject, preSubjectId[i]);
+		    			}
+		    		}
 		    	}
-	    	}
+		    	
+		    	model.addAttribute("addSuccess", "Y");
+			} catch (Exception e) {
+				model.addAttribute("addSuccess", "N");
+				e.printStackTrace();
+			}
 	    	
-	    	model.addAttribute("addSuccess", "Y");
+	    	
 	    	
 	        return "courseOfferring/managesubject";
 	    }
@@ -140,17 +155,35 @@ public class CourseOfferringController {
 	    }
 	    
 	    @RequestMapping(value = "/editSubject", method = RequestMethod.POST)
-	    public String editSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject,@ModelAttribute("preSubjectId") String preSubjectId,@ModelAttribute("preRequisiteId") String preRequisiteId) throws UnsupportedEncodingException {
+	    public String editSubject(Model model,HttpServletRequest request,HttpServletResponse response,@ModelAttribute("subjectForm") Subject subject) throws UnsupportedEncodingException {
 	    	request.setCharacterEncoding("UTF-8");
 	    	response.setContentType("text/html; charset=UTF-8");
 	    	
+	    	try {
+	    		//preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
+		    	//preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
+	    		
+	    		String[] preSubjectId;
+
+		    	subjectManager.updateSubject(subject);
+		    	
+		    	if(request.getParameterValues("preSubjectId")!=null && request.getParameter("chkPre") !=null){
+		    		
+		    		preSubjectId = request.getParameterValues("preSubjectId");
+		    		
+		    		for(int i=0; i<preSubjectId.length; i++){
+		    			if(!preSubjectId[i].equals("")){
+		    				subjectManager.addPrerequisite(subject, preSubjectId[i]);
+		    			}
+		    		}
+		    	}
+		    	
+		    	model.addAttribute("editSuccess", "Y");
+			} catch (Exception e) {
+				model.addAttribute("editSuccess", "N");
+				e.printStackTrace();
+			}
 	    	
-	    	preSubjectId = (preSubjectId.equals("")||preSubjectId==null)?"0":preSubjectId;
-	    	preRequisiteId = (preRequisiteId.equals("")||preRequisiteId==null)?"0":preRequisiteId;
-	    	
-	    	subjectManager.updateSubject(subject, Integer.parseInt(preRequisiteId), Integer.parseInt(preSubjectId));
-	    	
-	    	model.addAttribute("editSuccess", "Y");
 	        return "courseOfferring/managesubject";
 	    }
 	    
@@ -158,11 +191,16 @@ public class CourseOfferringController {
 	    @RequestMapping(value = "/deleteSubject", method = RequestMethod.POST)
 	    public String deleteSubject(Model model,@RequestParam("subjectId") String id) {
 	    	
-	    	if(id!=null && !id.equals("")){
-	    		subjectManager.deleteSubject(Integer.parseInt(id));
-	    	}
+	    	try {
+	    		if(id!=null && !id.equals("")){
+		    		subjectManager.deleteSubject(Integer.parseInt(id));
+		    	}
+	    		model.addAttribute("deleteSuccess", "Y");
+			} catch (Exception e) {
+				model.addAttribute("deleteSuccess", "N");
+			}
 	    	
-	        return "redirect:managesubject";
+	        return "courseOfferring/managesubject";
 	    }
 	    
 	    @RequestMapping(value = "/addCourse", method = RequestMethod.POST)
@@ -265,7 +303,7 @@ public class CourseOfferringController {
     		List<Curriculum> curList = curriculumRepository.findAll();
     		if(curList != null)
     		{
-    			System.out.println("Size >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+curList.size());
+    			
     			request.setAttribute("OatCurriculumList",curList);
     			
     		}
@@ -306,15 +344,15 @@ public class CourseOfferringController {
 	    	if(accId.equalsIgnoreCase("none")){
 	    		accId = "%";
 	    	}
-	    	String sql = "select * from curriculum where start_year like '%"+ searchYear +"%' and acc_id like '%"+ accId +"%'";
+	    	String sql = "select * from curriculum where start_year like '%"+ searchYear +"%' and code like '%"+ accId +"%'";
 	    	List<Curriculum> curList = curriculumRepository.querySQL(sql);
 	    	String result = "";
 	    	for(Curriculum curr : curList){
-	    		result += "<tr><td></td><td>"+ curr.getAccId() +"</td>"+
+	    		result += "<tr><td></td><td>"+ curr.getCode() +"</td>"+
 	    				 "<td>"+ curr.getName() +"</td>"+
-	    				 "<td>"+ curr.getName() +"</td>"+
-	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
-	    				 "<td>ให้ผมเอาข้อมูลจากไหน?</td>"+
+	    				 "<td>"+ curr.getNameEng() +"</td>"+
+	    				 "<td>"+ curr.getTotalCredit() +"</td>"+
+	    				 "<td> ผศ.ดร. พรชัย มงคลนาม </td>"+
 	    				 "<td><a class='btn btn-success btn-sm' style='margin-right:5px' href='editCurriculum?curId="+ curr.getId() +"'><span class='fa fa-edit'>&nbsp;</span></a><a class='btn btn-danger btn-sm' id='delBtn' href='deleteCurriculum?curId="+ curr.getId() +"'><span class='fa fa-times'>&nbsp;</span></a></td>"+
 	    				 "</tr>";
 	    	}
@@ -333,13 +371,16 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/editCurriculum", method = RequestMethod.POST)
 	    public String editCurriculum(Model model,@ModelAttribute("editcurriculumForm") Curriculum curriculum) {
-	    	System.out.println("editcurriculumForm" +curriculum);
-	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
-	    		curriculumRepository.update(curriculum);
-	    		model.addAttribute("editSuccess", "Y");
-	    	}else{
-	    		model.addAttribute("editSuccess", "N");
+	    	if(curriculum.getCode()!=null && !curriculum.getCode().equals("")){
+	    		System.out.println("editcurriculumForm" +curriculum);
+		    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+		    		curriculumRepository.update(curriculum);
+		    		model.addAttribute("editSuccess", "Y");
+		    	}else{
+		    		model.addAttribute("editSuccess", "N");
+		    	}
 	    	}
+	    	
 	        return "courseOfferring/managecurriculum";
 	    }
 	    
@@ -351,7 +392,7 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/addCurriculum", method = RequestMethod.POST)
 	    public String addCurriculum(Model model,@ModelAttribute("curriculumForm") Curriculum curriculum) {
-	    	if(curriculum.getAccId()!=null && !curriculum.getAccId().equals("")){
+	    	if(curriculum.getCode()!=null && !curriculum.getCode().equals("")){
 	    		curriculumRepository.create(curriculum);
 	    		model.addAttribute("addSuccess", "Y");
 	    	}else{
@@ -362,7 +403,7 @@ public class CourseOfferringController {
 	    
 	    @RequestMapping(value = "/deleteCurriculum", method = RequestMethod.GET)
 	    public String deleteCurriculum(Model model,@RequestParam("curId") int curId) {
-	    	curriculumRepository.deleteById(curId);
+	    	curriculumRepository.deleteById(curId);;
 	        return "courseOfferring/managecurriculum";
 	    }
 	    
@@ -415,6 +456,17 @@ public class CourseOfferringController {
 		}
 	    
 	    
+	    @ModelAttribute("statusList")
+		public Map<String,String> statusList() {
+			
+			Map<String,String> creditList = new LinkedHashMap<String,String>();
+			creditList.put("0", "ไม่เปิดใช้งาน");
+			creditList.put("1", "เปิดใช้งาน");
+			
+			return creditList;
+		}
+	    
+	    
 	    @ModelAttribute("subjectList")
 		public Map<String,String> subjectList() {
 			
@@ -427,6 +479,15 @@ public class CourseOfferringController {
 			}
 			
 			return subjectList;
+		}
+	    
+	    @ModelAttribute("teacherList")
+		public Map<String,String> teacherList() {
+			
+			Map<String,String> teacherList = new LinkedHashMap<String,String>();
+			teacherList.put("1", "ผศ.ดร. พรชัย มงคลนาม");
+			teacherList.put("2", "ผศ.ดร. ชลเมธ อาปณิกานนท์");			
+			return teacherList;
 		}
 	    
 	    
