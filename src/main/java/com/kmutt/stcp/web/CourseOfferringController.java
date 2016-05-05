@@ -303,7 +303,7 @@ public class CourseOfferringController {
     		List<Curriculum> curList = curriculumRepository.findAll();
     		if(curList != null)
     		{
-    			System.out.println("Size >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+curList.size());
+    			
     			request.setAttribute("OatCurriculumList",curList);
     			
     		}
