@@ -7,9 +7,10 @@ pageEncoding="UTF-8"%>
 <html lang="en">
 
 <head>
-    <!-- SweetAlert -->
-    <script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
-    <link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
+    <!-- SweetAlert (message alert -->
+    <script src="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/1.3.2/sweetalert2.min.css">
 
     <title>Report & Statistics</title>
 </head>`
@@ -29,11 +30,17 @@ pageEncoding="UTF-8"%>
                 <!--<div class="input-group-btn">-->
                 <!--&lt;!&ndash; Button and dropdown menu &ndash;&gt;-->
                 <!--</div>-->
-                <input id="reportYear" type="text" class="form-control" aria-label="..." placeholder="ปี">
-                <!--<input type="text" class="form-control" aria-label="..." placeholder="ชื่อหลักสูตร" >-->
+                <!--<input id="reportYear" type="text" class="form-control" aria-label="..." placeholder="ปี">-->
+
+                <select id="reportYearOption" class="form-control">
+                    <c:forEach var="optYear" items="${curriculumYearList}">
+                        <option value="${optYear.startYear}">${optYear.startYear}</option>
+                    </c:forEach>
+                </select>
+
                 <select id="reportNameOption" class="form-control">
-                    <c:forEach var="curriculumOption" varStatus="status" items="${curriculumNameList}">
-                        <option value="${curriculumOption.name}">${curriculumOption.name}</option>
+                    <c:forEach var="optName" items="${curriculumNameList}">
+                        <option value="${optName.name}">${optName.name}</option>
                     </c:forEach>
                     <!--<option value="bis">ระบบสารสนเทศทางธุรกิจ (Business Information System)</option>-->
                     <!--<option value="cs">วิทยาการคอมพิวเตอร์ (Computer Science)</option>-->
