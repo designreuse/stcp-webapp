@@ -40,7 +40,6 @@ public class SecurityTest {
     @Autowired
     AccountRepository accountRepository;
 
-    @Ignore
     @Test
     public void testValidateEmail() {
         String mailNull = securityManager.ValidateEmail("");
@@ -55,13 +54,11 @@ public class SecurityTest {
         assertEquals(null, mailKMUTT);
     }
 
-
-    @Ignore
     @Test
     public void testSendMail() {
         securityManager.SendMail("student@mail.kmutt.ac.th");
     }
-    @Ignore
+
     @Test
     public void testValidatePassword() {
         String passwordCorrect = securityManager.ValidatePassword("123456789");
@@ -73,8 +70,8 @@ public class SecurityTest {
         assertEquals("Password must have length more than 8 character",passwordNull);
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void testCreateUser() {
         String result = securityManager.CreateUser("student@mail.kmutt.ac.th","12345678");
         assertEquals(null,result);
