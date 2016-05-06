@@ -2,17 +2,28 @@ package com.kmutt.stcp.web;
 
 import com.kmutt.stcp.config.SpringRootConfig;
 import com.kmutt.stcp.config.SpringWebConfig;
+import com.kmutt.stcp.entity.Account;
+import com.kmutt.stcp.entity.User;
 import com.kmutt.stcp.manager.SecurityManager;
+import com.kmutt.stcp.repository.AccountRepository;
+import com.kmutt.stcp.repository.CurriculumRepository;
 import com.kmutt.stcp.repository.UserRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import javax.servlet.http.HttpSession;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by Gift on 04-May-16.
@@ -23,10 +34,13 @@ import static org.junit.Assert.fail;
 public class SecurityTest {
 
     @Autowired
+    SecurityController securityController;
+    @Autowired
     SecurityManager securityManager;
     @Autowired
-    UserRepository userRepository;
+    AccountRepository accountRepository;
 
+    @Ignore
     @Test
     public void testValidateEmail() {
         String mailNull = securityManager.ValidateEmail("");
@@ -42,12 +56,12 @@ public class SecurityTest {
     }
 
 
-
+    @Ignore
     @Test
     public void testSendMail() {
         securityManager.SendMail("student@mail.kmutt.ac.th");
     }
-
+    @Ignore
     @Test
     public void testValidatePassword() {
         String passwordCorrect = securityManager.ValidatePassword("123456789");
@@ -59,6 +73,7 @@ public class SecurityTest {
         assertEquals("Password must have length more than 8 character",passwordNull);
     }
 
+    @Ignore
     @Test
     public void testCreateUser() {
         String result = securityManager.CreateUser("student@mail.kmutt.ac.th","12345678");
@@ -66,16 +81,40 @@ public class SecurityTest {
     }
 
     @Test
-    public void createUserNotAvailableEmailTest() {
-        String result = securityManager.CreateUser("eee@mail.kmutt.ac.th","11111111");
-        if(result.isEmpty()){
-            fail(result);
-        }
+    @Transactional
+    public void createUserControllerResultFormat() {
+        String resultPattern = "\\{\"msg\":\".*\"\\}";
+        String msg;
+
+        //status message
+        msg = securityController.CreateUser(null,"jarupath.j@mail.kmutt.ac.th","11111111");
+        assertTrue(msg.matches(resultPattern));
+
+        //null message
+        msg = securityController.CreateUser(null,"anonymous@gmail.com","11111111");
+        assertTrue(msg.matches(resultPattern));
+
+        //error message
+        msg = securityController.CreateUser(null,"jarupath.j@mail.kmutt.ac.th","");
+        assertTrue(msg.matches(resultPattern));
     }
 
     @Test
-    public void createUserIsDuplicateTest() {
+    @Transactional
+    public void createUserControllerSuccessTest() {
+        String email = "jarupath.j@mail.kmutt.ac.th";
+        String password = "11111111";
 
+        String msg = securityController.CreateUser(null, email, password);
+        System.out.println(msg);
+
+        List<Account> users = accountRepository.queryHQL("FROM Account WHERE username='"+email+"'");
+        if(users.size()>1) {
+            fail("user created duplicate");
+        }
+
+        String regex = "\\{\"msg\":\"success\"\\}";
+        assertTrue(msg.matches(regex));
     }
 
 
