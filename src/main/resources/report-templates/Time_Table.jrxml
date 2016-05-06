@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-05T17:31:49 -->
+<!-- 2016-05-06T13:18:06 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Time_Table" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce7d3385-0221-4a52-858e-8164ee97ae93">
 	<property name="ireport.zoom" value="1.9487171000000016"/>
 	<property name="ireport.x" value="0"/>
@@ -9,8 +9,8 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select @n := @n + 1 AS 'No',curriculum_id, a.subject_id, name as curriculum_name , started_year as curriculum_started_year, subject_code, name_thai, c.name_eng, subject_type, credit, semester_term
-,semester_yesr,study_time,exam_time
+		<![CDATA[select @n := @n + 1 AS 'No',curriculum_id, a.subject_id, name as curriculum_name , b.start_year as curriculum_start_date, b.end_year as curriculum_end_date, c.subject_code, c.name_thai, c.name_eng, c.subject_type, c.credit, d.semester_term
+,d.semester_yesr,d.study_time,d.exam_time
 from curriculum_subject a, curriculum b, subject c, course d,(SELECT @n := 0) m
 where a.curriculum_id = b.id and
       a.subject_id = c.id and
@@ -26,7 +26,8 @@ order by semester_yesr,semester_term,subject_code]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="curriculum_name" class="java.lang.String"/>
-	<field name="curriculum_started_year" class="java.lang.String"/>
+	<field name="curriculum_start_date" class="java.lang.String"/>
+	<field name="curriculum_end_date" class="java.lang.String"/>
 	<field name="subject_code" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -109,7 +110,7 @@ Course Time Sheet]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["หลักสูตร Curriculum : "+$F{curriculum_name}+"   ปีพุทธศักราช Year : "+$F{curriculum_started_year}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["หลักสูตร Curriculum : "+$F{curriculum_name}+"   ปีพุทธศักราช Year : "+$F{curriculum_start_date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
