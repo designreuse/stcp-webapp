@@ -234,18 +234,23 @@ $(document).ready(function() {
                 var year = parseInt(inputValue);
                 year = year - 543;
 
-                if(year < (currentYear - 1) || year > 2100) {
+                if (year < (currentYear - 1) || year > 2100) {
                     swal.showInputError("Invalid year!");
                     return false;
                 }
 
+                var isFound = false;
                 var sizeElements = $("#selectSemesterYear option").length;
 
                 if (sizeElements > 0) {
 
                     $("#selectSemesterYear option").each(function (index) {
 
-                        if (year < parseInt($(this).val())) {
+                        if (year == parseInt($(this).val())) {
+
+                            isFound = true;
+
+                        } else if (year < parseInt($(this).val())) {
 
                             $("<option value=\"" + year + "\">ปีการศึกษา&nbsp;" + (year + 543) + "</option>").before($(this));
 
@@ -263,29 +268,32 @@ $(document).ready(function() {
 
                 }
 
-                $("#tabSemester").append(
-                    $("<li class=\"text-center\" tag=\"" + year + "\">" +
-                        "<a href=\"#" + year + "1\" role=\"tab\" tag=\"" + year + "1\"><strong>&nbsp;ภาคการเรียนที่ 1&nbsp;</strong></a>" +
-                        "</li>" +
-                        "<li class=\"text-center\" tag=\"" + year + "\">" +
-                        "<a href=\"#" + year + "2\" role=\"tab\" tag=\"" + year + "2\"><strong>&nbsp;ภาคการเรียนที่ 2&nbsp;</strong></a>" +
-                        "</li>")
-                );
+                if (!isFound) {
+                    $("#tabSemester").append(
+                        $("<li class=\"text-center\" tag=\"" + year + "\">" +
+                            "<a href=\"#" + year + "1\" role=\"tab\" tag=\"" + year + "1\"><strong>&nbsp;ภาคการเรียนที่ 1&nbsp;</strong></a>" +
+                            "</li>" +
+                            "<li class=\"text-center\" tag=\"" + year + "\">" +
+                            "<a href=\"#" + year + "2\" role=\"tab\" tag=\"" + year + "2\"><strong>&nbsp;ภาคการเรียนที่ 2&nbsp;</strong></a>" +
+                            "</li>")
+                    );
 
-                $("#courseplanlist").append(
-                    $("<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"" + year + "1\" data-semesteryear=\"" + year + "\" data-semesterterm=\"1\">" +
-                        "<table class=\"table table-bordered table-hover\" style=\"max-height: 284px !important;\">" +
-                        "<thead class=\"thead-default\">" +
-                        "<tr><th class=\"col-xs-8\">Subject</th><th class=\"col-xs-2\">Credit</th><th class=\"col-xs-2\">&nbsp;</th></tr></thead>" +
-                        "<tbody></tbody></table></div>" +
-                        "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"" + year + "2\" data-semesteryear=\"" + year + "\" data-semesterterm=\"2\">" +
-                        "<table class=\"table table-bordered table-hover\">" +
-                        "<thead class=\"thead-default\"><tr><th class=\"col-xs-8\">Subject</th><th class=\"col-xs-2\">Credit</th><th class=\"col-xs-2\">&nbsp;</th></tr></thead>" +
-                        "<tbody></tbody></table></div>")
-                );
+                    $("#courseplanlist").append(
+                        $("<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"" + year + "1\" data-semesteryear=\"" + year + "\" data-semesterterm=\"1\">" +
+                            "<table class=\"table table-bordered table-hover\" style=\"max-height: 284px !important;\">" +
+                            "<thead class=\"thead-default\">" +
+                            "<tr><th class=\"col-xs-8\">Subject</th><th class=\"col-xs-2\">Credit</th><th class=\"col-xs-2\">&nbsp;</th></tr></thead>" +
+                            "<tbody></tbody></table></div>" +
+                            "<div role=\"tabpanel\" class=\"tab-pane fade\" id=\"" + year + "2\" data-semesteryear=\"" + year + "\" data-semesterterm=\"2\">" +
+                            "<table class=\"table table-bordered table-hover\">" +
+                            "<thead class=\"thead-default\"><tr><th class=\"col-xs-8\">Subject</th><th class=\"col-xs-2\">Credit</th><th class=\"col-xs-2\">&nbsp;</th></tr></thead>" +
+                            "<tbody></tbody></table></div>")
+                    );
+                }
 
                 $('#selectSemesterYear').val(year);
                 $('#selectSemesterYear').trigger("change");
+
             }
 
             swal.close();
