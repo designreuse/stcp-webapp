@@ -25,223 +25,223 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("coursePlanner")
-@SessionAttributes(value = {"planMng", "courseMng", "courseList"})
+@SessionAttributes(value = { "planMng", "courseMng", "courseList" })
 public class CoursePlannerController {
 
-    // Field//
-    private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
+	// Field//
+	private final Logger logger = LoggerFactory.getLogger(CoursePlannerController.class);
 
-    @Autowired
-    ApplicationContext appContext;
+	@Autowired
+	ApplicationContext appContext;
 
-    @Autowired
+	@Autowired
     AccountRepository accountRepository;
 
-    // @Autowired
-    // private HttpServletRequest request;
+	// @Autowired
+	// private HttpServletRequest request;
 
-    // Action//
-    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public String index(HttpSession session, Map<String, Object> model) {
+	// Action//
+	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
+	public String index(HttpSession session, Map<String, Object> model) {
 
         // TODO: When deploy should remove Dummy Student Account
 //		Account student = accountRepository.findOne(1);
 //		session.setAttribute("account", student);
 
-        CourseManager courseMng = this.getCurrentCourseManager(session);
-        CoursePlannerManager planMng = this.getCurrentPlanManger(session);
+		CourseManager courseMng = this.getCurrentCourseManager(session);
+		CoursePlannerManager planMng = this.getCurrentPlanManger(session);
 
-        List<CoursePlan> semesterPlan = planMng.getCoursePlanList();
-        model.put("semesterList", semesterPlan);
+		List<CoursePlan> semesterPlan = planMng.getCoursePlanList();
+		model.put("semesterList", semesterPlan);
+		
+		List<Integer> semesterYearList = planMng.getSemesterYearList();
+		model.put("semesterYearList", semesterYearList);
 
-        List<Integer> semesterYearList = planMng.getSemesterYearList();
-        model.put("semesterYearList", semesterYearList);
+		List<Subject> subjectAll = courseMng.getSubjectList();
+		subjectAll = bindSubjectIsSelected(subjectAll, planMng.getSubjectSelectedList());
+		model.put("subjectlist", subjectAll);
 
-        List<Subject> subjectAll = courseMng.getSubjectList();
-        subjectAll = bindSubjectIsSelected(subjectAll, planMng.getSubjectSelectedList());
-        model.put("subjectlist", subjectAll);
+		return "coursePlanner/mainPage";
 
-        return "coursePlanner/mainPage";
+	}
 
-    }
+	@RequestMapping(value = { "/courseplan/{semesteryear}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<CoursePlan> getCoursePlanBySemester(HttpSession session,
+			@PathVariable("semesteryear") String semesterYear) {
 
-    @RequestMapping(value = {"/courseplan/{semesteryear}"}, method = RequestMethod.GET)
-    @ResponseBody
-    public List<CoursePlan> getCoursePlanBySemester(HttpSession session,
-                                                    @PathVariable("semesteryear") String semesterYear) {
+		try {
 
-        try {
+			int _semesterYear = 0;
 
-            int _semesterYear = 0;
+			try {
 
-            try {
+				_semesterYear = Integer.parseInt(semesterYear);
 
-                _semesterYear = Integer.parseInt(semesterYear);
+			} catch (NumberFormatException e) {
 
-            } catch (NumberFormatException e) {
+				System.out.println(e.getMessage());
+				return null;
 
-                System.out.println(e.getMessage());
-                return null;
+			}
 
-            }
+			CoursePlannerManager coursePlanMng = this.getCurrentPlanManger(session);
 
-            CoursePlannerManager coursePlanMng = this.getCurrentPlanManger(session);
+			return coursePlanMng.getCoursePlanList(_semesterYear);
 
-            return coursePlanMng.getCoursePlanList(_semesterYear);
+		} catch (Exception e) {
 
-        } catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
 
-            System.out.println(e.getMessage());
-            return null;
+		}
 
-        }
+	}
 
-    }
+	@RequestMapping(value = { "/searchSubject" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<Subject> searchSubject(HttpSession session, @RequestParam("textsearch") String textSearch) {
 
-    @RequestMapping(value = {"/searchSubject"}, method = RequestMethod.GET)
-    @ResponseBody
-    public List<Subject> searchSubject(HttpSession session, @RequestParam("textsearch") String textSearch) {
+		List<Subject> subjectSearched = new ArrayList<>();
 
-        List<Subject> subjectSearched = new ArrayList<>();
+		try {
 
-        try {
+			CourseManager courseMng = this.getCurrentCourseManager(session);
+			subjectSearched = courseMng.searchSubject(textSearch);
 
-            CourseManager courseMng = this.getCurrentCourseManager(session);
-            subjectSearched = courseMng.searchSubject(textSearch);
+		} catch (Exception e) {
 
-        } catch (Exception e) {
+			logger.error("Method:searchSubject|Err:" + e.getMessage());
+			subjectSearched = new ArrayList<>();
+		}
 
-            logger.error("Method:searchSubject|Err:" + e.getMessage());
-            subjectSearched = new ArrayList<>();
-        }
+		return subjectSearched;
 
-        return subjectSearched;
+	}
 
-    }
+	@RequestMapping(value = { "/saveplan" }, method = RequestMethod.POST)
+	@ResponseBody
+	public MessageResult savePlan(HttpSession session, @RequestBody List<PlanMessageRequest> messageRequest) {
 
-    @RequestMapping(value = {"/saveplan"}, method = RequestMethod.POST)
-    @ResponseBody
-    public MessageResult savePlan(HttpSession session, @RequestBody List<PlanMessageRequest> messageRequest) {
+		MessageResult result = new MessageResult();
 
-        MessageResult result = new MessageResult();
+		try {
 
-        try {
+			if (messageRequest != null) {
 
-            if (messageRequest != null) {
+				CoursePlannerManager plnManger = this.getCurrentPlanManger(session);
 
-                CoursePlannerManager plnManger = this.getCurrentPlanManger(session);
+				if (plnManger.setCoursePlanForSave(messageRequest)) {
 
-                if (plnManger.setCoursePlanForSave(messageRequest)) {
+					if (plnManger.savePlan()) {
 
-                    if (plnManger.savePlan()) {
+						result.StatusCode = "000";
+						result.IsError = false;
+						result.ErrorDescription = "";
 
-                        result.StatusCode = "000";
-                        result.IsError = false;
-                        result.ErrorDescription = "";
+					} else {
 
-                    } else {
+						result.StatusCode = "103";
+						result.IsError = true;
+						result.ErrorDescription = "can't save plan in database.";
 
-                        result.StatusCode = "103";
-                        result.IsError = true;
-                        result.ErrorDescription = "can't save plan in database.";
+					}
 
-                    }
+				} else {
 
-                } else {
+					result.StatusCode = "102";
+					result.IsError = true;
+					result.ErrorDescription = "message can't be parsed.";
 
-                    result.StatusCode = "102";
-                    result.IsError = true;
-                    result.ErrorDescription = "message can't be parsed.";
+				}
 
-                }
+			} else {
 
-            } else {
+				result.StatusCode = "101";
+				result.IsError = true;
+				result.ErrorDescription = "message are empty";
 
-                result.StatusCode = "101";
-                result.IsError = true;
-                result.ErrorDescription = "message are empty";
+			}
 
-            }
+		} catch (Exception e) {
 
-        } catch (Exception e) {
+			logger.error("Method:savePlan|Err:" + e.getMessage());
 
-            logger.error("Method:savePlan|Err:" + e.getMessage());
+			result.StatusCode = "100";
+			result.IsError = true;
+			result.ErrorDescription = "can't save plan.";
 
-            result.StatusCode = "100";
-            result.IsError = true;
-            result.ErrorDescription = "can't save plan.";
+		}
 
-        }
+		return result;
 
-        return result;
+	}
 
-    }
+	// Method//
+	private CourseManager getCurrentCourseManager(HttpSession session) {
 
-    // Method//
-    private CourseManager getCurrentCourseManager(HttpSession session) {
+		CourseManager _courseManage = null;
 
-        CourseManager _courseManage = null;
+		try {
 
-        try {
+			_courseManage = (CourseManager) session.getAttribute("courseMng");
 
-            _courseManage = (CourseManager) session.getAttribute("courseMng");
+			if (_courseManage == null) {
+				// TODO: change session name to get account
+				_courseManage = appContext.getBean(CourseManager.class);
+				_courseManage.setStudent((Account) session.getAttribute("account"));
+				session.setAttribute("courseMng", _courseManage);
+			}
 
-            if (_courseManage == null) {
-                // TODO: change session name to get account
-                _courseManage = appContext.getBean(CourseManager.class);
-                _courseManage.setStudent((Account) session.getAttribute("account"));
-                session.setAttribute("courseMng", _courseManage);
-            }
+			return _courseManage;
 
-            return _courseManage;
+		} catch (Exception e) {
 
-        } catch (Exception e) {
+			logger.error(e.getMessage());
 
-            logger.error(e.getMessage());
+			return appContext.getBean(CourseManager.class);
 
-            return appContext.getBean(CourseManager.class);
+		}
+	}
 
-        }
-    }
+	private CoursePlannerManager getCurrentPlanManger(HttpSession session) {
 
-    private CoursePlannerManager getCurrentPlanManger(HttpSession session) {
+		CoursePlannerManager _coursePlanManage = null;
 
-        CoursePlannerManager _coursePlanManage = null;
+		try {
 
-        try {
+			_coursePlanManage = (CoursePlannerManager) session.getAttribute("planMng");
 
-            _coursePlanManage = (CoursePlannerManager) session.getAttribute("planMng");
+			if (_coursePlanManage == null) {
+				// TODO: change session name to get account
+				_coursePlanManage = appContext.getBean(CoursePlannerManager.class);
+				_coursePlanManage.setStudent((Account) session.getAttribute("account"));
+				session.setAttribute("planMng", _coursePlanManage);
+			}
 
-            if (_coursePlanManage == null) {
-                // TODO: change session name to get account
-                _coursePlanManage = appContext.getBean(CoursePlannerManager.class);
-                _coursePlanManage.setStudent((Account) session.getAttribute("account"));
-                session.setAttribute("planMng", _coursePlanManage);
-            }
+			return _coursePlanManage;
 
-            return _coursePlanManage;
+		} catch (Exception e) {
 
-        } catch (Exception e) {
+			logger.error(e.getMessage());
+			return new CoursePlannerManager(null);
+		}
+	}
 
-            logger.error(e.getMessage());
-            return new CoursePlannerManager(null);
-        }
-    }
+	private List<Subject> bindSubjectIsSelected(List<Subject> subjectAll, List<Subject> subjectSelectedList) {
 
-    private List<Subject> bindSubjectIsSelected(List<Subject> subjectAll, List<Subject> subjectSelectedList) {
+		for (Subject subject : subjectAll) {
 
-        for (Subject subject : subjectAll) {
+			for (Subject subjectSelected : subjectSelectedList) {
 
-            for (Subject subjectSelected : subjectSelectedList) {
+				if (subject.getSubjectCode().toLowerCase().equals(subjectSelected.getSubjectCode().toLowerCase())
+						|| subject.getId() == subjectSelected.getId()) {
+					subject.setStatus(2);
+				}
+			}
+		}
 
-                if (subject.getSubjectCode().toLowerCase().equals(subjectSelected.getSubjectCode().toLowerCase())
-                        || subject.getId() == subjectSelected.getId()) {
-                    subject.setStatus(2);
-                }
-            }
-        }
+		return subjectAll;
 
-        return subjectAll;
-
-    }
+	}
 }
