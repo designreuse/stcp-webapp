@@ -46,8 +46,8 @@ public class CoursePlannerController {
 
         // TODO: When deploy should remove Dummy Student Account
 //		Account student = accountRepository.findAll().stream().findFirst().orElse(new Account());
-        Account student = accountRepository.findOne(1);
-        session.setAttribute("account", student);
+//        Account student = accountRepository.findOne(1);
+//        session.setAttribute("account", student);
 
         CourseManager courseMng = this.getCurrentCourseManager(session);
         CoursePlannerManager planMng = this.getCurrentPlanManger(session);
