@@ -45,6 +45,7 @@ public class CoursePlannerController {
 	public String index(HttpSession session, Map<String, Object> model) {
 
 		// TODO: When deploy should remove Dummy Student Account
+//		Account student = accountRepository.findAll().stream().findFirst().orElse(new Account());
 		Account student = accountRepository.findOne(1);
 		session.setAttribute("account", student);
 

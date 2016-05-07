@@ -15,11 +15,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="${root}/resources/core/js/bootstrap.min.js"></script>
-
-<!-- SweetAlert -->
-<script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
-<link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
-
+<link rel="stylesheet" href="${root}/resources/core/css/sweetalert.css">
 <link rel="stylesheet" href="${root}/resources/core/css/courseplan.css">
 
 </head>
@@ -58,6 +54,9 @@
 				<button id="btnSave" type="button" class="btn btn-primary btn-sm">
 					&nbsp;<i class="fa fa-floppy-o fa-lg"></i>&nbsp;Save&nbsp;
 				</button>
+				<button id="btnAddYear" type="button" class="btn btn-success btn-sm">
+					&nbsp;<i class="fa fa-plus fa-lg"></i>&nbsp;Add Year&nbsp;
+				</button>
 			</div>
 			<br />
 			<div class="row">
@@ -91,7 +90,8 @@
 										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}" data-semesterid="${semester.id}">
 											<td class="text-left">${semester.subject.subjectCode}&nbsp;${semester.subject.nameThai}</td>
 											<td>${semester.subject.credit}</td>
-											<td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td>
+											<%-- <td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td> --%>
+											<td><button class="btn btn-danger btn-sm courseBtnDelete"><span class="fa fa-times">&nbsp;</span></button></td>
 										</tr>
 									</c:if>
 								</c:forEach>
@@ -113,7 +113,8 @@
 										<tr data-id="${semester.subject.id}" data-subjectcode="${semester.subject.subjectCode}" data-semesterid="${semester.id}">
 											<td class="text-left">${semester.subject.subjectCode}&nbsp;${semester.subject.nameThai}</td>
 											<td>${semester.subject.credit}</td>
-											<td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td>
+											<%-- <td><button class="btn btn-danger btn-sm courseBtnDelete" ${year < currentYear? 'disabled' : '' }><span class="fa fa-times">&nbsp;</span></button></td> --%>
+											<td><button class="btn btn-danger btn-sm courseBtnDelete"><span class="fa fa-times">&nbsp;</span></button></td>
 										</tr>
 									</c:if>
 								</c:forEach>
@@ -132,7 +133,7 @@
 								<span>Total Credits :</span>
 							</div>
 							<div class="col-xs-3 col-sm-2 text-center">
-								<span id="totalCredits">9</span>
+								<span id="totalCredits"></span>
 							</div>
 							<div class="col-xs-3 col-sm-2">
 								<small>credits</small>
@@ -143,7 +144,7 @@
 								<span class="">All Years Credits :</span>
 							</div>
 							<div class="col-xs-3 col-sm-2 text-center">
-								<span id="totalAllCredits">36</span>
+								<span id="totalAllCredits"></span>
 							</div>
 							<div class="col-xs-3 col-sm-2">
 								<small>credits</small>
@@ -171,7 +172,9 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="${root}/resources/core/js/courseplan.js" defer></script>
+	<script type="text/javascript" src="${root}/resources/core/js/sweetalert.js" defer ></script>
+	
+	<script type="text/javascript" src="${root}/resources/core/js/courseplan.js" defer ></script>
 
 </body>
 </html>

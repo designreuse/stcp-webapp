@@ -5,7 +5,7 @@
 div#i_containTab {
 	position: relative;
 	display: block;
-	width: 540px; /* ¡ÓË¹´¤ÇÒÁ¡ÇéÒ§·Ñé§ËÁ´   */
+	width: 540px; /* ï¿½ï¿½Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   */
 	border: 1px solid #CCC;
 }
 
@@ -21,7 +21,7 @@ ul#navi_containTab li {
 	display: block;
 	float: left;
 	height: 30px;
-	width: 25%; /* ¡ÓË¹´¤ÇÒÁ¡ÇéÒ§·Ñé§ËÁ´  ËÒÃ´éÇÂ¨Ó¹Ç¹àÁ¹Ùá·çº  */
+	width: 25%; /* ï¿½ï¿½Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½Ã´ï¿½ï¿½Â¨Ó¹Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
 	border: 0px solid #CCC;
 	line-height: 25px;
 	cursor: pointer;
@@ -29,7 +29,7 @@ ul#navi_containTab li {
 	border: 1px solid #e0e0e0;
 	padding: 3px 5px;
 }
-/* class ÃÙ»áºº¢Í§áµèÅÐàÁ¹Ù */
+/* class ï¿½Ù»áººï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .tabNavi1 {
 	background-color: #848484;
 	color: #ffffff;
@@ -52,7 +52,7 @@ ul#detail_containTab li {
 	width: 100%;
 	height: 250px;
 }
-/* class ÃÙ»áºº¢Í§áµèÅÐà¹×éÍËÒ */
+/* class ï¿½Ù»áººï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .detailContent1 {
 	background-color: white;
 	border: 1px solid black;
@@ -151,6 +151,11 @@ ul#detail_containTab li {
 
 div[role=tabpanel] tbody td{
 	vertical-align: middle;
+}
+
+/* custom sweet button */
+.confirm.btn, .cancel.btn {
+	min-width: 84.7px;
 }
 
 .colorgraph {
