@@ -97,7 +97,7 @@ $(document).ready(function() {
                         optElement.data('credit', subject.credit);
                         optElement.data('content', subject.detailThai);
 
-                        if (subject.status == 1) {
+                        if (subject.status == 2) {
                             optElement.attr('isdisabled', 'true');
                             optElement.addClass('optionDisabled');
                         }
