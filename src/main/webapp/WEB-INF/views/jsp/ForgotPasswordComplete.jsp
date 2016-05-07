@@ -30,7 +30,7 @@
 <body>
 	<div class="jumbotron" style="background-color:#dd4b39">
 		<div class="container" style="color:white;">
-			<h1>Student Course Planer</h1>
+			<h1>Student Course Planner</h1>
 		</div>
 	</div>
 	

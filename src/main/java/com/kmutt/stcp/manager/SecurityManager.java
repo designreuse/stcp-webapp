@@ -126,7 +126,7 @@ public class SecurityManager {
     		// Get Role User
     		//String hqlRole = "from role_user where id = " + usr.getId().toString();
     		//RoleUser role = (RoleUser)roleUserRepository.queryHQL(hqlRole);
-    		RoleUser role = findRoleUserByUserID(usr.getId());
+    		RoleUser role = findRoleUserByUserName(Email);
     		
     		if(role.equals(null)){
     			return "User don't have Role";
@@ -185,7 +185,7 @@ public class SecurityManager {
     public RoleUser GetLoginRoleProfie(HttpSession session){
     	User loginUsr = (User)session.getAttribute("loginUser");
     	
-    	RoleUser loginRole = findRoleUserByUserID(loginUsr.getId());
+    	RoleUser loginRole = findRoleUserByUserName(loginUsr.getEmail());
     	
     	return loginRole;
     }
@@ -377,11 +377,20 @@ public class SecurityManager {
     	return null;
     }
     
-    private RoleUser findRoleUserByUserID(Integer UserID){
+    private RoleUser findRoleUserByUserName(String UserName){
     	List<RoleUser> roleuserList = roleUserRepository.findAll();
     	
+    	String role = "";
+    	
+    	if(UserName.contains("@mail.kmutt.ac.th") == true){
+    		role = "STUDENT";
+    	}
+    	else{
+    		role = "TEACHER";
+    	}
+    	
     	for (RoleUser roleUser : roleuserList) {
-			if(roleUser.getId() == UserID){
+			if(roleUser.getRole().toUpperCase().equals(role)){
 				return roleUser;
 			}
 		}
