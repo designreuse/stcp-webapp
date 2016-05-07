@@ -46,12 +46,14 @@ public class SecurityTest {
         String mailwithCharacter = securityManager.ValidateEmail("student_123@mail.kmutt.ac.th");
         String mailIncomplete = securityManager.ValidateEmail("student_123@mail.ac.th");
         String mailKMUTT = securityManager.ValidateEmail("student@mail.kmutt.ac.th");
+        String mailKMUTTExist = securityManager.ValidateEmail("jarupath.j@mail.kmutt.ac.th");
 
 
         assertEquals("Email Invalid format",mailNull);
-        assertEquals(null,mailwithCharacter);
-        assertEquals("Email Invalid format",mailIncomplete);
-        assertEquals(null, mailKMUTT);
+        assertEquals("Email is not KMUTT Email Account",mailwithCharacter);
+        assertEquals("Email is not KMUTT Email Account",mailIncomplete);
+        assertEquals("User is exist ,Please Login", mailKMUTTExist);
+        assertEquals("Email is not KMUTT Email Account", mailKMUTT);
     }
 
     @Test
@@ -106,12 +108,9 @@ public class SecurityTest {
         System.out.println(msg);
 
         List<Account> users = accountRepository.queryHQL("FROM Account WHERE username='"+email+"'");
-        if(users.size()>1) {
-            fail("user created duplicate");
-        }
 
         String regex = "\\{\"msg\":\"success\"\\}";
-        assertTrue(msg.matches(regex));
+        assertTrue(msg.matches(regex) && users.size()>0);
     }
 
 
