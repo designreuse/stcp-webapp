@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
 
-	$("#btnSave").click(function() {
+	/*$("#btnSave").click(function() {
+		
 		swal({
 			title : "Add Cousre",
 			text : "Are you want to save this Cousre?",
@@ -24,6 +25,7 @@ $(document).ready(function() {
 			}
 		});
 		
+		
 	});
 
 	$("#btnReset").click(function() {
@@ -42,5 +44,19 @@ $(document).ready(function() {
 				window.location.href = window.location.href;
 			}
 		});
-	});
+	});*/
 });
+
+function saveFunction() {
+    var x;
+    if (confirm("Are you want to save this Cousre?") == true) {
+    	document.getElementById("form").submit();
+    }
+}
+
+function resetFunction() {
+    var x;
+    if (confirm("Are you want to reset this Cousre?") == true) {
+    	window.location.href = window.location.href;
+    }
+}

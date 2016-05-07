@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Student_Planning" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55de5cd7-dbe7-45b4-85e1-685c501adef1">
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-05-06T23:50:24 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Student_Planning" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55de5cd7-dbe7-45b4-85e1-685c501adef1">
 	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="LOCALHOST_DATA_ADAPTER.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="ID_STUDENT" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT @n := @n + 1 AS 'No',a.id as user_id, a.firstname, a.lastname, a.faculty,a.major, c.semester_year, c.semester_term, d.subject_code, d.name_thai, d.name_eng, d.subject_type, d.credit, e.name, e.start_year, e.started_year, f.sum_credit
+		<![CDATA[SELECT @n := @n + 1 AS 'No',a.id as user_id, a.firstname, a.lastname, a.faculty,a.major, c.semester_year, c.semester_term, d.subject_code, d.name_thai, d.name_eng, d.subject_type, d.credit, e.name, e.start_year, e.end_year, f.sum_credit
 FROM  user a, account b, course_plan c, subject d, curriculum e, (SELECT @n := 0) m
 CROSS JOIN (SELECT SUM(credit) as sum_credit FROM subject AS sum_credit) f
 WHERE a.id = b.user_id and
@@ -58,7 +62,7 @@ ORDER BY c.semester_year, c.semester_term, d.subject_code]]>
 	<field name="start_year" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="started_year" class="java.lang.String">
+	<field name="end_year" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="sum_credit" class="java.lang.Double"/>
@@ -140,7 +144,7 @@ Planning Sheet]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["หลักสูตร Curriculum : "+$F{name}+"   	ปีพุทธศักราช Year : "+$F{started_year}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["หลักสูตร Curriculum : "+$F{name}+"   	ปีพุทธศักราช Year : "+$F{semester_year}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

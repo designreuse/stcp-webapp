@@ -19,10 +19,10 @@
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
-	<!-- SweetAlert -->
-<script src="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.js"></script>
+<!-- SweetAlert  -->
+<script src="${pageContext.request.contextPath}/resources/core/plugins/sweetAlert/sweetalert-dev.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/core/plugins/sweetAlert/sweetalert.css">
 
-<link rel="stylesheet" href="http://lipis.github.io/bootstrap-sweetalert/lib/sweet-alert.css">
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#dataTable').DataTable();
